@@ -17,7 +17,8 @@ export default {
         }
       },
       fontFamily: {
-        crete: ['"Crete Round"', ...defaultTheme.fontFamily.serif], // Add Crete Round with serif fallback
+        crete: ["var(--font-crete-round)", ...defaultTheme.fontFamily.serif],
+        raleway: ["var(--font-raleway)", ...defaultTheme.fontFamily.sans],
       },
     },
   },
