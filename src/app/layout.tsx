@@ -82,6 +82,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <title>Burning Boats</title>
+        <meta property="description" content="Try and figure out what this is about" />
+        <meta property="og:title" content="Burning Boats Official Site" />
+        <meta property="og:description" content="Welcome to our site. Explore our projects, meet our team, and join our journey to redefine possibilities." />
+        <meta property="og:image" content="https://yourdomain.com/images/og-image.jpg" />
+        <meta property="og:url" content="https://burningboats.github.io" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Burning Boats" />
+        <meta property="og:locale" content="en_US" />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} ${raleway.variable} ${creteRound.className} antialiased overflow-hidden`}>
         <main>{children}</main>
       </body>
