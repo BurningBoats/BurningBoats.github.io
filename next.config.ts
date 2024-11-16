@@ -1,9 +1,11 @@
 import type { NextConfig } from "next";
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 const nextConfig: NextConfig = {
   output: 'export',
-  basePath: '/burningboats.github.io',
-  assetPrefix: '/burningboats.github.io',
+  basePath: isProduction ? '/burningboats.github.io' : '',
+  assetPrefix: isProduction ? '/burningboats.github.io' : '',
 };
 
 export default nextConfig;
