@@ -52,6 +52,12 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/images/og-square.jpg", // Square image for WhatsApp
+        width: 630,
+        height: 630,
+        alt: "Burning Boats Studio - Official Site",
+      },
+      {
+        url: "/images/og-square-lg.jpg", // Square image for WhatsApp
         width: 1200,
         height: 1200,
         alt: "Burning Boats Studio - Official Site",
