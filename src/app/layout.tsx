@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     siteName: "Burning Boats",
     images: [
       {
-        url: "https://burningboats.github.io/images/social-banner.jpg",
+        url: "/bbuletin.png",
         width: 1200,
         height: 630,
         alt: "Burning Boats - Explore the Future",
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     title: "Burning Boats | Explore the Future",
     description:
       "Join Burning Boats on a journey of exploration and innovation. Discover our team and projects.",
-    images: ["https://burningboats.github.io/images/social-banner.jpg"],
+    images: ["/bbuletin.png"],
     site: "@burningboats",
   },
   icons: {
@@ -87,7 +87,7 @@ export default function RootLayout({
         <meta property="description" content="Try and figure out what this is about" />
         <meta property="og:title" content="Burning Boats Official Site" />
         <meta property="og:description" content="Welcome to our site. Explore our projects, meet our team, and join our journey to redefine possibilities." />
-        <meta property="og:image" content="https://yourdomain.com/images/og-image.jpg" />
+        <meta property="og:image" content="/bbuletin.png" />
         <meta property="og:url" content="https://burningboats.github.io" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Burning Boats" />
