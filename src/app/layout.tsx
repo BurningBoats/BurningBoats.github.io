@@ -27,7 +27,7 @@ const raleway = Raleway({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://burningboats.github.io"),
-  title: "Burning Boats | Indie Devs with Big Dreams",
+  title: "Burning Boats Studio | Official Site",
   description:
     "We're a small, passionate team creating exploration roguelikes and unique gaming experiences. Dive into our projects and join us on this journey.",
   keywords: [
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     { name: "Burning Boats Team", url: "https://burningboats.github.io" },
   ],
   openGraph: {
-    title: "Burning Boats | Indie Devs with Big Dreams",
+    title: "Burning Boats Studio | Official Site",
     description:
       "Meet Burning Boats, an indie game development team crafting exploration roguelikes and creative experiences. Join us as we redefine fun.",
     url: "https://burningboats.github.io",
@@ -54,13 +54,13 @@ export const metadata: Metadata = {
         url: "/images/og-square.jpg", // Square image for WhatsApp
         width: 1200,
         height: 1200,
-        alt: "Burning Boats - Indie Devs with Big Dreams",
+        alt: "Burning Boats Studio - Official Site",
       },
       {
         url: "/images/og-banner.jpg",
         width: 1200,
         height: 630,
-        alt: "Burning Boats - Indie Devs with Big Dreams",
+        alt: "Burning Boats Studio - Official Site",
       },
     ],
     locale: "en_US",
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Burning Boats | Indie Devs with Big Dreams",
+    title: "Burning Boats Studio | Official Site",
     description:
       "We're a small, passionate team creating exploration roguelikes and unique gaming experiences. Dive into our projects.",
     images: ["/images/og-banner.jpg"],
