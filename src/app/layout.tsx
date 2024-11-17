@@ -27,34 +27,34 @@ const raleway = Raleway({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://burningboats.github.io"),
-  title: "Burning Boats Official Site",
+  title: "Burning Boats | Indie Devs with Big Dreams",
   description:
-    "Welcome to our site. Explore our projects, meet our team, and join our journey to redefine possibilities.",
+    "We're a small, passionate team creating exploration roguelikes and unique gaming experiences. Dive into our projects and join us on this journey.",
   keywords: [
     "Burning Boats",
-    "gamedev",
-    "mexican development",
-    "Mindaro",
+    "indie game dev",
     "exploration roguelike",
-    "videogames",
-    "development team",
-    "projects",
+    "Mindaro",
+    "small dev team",
+    "game development",
+    "indie gaming",
+    "creative team",
   ],
   authors: [
     { name: "Burning Boats Team", url: "https://burningboats.github.io" },
   ],
   openGraph: {
-    title: "Burning Boats | Explore the Future",
+    title: "Burning Boats | Indie Devs with Big Dreams",
     description:
-      "Discover Burning Boats: a hub for creative minds and groundbreaking projects. Meet the team behind the vision.",
+      "Meet Burning Boats, an indie game development team crafting exploration roguelikes and creative experiences. Join us as we redefine fun.",
     url: "https://burningboats.github.io",
     siteName: "Burning Boats",
     images: [
       {
-        url: "/images/og-banner.jpg", // Corrected the path to the updated OG image
+        url: "/images/og-banner.jpg",
         width: 1200,
         height: 630,
-        alt: "Burning Boats - Explore the Future",
+        alt: "Burning Boats - Indie Devs with Big Dreams",
       },
     ],
     locale: "en_US",
@@ -62,10 +62,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Burning Boats | Explore the Future",
+    title: "Burning Boats | Indie Devs with Big Dreams",
     description:
-      "Join Burning Boats on a journey of exploration and innovation. Discover our team and projects.",
-    images: ["/images/og-banner.jpg"], // Updated path here as well
+      "We're a small, passionate team creating exploration roguelikes and unique gaming experiences. Dive into our projects.",
+    images: ["/images/og-banner.jpg"],
     site: "@burningboats",
   },
   icons: {
@@ -73,9 +73,8 @@ export const metadata: Metadata = {
     shortcut: "/favicon-32x32.png",
     apple: "/apple-touch-icon.png",
   },
-  themeColor: "#1e293b",
-  viewport: "width=device-width, initial-scale=1.0",
 };
+
 
 export default function RootLayout({
   children,
