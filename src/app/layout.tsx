@@ -20,15 +20,16 @@ const creteRound = Crete_Round({
 });
 
 const raleway = Raleway({
-  weight: ["300", "400", "500", "600", "700"], // Choose weights for different text usages
+  weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-raleway",
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://burningboats.github.io'),
-  title: 'Burning Boats Official Site',
-  description: 'Welcome to our site. Explore our projects, meet our team, and join our journey to redefine possibilities.',
+  metadataBase: new URL("https://burningboats.github.io"),
+  title: "Burning Boats Official Site",
+  description:
+    "Welcome to our site. Explore our projects, meet our team, and join our journey to redefine possibilities.",
   keywords: [
     "Burning Boats",
     "gamedev",
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
     siteName: "Burning Boats",
     images: [
       {
-        url: "/bbuletin.png",
+        url: "/images/og-banner.jpg", // Corrected the path to the updated OG image
         width: 1200,
         height: 630,
         alt: "Burning Boats - Explore the Future",
@@ -64,7 +65,7 @@ export const metadata: Metadata = {
     title: "Burning Boats | Explore the Future",
     description:
       "Join Burning Boats on a journey of exploration and innovation. Discover our team and projects.",
-    images: ["/bbuletin.png"],
+    images: ["/images/og-banner.jpg"], // Updated path here as well
     site: "@burningboats",
   },
   icons: {
@@ -85,16 +86,16 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <title>Burning Boats</title>
-        <meta property="description" content="Try and figure out what this is about" />
-        <meta property="og:title" content="Burning Boats Official Site" />
-        <meta property="og:description" content="Welcome to our site. Explore our projects, meet our team, and join our journey to redefine possibilities." />
-        <meta property="og:image" content="/bbuletin.png" />
-        <meta property="og:url" content="https://burningboats.github.io" />
-        <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="Burning Boats" />
-        <meta property="og:locale" content="en_US" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${raleway.variable} ${creteRound.className} antialiased overflow-hidden`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${raleway.variable} ${creteRound.className} antialiased overflow-hidden`}
+      >
         <main>{children}</main>
       </body>
     </html>
