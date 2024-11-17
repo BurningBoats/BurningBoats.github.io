@@ -26,6 +26,7 @@ const raleway = Raleway({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://burningboats.github.io'),
   title: 'Burning Boats Official Site',
   description: 'Welcome to our site. Explore our projects, meet our team, and join our journey to redefine possibilities.',
   keywords: [
