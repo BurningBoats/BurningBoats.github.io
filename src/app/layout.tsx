@@ -51,6 +51,12 @@ export const metadata: Metadata = {
     siteName: "Burning Boats",
     images: [
       {
+        url: "/images/og-square.jpg", // Square image for WhatsApp
+        width: 1200,
+        height: 1200,
+        alt: "Burning Boats - Indie Devs with Big Dreams",
+      },
+      {
         url: "/images/og-banner.jpg",
         width: 1200,
         height: 630,
