@@ -51,18 +51,6 @@ export const metadata: Metadata = {
     siteName: "Burning Boats",
     images: [
       {
-        url: "/images/og-square.jpg?v=2",
-        width: 630,
-        height: 630,
-        alt: "Burning Boats Studio - Official Site",
-      },
-      {
-        url: "/images/og-square-lg.jpg?v=2",
-        width: 1200,
-        height: 1200,
-        alt: "Burning Boats Studio - Official Site",
-      },
-      {
         url: "/images/og-banner.jpg?v=2",
         width: 1200,
         height: 630,
