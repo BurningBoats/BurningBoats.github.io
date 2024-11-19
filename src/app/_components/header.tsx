@@ -89,15 +89,7 @@ export default function Header() {
               </li>
               <li>
                 <button
-                  onClick={() => scrollToSection("team")}
-                  className="block w-full px-4 py-2 hover:bg-gray-100 text-left"
-                >
-                  Team
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("footer")}
+                  onClick={() => scrollToSection("contacts")}
                   className="block w-full px-4 py-2 hover:bg-gray-100 text-left"
                 >
                   Contact us
