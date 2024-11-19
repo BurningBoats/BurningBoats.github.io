@@ -2,14 +2,14 @@
 
 import HeroSection from "./_components/hero";
 import ProjectsSection from "./_components/projects";
-import TeamSection from "./_components/team";
+import ContactSection from "./_components/contacts";
 
 export default function Home() {
   return (
     <>
       <HeroSection />
       <ProjectsSection/>
-      <TeamSection/>
+      <ContactSection/>
     </>
   );
 }

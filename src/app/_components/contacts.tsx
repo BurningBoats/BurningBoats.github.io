@@ -40,9 +40,7 @@ export default function TeamSection() {
       name: "Juan Muniain",
       role: "3D Artist",
       image: "/images/htph.jpeg",
-      links: [
-        
-      ],
+      links: [],
     },
     {
       name: "Luis J. Karam",
@@ -76,9 +74,9 @@ export default function TeamSection() {
       role: "Graphics Programmer",
       image: "/images/htph.jpeg",
       links: [
-        { platform: "Github", url: "https://github.com/SFMB-9", icon: FaGithub},
+        { platform: "Github", url: "https://github.com/SFMB-9", icon: FaGithub },
         { platform: "Itch.io", url: "https://firefrog88.itch.io/", icon: SiItchdotio },
-        { platform: "LinkedIn", url: "https://www.linkedin.com/in/salvador-federico-milan%C3%A9s-braniff-160631238/", icon: FaLinkedin}
+        { platform: "LinkedIn", url: "https://www.linkedin.com/in/salvador-federico-milan%C3%A9s-braniff-160631238/", icon: FaLinkedin },
       ],
     },
     {
@@ -94,18 +92,22 @@ export default function TeamSection() {
 
   return (
     <section
-      id="team"
-      className="relative w-screen flex flex-col items-center justify-center bg-gray-100 py-6 text-bb"
+      className="relative w-screen flex flex-col items-center justify-center bg-gray-100 py-16 text-bb"
     >
+      {/* Anchor */}
+      <div
+        id="contacts"
+        className="absolute -top-24" // Offset equal to navbar height (96px = 24rem)
+      />
       {/* Section Title */}
-      <h2 className="text-3xl font-raleway font-bold mb-4">Meet the Team</h2>
+      <h2 className="text-3xl font-raleway font-bold mb-6">Meet the Team</h2>
 
       {/* Team Members Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl">
         {teamMembers.map((member, index) => (
           <div
             key={index}
-            className="relative group flex flex-col items-center text-center bg-white rounded-lg shadow-lg p-3 hover:shadow-xl transition-transform duration-300 transform hover:scale-105"
+            className="relative group flex flex-col items-center text-center bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition-transform duration-300 transform hover:scale-105"
           >
             {/* Team Member Image */}
             <div className="relative w-16 h-16 rounded-full overflow-hidden mb-2">
