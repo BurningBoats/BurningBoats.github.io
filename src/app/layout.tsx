@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     siteName: "Burning Boats",
     images: [
       {
-        url: "/images/og-banner.jpg?v=2",
+        url: "/images/og-banner.jpg",
         width: 1200,
         height: 630,
         alt: "Burning Boats Studio - Official Site",
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     title: "Burning Boats Studio | Official Site",
     description:
       "We're a small, passionate team creating exploration roguelikes and unique gaming experiences. Dive into our projects.",
-    images: ["/images/og-banner.jpg?v=2"],
+    images: ["/images/og-banner.jpg"],
     site: "@burningboats",
   },
   icons: {
