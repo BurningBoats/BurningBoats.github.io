@@ -21,7 +21,7 @@ export default function ProjectsSection() {
           </p>
           <button
             className="px-6 py-2 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition duration-200"
-            onClick={() => alert("Navigate to the 'Mindaro' page soon!")} // Replace this with a link later
+            onClick={() => alert("Navigate to the Mindaro official page soon!")} // Replace this with a link later
           >
             Learn More
           </button>
