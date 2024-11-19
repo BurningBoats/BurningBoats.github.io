@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Crete_Round, Raleway } from "next/font/google";
+import Footer from "./_components/footer";
+import Header from "./_components/header";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -93,9 +95,15 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${raleway.variable} ${creteRound.className} antialiased overflow-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} ${raleway.variable} ${creteRound.className} antialiased`}
       >
-        <main>{children}</main>
+        <main>
+          <div className="h-screen overflow-y-auto no-scrollbar">
+            <Header />
+            {children}
+            <Footer />
+          </div>
+        </main>
       </body>
     </html>
   );
