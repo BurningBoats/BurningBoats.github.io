@@ -3,9 +3,13 @@
 export default function ProjectsSection() {
   return (
     <section
-      id="projects"
-      className="relative min-h-[60vh] w-screen flex flex-col items-center justify-center bg-gray-900 text-white py-12"
+      className="relative min-h-[50vh] w-screen flex flex-col items-center justify-center bg-gray-900 text-white"
     >
+      {/* Anchor */}
+      <div
+        id="projects"
+        className="absolute -top-24" // Offset equal to navbar height (96px = 24rem)
+      />
       {/* Section Title */}
       <h2 className="text-4xl font-raleway font-bold mb-8">Projects</h2>
 
@@ -20,7 +24,7 @@ export default function ProjectsSection() {
             worlds filled with danger, puzzles, and adventure.
           </p>
           <button
-            className="px-6 py-2 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition duration-200"
+            className="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium rounded hover:scale-105 shadow-lg transition-transform duration-300"
             onClick={() => alert("Navigate to the Mindaro official page soon!")} // Replace this with a link later
           >
             Learn More
