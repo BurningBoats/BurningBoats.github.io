@@ -29,3 +29,8 @@ body {
   display: none; /* Chrome, Safari, Opera */
 }
 
+.anchor {
+  position: absolute;
+  top: -96px; /* Adjust based on your navbar height */
+  left: 0;
+}
