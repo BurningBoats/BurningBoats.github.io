@@ -17,7 +17,7 @@ export default function HeroSection() {
       <div className="relative z-2 px-4 font-raleway text-left max-w-lg ml-10">
         <h1 className="text-4xl font-bold mb-4">Our Story</h1>
         <p className="text-sm leading-relaxed">
-        Burning Boats Studio was founded by nine passionate developers in Mexico City, brought together by a shared love for gaming and creativity. Each of us brings unique skills to the table—programming, design, art, and sound—all driven by the vision to craft immersive and memorable gaming experiences. As a small indie team, we embrace challenges and push boundaries to tell compelling stories and deliver gameplay that resonates with players. Together, we're building a future where exploration, creativity, and fun come alive in every project.
+        Burning Boats Studio was founded by nine passionate developers in Mexico City, brought together by a shared love for gaming and creativity. Each of us brings unique skills to the table—programming, design, art, and sound—all driven by the vision to craft immersive and memorable gaming experiences. As a small indie team, we embrace challenges and push boundaries to tell compelling stories and deliver gameplay that resonates with players. Together, we&apos;re building a future where exploration, creativity, and fun come alive in every project.
         </p>
       </div>
     </section>
