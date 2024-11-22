@@ -2,9 +2,7 @@ export default function HeroSection() {
   return (
     <section
       className="relative h-screen w-screen flex items-center bg-fixed bg-cover bg-center"
-      style={{
-        backgroundImage: "url('/images/field.png')",
-      }}
+      
     >
       <div
         id="hero"
