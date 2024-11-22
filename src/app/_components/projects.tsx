@@ -19,7 +19,7 @@ export default function ProjectsSection() {
         <div className="bg-gray-800 rounded-lg shadow-lg p-6 max-w-md w-full text-center">
           <h3 className="text-2xl font-semibold mb-4">Mindaro</h3>
           <p className="text-gray-300 mb-6">
-            Mindaro is an exciting multiplayer exploration rogue-like that
+            Mindaro is an exciting multiplayer exploration rogue-lite that
             challenges players to traverse mysterious, procedurally generated
             worlds filled with danger, puzzles, and adventure.
           </p>

@@ -31,11 +31,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://burningboats.github.io"),
   title: "Burning Boats Studio | Official Site",
   description:
-    "We're a small, passionate team creating exploration roguelikes and unique gaming experiences. Dive into our projects and join us on this journey.",
+    "We're a small, passionate team creating exploration roguelites and unique gaming experiences. Dive into our projects and join us on this journey.",
   keywords: [
     "Burning Boats",
     "indie game dev",
-    "exploration roguelike",
+    "exploration roguelite",
     "Mindaro",
     "small dev team",
     "game development",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Burning Boats Studio | Official Site",
     description:
-      "Meet Burning Boats, an indie game development team crafting exploration roguelikes and creative experiences. Join us as we redefine fun.",
+      "Meet Burning Boats, an indie game development team crafting exploration roguelites and creative experiences. Join us as we redefine fun.",
     url: "https://burningboats.github.io",
     siteName: "Burning Boats",
     images: [
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Burning Boats Studio | Official Site",
     description:
-      "We're a small, passionate team creating exploration roguelikes and unique gaming experiences. Dive into our projects.",
+      "We're a small, passionate team creating exploration roguelites and unique gaming experiences. Dive into our projects.",
     images: ["/images/og-banner.jpg"],
     site: "@burningboats",
   },
