@@ -28,7 +28,7 @@ export default function TeamSection() {
       links: [{ platform: "GitHub", url: "https://github.com", icon: FaGithub }],
     },
     {
-      name: "Joe Magnani",
+      name: "",
       role: "Biz Dev",
       image: "/images/htph.jpeg",
       links: [
