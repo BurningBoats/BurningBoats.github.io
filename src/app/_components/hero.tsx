@@ -3,7 +3,7 @@ export default function HeroSection() {
     <section
       className="relative h-screen w-screen flex items-center bg-fixed bg-cover bg-center"
       style={{
-        backgroundImage: "url('/images/crater.png')", // Replace with your image
+        backgroundImage: "url('/images/field.png')",
       }}
     >
       <div
