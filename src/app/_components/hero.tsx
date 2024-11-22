@@ -8,7 +8,7 @@ export default function HeroSection() {
     >
       <div
         id="hero"
-        className="absolute -top-24" // Offset equal to navbar height (96px = 24rem)
+        className="absolute -top-24"
       />
       {/* Semi-Transparent Overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-50"></div>
