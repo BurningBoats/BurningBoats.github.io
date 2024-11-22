@@ -1,4 +1,4 @@
-import { FaTwitter, FaLinkedin, FaGithub } from "react-icons/fa";
+import { FaXTwitter, FaLinkedin } from "react-icons/fa6";
 
 export default function Footer() {
   return (
@@ -12,7 +12,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="text-white hover:text-blue-400 transition duration-200"
           >
-            <FaTwitter size={24} />
+            <FaXTwitter size={24} />
           </a>
           <a
             href="https://linkedin.com"
@@ -21,14 +21,6 @@ export default function Footer() {
             className="text-white hover:text-blue-600 transition duration-200"
           >
             <FaLinkedin size={24} />
-          </a>
-          <a
-            href="https://github.com/BurningBoats/BurningBoats.github.io"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white hover:text-gray-400 transition duration-200"
-          >
-            <FaGithub size={24} />
           </a>
         </div>
 

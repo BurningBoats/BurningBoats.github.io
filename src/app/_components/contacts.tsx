@@ -2,11 +2,11 @@ import Image from "next/image";
 import {
   FaFacebook,
   FaLinkedin,
-  FaTwitter,
+  FaXTwitter,
   FaGithub,
   FaInstagram,
   FaDiscord,
-} from "react-icons/fa";
+} from "react-icons/fa6";
 import { SiItchdotio } from "react-icons/si"; // Icon for Itch.io
 
 export default function TeamSection() {
@@ -56,7 +56,7 @@ export default function TeamSection() {
       image: "/images/htph.jpeg",
       links: [
         { platform: "Itch.io", url: "https://itch.io", icon: SiItchdotio },
-        { platform: "Twitter", url: "https://twitter.com", icon: FaTwitter },
+        { platform: "X", url: "https://twitter.com", icon: FaXTwitter },
       ],
     },
     {
