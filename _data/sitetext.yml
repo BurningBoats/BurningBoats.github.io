@@ -12,19 +12,19 @@
 en: &DEFAULT_EN
   header:
    # title:
-    text: Come see my work!
-    button: Start Looking!
+    text: Burning Boats Studios
+    button: Start Looking Around
     buttonlink: "#portfolio"
 
   portfolio:
     title: "Portfolio"
-    text: "The different art works i have worked on"
+    text: "Section 1 text"
     section: portfolio
     closebutton: "Close Project"
 
   services:
     title: "Softwares"
-    text: "I have middle to advance level experience with the following software! Download my resume in order to see more :)"
+    text: "Section 2 text"
     section: services
     #list:
       # - title: "[Markdown](https://en.wikipedia.org/wiki/Markdown)"
@@ -33,8 +33,8 @@ en: &DEFAULT_EN
 
   about:
     title: "About me"
-    text: "What you have to know :)"
-    body: "I'm a 3D artist principally focused on asset creation and hand painted textures. I like to learn and challenge myself with new and harder objectives to reach better results in my projects."
+    text: "Section 3 text"
+    body: "Section 3 body"
     section: about
 
   clients:

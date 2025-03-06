@@ -13,26 +13,6 @@
           <source src="assets/DemoReel.mp4" type="video/mp4">
         </video>
       </div>
-      <div class="col">
-        <div class="col">
-	      {% for project in site.portfolio %}
-          <div class="portfolio-item">
-            <a class="portfolio-link" data-toggle="modal" href="#p{{ forloop.index }}">
-            <div class="portfolio-hover">
-              <div class="portfolio-hover-content">
-                <i class="{{ site.data.style.portfolio-icon | default: "fas fa-plus fa-3x" }}"></i>
-              </div>
-            </div>
-            <img class="img-fluid" src="{{ project.caption.thumbnail }}" alt="">
-            </a>
-            <div class="portfolio-caption">
-              <h4>{{ project.caption.title }}</h4>
-              <p class="text-muted">{{ project.caption.subtitle }}</p>
-            </div>
-          </div>
-	      {% endfor %}
-        </div>
-      </div>
     </div>
 
   </div>
