@@ -17,13 +17,13 @@ en: &DEFAULT_EN
     buttonlink: "#portfolio"
 
   portfolio:
-    title: "Portfolio"
+    title: "Games"
     text: "Section 1 text"
     section: portfolio
     closebutton: "Close Project"
 
   services:
-    title: "Softwares"
+    title: "Our Story"
     text: "Section 2 text"
     section: services
     #list:
@@ -32,7 +32,7 @@ en: &DEFAULT_EN
       # icon: fab fa-markdown
 
   about:
-    title: "About me"
+    title: "Team"
     text: "Section 3 text"
     body: "Section 3 body"
     section: about
