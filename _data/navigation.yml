@@ -11,11 +11,11 @@
 # -----------------
 en: &DEFAULT_EN
   nav:
-    - title: "Portfolio"
+    - title: "Games"
       section: portfolio
-    - title: "Softwares"
+    - title: "Our Story"
       section: services
-    - title: "About"
+    - title: "Team"
       section: about
 
 en-US:
