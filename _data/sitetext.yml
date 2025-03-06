@@ -1,0 +1,65 @@
+#
+# Work based on https://github.com/mmistakes/minimal-mistakes/blob/master/_data/ui-text.yml
+#
+# Configuration: Add to _config.yml
+# locale: "en-US"  [YOUR PREFERRED LOCALE]
+#
+# How to use:
+# {{ site.data.ui-text[site.locale].<var_name> | default: 'text' }}
+
+# English (default)
+# -----------------
+en: &DEFAULT_EN
+  header:
+   # title:
+    text: Come see my work!
+    button: Start Looking!
+    buttonlink: "#portfolio"
+
+  portfolio:
+    title: "Portfolio"
+    text: "The different art works i have worked on"
+    section: portfolio
+    closebutton: "Close Project"
+
+  services:
+    title: "Softwares"
+    text: "I have middle to advance level experience with the following software! Download my resume in order to see more :)"
+    section: services
+    #list:
+      # - title: "[Markdown](https://en.wikipedia.org/wiki/Markdown)"
+      #  desc: "Your description here, full **Markdown** support"
+      # icon: fab fa-markdown
+
+  about:
+    title: "About me"
+    text: "What you have to know :)"
+    body: "I'm a 3D artist principally focused on asset creation and hand painted textures. I like to learn and challenge myself with new and harder objectives to reach better results in my projects."
+    section: about
+
+  clients:
+    section: clients
+    max-height: 100px
+    horizontal-scrolling: "" #"yes/no"
+    list:
+      - title: "editors"
+        #url: 
+        logo: assets/img/clients/editors.png
+
+  footer:
+    legal: "Privacy Policy"
+    social:
+      - url: https://sketchfab.com/Tomoe_512
+        icon: "fa fa-cube"
+      - url: https://www.linkedin.com/in/venecia-paz/
+        icon: "fab fa-linkedin-in"
+      - url: https://www.instagram.com/tomoe_512/
+        icon: "fab fa-instagram"
+en-US:
+  <<: *DEFAULT_EN
+en-CA:
+  <<: *DEFAULT_EN
+en-GB:
+  <<: *DEFAULT_EN
+en-AU:
+  <<: *DEFAULT_EN
