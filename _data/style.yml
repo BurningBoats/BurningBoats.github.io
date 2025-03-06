@@ -1,7 +1,7 @@
 #Color Customization
-highlight: "#352121"
-white: "#fffaF1"
-black: "#342020"
+highlight: "#0e1b24" #darker blue
+white: "#fffaF1" #white logo
+black: "#10212E" #dark blue
 #background:"#827777"
 
 #Image Customization
