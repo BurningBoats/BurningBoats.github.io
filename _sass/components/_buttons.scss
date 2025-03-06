@@ -2,7 +2,7 @@
 .btn {
   @include heading-font;
   font-weight: 700;
-  color:#dedede;
+  color:#fffaf1;
 }
 
 .btn-xl {
@@ -11,7 +11,7 @@
 }
 
 .btn-primary {
-  color:#dedede;
+  color:#fffaf1;
   background-color: $primary;
   border-color: $primary;
   &:active,
@@ -19,7 +19,7 @@
   &:hover {
     background-color: darken($primary, 7.5%) !important;
     border-color: darken($primary, 7.5%) !important;
-    color: #dedede;
+    color: #fffaf1;
   }
   &:active,
   &:focus {
