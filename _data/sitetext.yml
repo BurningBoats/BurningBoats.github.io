@@ -18,13 +18,13 @@ en: &DEFAULT_EN
 
   portfolio:
     title: "Games"
-    text: "Section 1 text"
+    text: "Trailer for our game 'Mindaro' a horror/fantasy game about a dangerous world that was once used for mining resources."
     section: portfolio
     closebutton: "Close Project"
 
   services:
     title: "Our Story"
-    text: "Section 2 text"
+    #text: "Section 2 text"
     section: services
     #list:
       # - title: "[Markdown](https://en.wikipedia.org/wiki/Markdown)"
@@ -33,8 +33,8 @@ en: &DEFAULT_EN
 
   about:
     title: "Team"
-    text: "Section 3 text"
-    body: "Section 3 body"
+    text: "Meet the team"
+    #body: "Stationed in Mexico "
     section: about
 
   clients:
@@ -49,11 +49,11 @@ en: &DEFAULT_EN
   footer:
     legal: "Privacy Policy"
     social:
-      - url: https://sketchfab.com/Tomoe_512
-        icon: "fa fa-cube"
-      - url: https://www.linkedin.com/in/venecia-paz/
-        icon: "fab fa-linkedin-in"
-      - url: https://www.instagram.com/tomoe_512/
+      #- url: https://sketchfab.com/Tomoe_512
+      #  icon: "fa fa-cube"
+      #- url: https://www.linkedin.com/in/venecia-paz/
+      #  icon: "fab fa-linkedin-in"
+      - url: https://www.instagram.com/burningboatsss/
         icon: "fab fa-instagram"
 en-US:
   <<: *DEFAULT_EN
