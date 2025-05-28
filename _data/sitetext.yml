@@ -25,7 +25,7 @@ en: &DEFAULT_EN
   services:
     title: "Our Story"
     #text: "Section 2 text"
-    body: "Here at Burning Boats Studio, we're a group of nine dedicated Mexican developers, all based in vibrant Mexico City. Our journey began with a simple, yet powerful, shared passion for gaming and creativity. Each member of our team brings a distinct expertise to the table—whether it's the logic of programming, the imagination of design, the beauty of art, or the power of sound. This diverse talent fuels our core mission: to forge deeply immersive and memorable gaming experiences. As a small indie studio, we relish every challenge, pushing ourselves to tell captivating stories and deliver gameplay that truly connects with players. Together, we're shaping a future where adventure, ingenuity, and pure fun spring forth from every game we create."
+    body: "Here at Burning Boats Studio, we're a group of dedicated Mexican developers. Our journey began with a simple, yet powerful, shared passion for gaming and creativity. Each member of our team brings a distinct expertise to the table—whether it's the logic of programming, the imagination of design, the beauty of art, or the power of sound. This diverse talent fuels our core mission: to forge deeply immersive and memorable gaming experiences. As a small indie studio, we relish every challenge, pushing ourselves to tell captivating stories and deliver gameplay that truly connects with players. Together, we're shaping a future where adventure, ingenuity, and pure fun spring forth from every game we create."
     section: services
     #list:
       # - title: "[Markdown](https://en.wikipedia.org/wiki/Markdown)"
