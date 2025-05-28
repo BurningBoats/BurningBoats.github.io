@@ -13,10 +13,9 @@
 	  
       <div class="row text-center">
         <div class="col-lg-8 mx-auto text-center" style="margin-bottom: 40px">
-          <div class="large text-muted">{{ site.data.sitetext.services.body | markdownify }}</div>
+          <div class="large text-muted">a {{ site.data.sitetext[site.locale].services.body | markdownify }}</div>
         </div>
       </div>
-	  
     </div>
   </section>
 <!-- End Services -->
