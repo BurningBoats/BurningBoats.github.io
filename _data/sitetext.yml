@@ -38,15 +38,6 @@ en: &DEFAULT_EN
     #body: "Stationed in Mexico "
     section: about
 
-  clients:
-    section: clients
-    max-height: 100px
-    horizontal-scrolling: "" #"yes/no"
-    list:
-      - title: "editors"
-        #url: 
-        logo: assets/img/clients/editors.png
-
   footer:
     legal: "Privacy Policy"
     social:
