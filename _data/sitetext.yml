@@ -11,7 +11,6 @@
 # -----------------
 en: &DEFAULT_EN
   header:
-   # title:
     text: Burning Boats Studios
     button: Start Looking Around
     buttonlink: "#portfolio"
@@ -24,27 +23,17 @@ en: &DEFAULT_EN
 
   services:
     title: "Our Story"
-    #text: "Section 2 text"
     body: "Here at Burning Boats Studio, we're a group of dedicated Mexican developers. Our journey began with a simple, yet powerful, shared passion for gaming and creativity. Each member of our team brings a distinct expertise to the table—whether it's the logic of programming, the imagination of design, the beauty of art, or the power of sound. This diverse talent fuels our core mission: to forge deeply immersive and memorable gaming experiences. As a small indie studio, we relish every challenge, pushing ourselves to tell captivating stories and deliver gameplay that truly connects with players. Together, we're shaping a future where adventure, ingenuity, and pure fun spring forth from every game we create."
     section: services
-    #list:
-      # - title: "[Markdown](https://en.wikipedia.org/wiki/Markdown)"
-      #  desc: "Your description here, full **Markdown** support"
-      # icon: fab fa-markdown
 
   about:
     title: "Team"
     text: "Meet the team"
-    #body: "Stationed in Mexico "
     section: about
 
   footer:
     legal: "Privacy Policy"
     social:
-      #- url: https://sketchfab.com/Tomoe_512
-      #  icon: "fa fa-cube"
-      #- url: https://www.linkedin.com/in/venecia-paz/
-      #  icon: "fab fa-linkedin-in"
       - url: https://www.instagram.com/burningboatsss/
         icon: "fab fa-instagram"
 en-US:

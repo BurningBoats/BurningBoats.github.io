@@ -13,9 +13,7 @@ en: &DEFAULT_EN
   nav:
     - title: "Games"
       section: portfolio
-    - title: "Our Story"
-      section: services
-    - title: "Team"
+    - title: "About us"
       section: about
 
 en-US:

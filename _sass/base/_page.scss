@@ -2,6 +2,7 @@
 body {
   overflow-x: hidden;
   @include body-font;
+  background-color: #fffaF1;
 }
 
 p {
@@ -72,4 +73,11 @@ img::selection {
 
 img::-moz-selection {
   background: transparent;
+}
+
+@font-face {
+  font-family: 'Mindaro Font';
+  src: url('/assets/css/fonts/Mindaro-Font.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
