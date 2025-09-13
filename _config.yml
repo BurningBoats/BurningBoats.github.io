@@ -16,8 +16,8 @@
 plugins:
   - jekyll-remote-theme
 
-url    : "https://burningboats.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
-baseurl: "" # the subpath of your site, e.g. /blog
+url    : "https://burningboats.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "/Mindaro"
 
 title      : Burning Boats Website
 email      : your-email@example.com #this is also the email contact forms will go to
