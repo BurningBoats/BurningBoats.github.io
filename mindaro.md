@@ -7,7 +7,7 @@ title: Mindaro
 <header class="masthead">
 	<div class="container">
     	<div>
-    		<div class="intro-lead-in" style="font-style: normal; font-size: 150px; font-family: 'Mindaro Font', sans-serif;">MINDARO</div>
+    		<div class="intro-lead-in" style="font-style: normal; font-size: 15vw ; font-family: 'Mindaro Font', sans-serif;">MINDARO</div>
       	</div>
 		<div class="row text-center" style = "padding-bottom: 50px;">
         	<div class="col-lg-12 mx-auto text-center">
@@ -37,7 +37,7 @@ title: Mindaro
       	</div>
 		<div class="row text-center" style="padding-top: 50px">
         	<div class="col-lg-6 mx-auto text-center">
-          		<iframe src="https://store.steampowered.com/widget/3879330/" frameborder="0" width="646" height="190"></iframe>
+          		<iframe src="https://store.steampowered.com/widget/3879330/" frameborder="0" style= "width: 100%; max-width: 646px; height: 190px;"></iframe>
         	</div>
 			<div class="col-lg-6"> 
 				<iframe src="https://discord.com/widget?id=1332207802327765064&theme=dark" width="350" height="190" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
