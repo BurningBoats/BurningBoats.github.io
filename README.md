@@ -21,7 +21,10 @@ npm run check      # astro check (types + content)
 npm run build      # → dist/
 npm run preview    # serve dist/
 npm run budgets    # JS/CSS/asset size budgets (run after build)
+npm run verify     # check + build + budgets + locale/SEO checklist (what CI runs)
 ```
+
+QA helpers (need the installed Edge/Chrome, no browser download): `node scripts/screenshot.mjs --base=http://127.0.0.1:4321 --out=.cache/shots --paths=/,/mindaro/ [--full] [--mobile] [--theme=light] [--intro --delay=700]`. Lighthouse: `CHROME_PATH=<msedge.exe> npx lighthouse http://127.0.0.1:4322/ --output=json`.
 
 Node ≥ 22.12 (`.nvmrc` = 24).
 
