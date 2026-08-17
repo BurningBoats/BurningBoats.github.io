@@ -1,1 +1,124 @@
-[]
+[
+  {
+    "id": "henry",
+    "name": "Enrique Díaz",
+    "nickname": "Henry",
+    "role": { "en": "Game Director", "es": "Director del juego", "pt": "Diretor do jogo" },
+    "bio": {
+      "en": "Holds the vision for Mindaro and makes the calls that keep every discipline pointed at the same descent.",
+      "es": "Sostiene la visión de Mindaro y toma las decisiones que mantienen a todas las disciplinas apuntando al mismo descenso.",
+      "pt": "Sustenta a visão de Mindaro e toma as decisões que mantêm todas as disciplinas apontando para a mesma descida."
+    },
+    "bioStatus": "to-confirm",
+    "avatar": "../assets/team/henry.webp",
+    "focal": { "x": 0.5, "y": 0.45 },
+    "order": 1
+  },
+  {
+    "id": "venecia",
+    "name": "Venecia Paz",
+    "role": { "en": "Art Lead", "es": "Líder de arte", "pt": "Líder de arte" },
+    "bio": {
+      "en": "Leads the look of Mindaro, from the pioneers' silhouettes to the light in each layer.",
+      "es": "Dirige el arte de Mindaro: de las siluetas de los pioneros a la luz de cada capa.",
+      "pt": "Lidera a arte de Mindaro: das silhuetas dos pioneiros à luz de cada camada."
+    },
+    "bioStatus": "to-confirm",
+    "avatar": "../assets/team/venecia.webp",
+    "order": 2
+  },
+  {
+    "id": "paul",
+    "name": "Paul A. Solis",
+    "role": { "en": "PR, PM & Programmer", "es": "PR, PM y programador", "pt": "PR, PM e programador" },
+    "bio": {
+      "en": "Writes code, keeps the schedule honest and tells the world what we're building.",
+      "es": "Escribe código, mantiene honesto el calendario y le cuenta al mundo lo que estamos construyendo.",
+      "pt": "Escreve código, mantém o cronograma honesto e conta ao mundo o que estamos construindo."
+    },
+    "bioStatus": "to-confirm",
+    "avatar": "../assets/team/paul.webp",
+    "order": 3
+  },
+  {
+    "id": "octavio",
+    "name": "Octavio Díaz",
+    "role": { "en": "PR & PM", "es": "PR y PM", "pt": "PR e PM" },
+    "bio": {
+      "en": "Keeps the team on track and the outside world in the loop: press, partners, community.",
+      "es": "Mantiene al equipo en ruta y al mundo exterior al tanto: prensa, aliados, comunidad.",
+      "pt": "Mantém a equipe no rumo e o mundo exterior informado: imprensa, parceiros, comunidade."
+    },
+    "bioStatus": "to-confirm",
+    "avatar": "../assets/team/octavio.webp",
+    "links": { "linkedin": "https://www.linkedin.com/company/burning-boats-studios-llc" },
+    "order": 4
+  },
+  {
+    "id": "mata",
+    "name": "Mata",
+    "surnameTbd": true,
+    "role": { "en": "Level & Game Design", "es": "Diseño de niveles y de juego", "pt": "Level design e game design" },
+    "bio": {
+      "en": "Designs the layers you descend through and the rules that make each trip a gamble.",
+      "es": "Diseña las capas por las que desciendes y las reglas que convierten cada viaje en una apuesta.",
+      "pt": "Projeta as camadas pelas quais você desce e as regras que transformam cada viagem em uma aposta."
+    },
+    "bioStatus": "to-confirm",
+    "avatar": "../assets/team/mata.webp",
+    "order": 5
+  },
+  {
+    "id": "leon",
+    "name": "León",
+    "surnameTbd": true,
+    "role": { "en": "3D Art", "es": "Arte 3D", "pt": "Arte 3D" },
+    "bio": {
+      "en": "Builds Mindaro in three dimensions: creatures, ruins and everything you'll wish you hadn't seen.",
+      "es": "Construye Mindaro en tres dimensiones: criaturas, ruinas y todo lo que desearás no haber visto.",
+      "pt": "Constrói Mindaro em três dimensões: criaturas, ruínas e tudo o que você vai desejar não ter visto."
+    },
+    "bioStatus": "to-confirm",
+    "avatar": "../assets/team/leon.webp",
+    "order": 6
+  },
+  {
+    "id": "david",
+    "name": "David Mendieta",
+    "role": { "en": "Rigger & Animator", "es": "Rigger y animador", "pt": "Rigger e animador" },
+    "bio": {
+      "en": "Gives the creatures their bones and their movement — the part that makes you run.",
+      "es": "Les da huesos y movimiento a las criaturas: la parte que te hace correr.",
+      "pt": "Dá ossos e movimento às criaturas — a parte que faz você correr."
+    },
+    "bioStatus": "to-confirm",
+    "avatar": "../assets/team/david.webp",
+    "order": 7
+  },
+  {
+    "id": "roberto",
+    "name": "Roberto Martínez",
+    "role": { "en": "SFX & Soundtrack", "es": "SFX y banda sonora", "pt": "SFX e trilha sonora" },
+    "bio": {
+      "en": "Composes the soundtrack and designs the sounds you'll hear a second before you see anything.",
+      "es": "Compone la banda sonora y diseña los sonidos que escucharás un segundo antes de ver cualquier cosa.",
+      "pt": "Compõe a trilha sonora e desenha os sons que você vai ouvir um segundo antes de ver qualquer coisa."
+    },
+    "bioStatus": "to-confirm",
+    "avatar": "../assets/team/roberto.webp",
+    "order": 8
+  },
+  {
+    "id": "keith",
+    "name": "Keith Warner",
+    "role": { "en": "Mentor", "es": "Mentor", "pt": "Mentor" },
+    "bio": {
+      "en": "Industry mentor to the team: perspective, hard questions and the occasional reality check.",
+      "es": "Mentor del equipo: perspectiva, preguntas difíciles y, de vez en cuando, un baño de realidad.",
+      "pt": "Mentor da equipe: perspectiva, perguntas difíceis e, de vez em quando, um banho de realidade."
+    },
+    "bioStatus": "to-confirm",
+    "avatar": "../assets/team/keith.webp",
+    "order": 9
+  }
+]
