@@ -26,12 +26,12 @@ const links = [
   { key: 'news', label: t.nav.news, href: localePath(locale, 'news') },
   { key: 'careers', label: t.nav.careers, href: localePath(locale, 'careers') },
   { key: 'press', label: t.nav.press, href: localePath(locale, 'press') },
-] as const;
+].filter((l) => l.key !== 'careers' || SITE.sections.careers);
 ---
 <header class:list={['site-header', `is-${variant}`]} data-nav data-variant={variant} transition:name="site-header" transition:animate="none">
   <div class="container-x nav-inner">
     <a href={localePath(locale)} class="brand" title={t.nav.homeAria}>
-      <LogoMark size={38} class="brand-mark" />
+      <LogoMark size={38} scheme="tile" shape="circle" class="brand-mark" />
       <span class="brand-name"><span class="brand-name-1">Burning Boats</span><span class="sr-only"> </span><span class="brand-name-2">Studios</span></span>
     </a>
 

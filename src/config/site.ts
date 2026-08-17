@@ -45,6 +45,13 @@ export const SITE = {
   },
   /** Dark is the cinematic default; set true to follow the OS scheme when no choice is stored. */
   respectOsColorScheme: false,
+  /**
+   * Optional sections. `careers: false` hides the Careers page (not built), its nav/footer links and
+   * the "open roles" pointers — nothing is deleted; flip to true to bring it all back.
+   */
+  sections: {
+    careers: false,
+  },
 } as const;
 
 export const SITE_URL = SITE.customDomain ? `https://${SITE.customDomain}` : SITE.githubHost;

@@ -260,8 +260,7 @@ export const en = {
   team: {
     title: 'The team',
     intro: "We're a small crew of Mexican developers with every discipline in the room: code, design, art, sound, and the people who keep it all moving. This is who's building Mindaro.",
-    join: { line: "Missing from this list? We're looking for VFX, programming and SFX help.", cta: 'Open roles' },
-    badge: 'Crew',
+    join: { line: "Missing from this list? We're looking for VFX, programming and marketing help.", cta: 'Open roles' },
     bioPending: 'Bio coming soon.',
   },
 
@@ -359,7 +358,7 @@ export const en = {
     },
     careers: {
       title: 'Careers — Join Burning Boats Studios',
-      description: "Join a small indie game studio from Mexico. We're looking for VFX, gameplay programming and SFX help on Mindaro, and open applications.",
+      description: "Join a small indie game studio from Mexico. We're looking for VFX, gameplay programming and marketing help on Mindaro, and open applications.",
     },
     notFound: { title: 'Page not found — Burning Boats Studios', description: 'This page does not exist.' },
     postSuffix: ' — Burning Boats Studios',

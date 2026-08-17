@@ -5,6 +5,7 @@ import BaseLayout from '~/layouts/BaseLayout.astro';
 import Section from '~/components/layout/Section.astro';
 import Button from '~/components/ui/Button.astro';
 import TeamCard from '~/components/team/TeamCard.astro';
+import { SITE } from '~/config/site';
 import { localeStaticPaths, useDict, localePath, type Locale } from '~/i18n';
 import pointing from '~/assets/pioneer/pointing.webp';
 
@@ -22,7 +23,11 @@ const team = (await getCollection('team', (e) => e.data.active)).sort((a, b) => 
       <div class="join-figure" aria-hidden="true"><Image src={pointing} alt="" width={220} densities={[1, 2]} loading="lazy" /></div>
       <div class="join-copy">
         <p>{t.team.join.line}</p>
-        <Button href={localePath(locale, 'careers')} variant="secondary" icon="arrow-right">{t.team.join.cta}</Button>
+        {SITE.sections.careers ? (
+          <Button href={localePath(locale, 'careers')} variant="secondary" icon="arrow-right">{t.team.join.cta}</Button>
+        ) : (
+          <Button href={`mailto:${SITE.email}`} variant="secondary" icon="mail" iconPosition="start">{t.common.cta.emailUs}</Button>
+        )}
       </div>
     </aside>
   </Section>

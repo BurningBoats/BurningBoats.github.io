@@ -1,7 +1,7 @@
 ---
 /**
- * "Crew ID badge": square avatar in a uniform frame, name + role always visible, bio on hover/focus.
- * Heterogeneous illustration backgrounds are kept — the frame + badge grammar makes them read as ID photos.
+ * Team card: square avatar in a uniform frame, name + role always visible, bio on hover/focus.
+ * Heterogeneous illustration backgrounds are kept (illustrator’s intent); the uniform frame ties them together.
  */
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
@@ -23,7 +23,6 @@ const bio = m.bio[locale];
 ) : (
   <article class="tc" data-reveal-item>
     <div class="tc-frame">
-      <span class="tc-badge">{t.team.badge} · {String(index + 1).padStart(2, '0')}</span>
       <Image
         src={m.avatar}
         alt={`${m.name} — ${role}`}
@@ -61,7 +60,6 @@ const bio = m.bio[locale];
   .tc-frame :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease-out-cubic); }
   .tc:hover .tc-frame :global(img), .tc:focus-within .tc-frame :global(img) { transform: scale(1.04); }
   :global([data-effects='on']) .tc:hover .tc-frame { box-shadow: var(--glow-accent); }
-  .tc-badge { position: absolute; top: 0.75rem; left: 0.75rem; z-index: 2; padding: 0.3rem 0.55rem; border-radius: var(--radius-xs); background: color-mix(in oklab, var(--navy-950) 78%, transparent); color: var(--cream-50); font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
   .tc-bio { position: absolute; inset: auto 0 0 0; z-index: 2; padding: 2.5rem 1rem 1rem; background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--navy-950) 88%, transparent) 40%); color: var(--cream-50); font-size: 0.9rem; line-height: 1.45; opacity: 0; transform: translateY(8px); transition: opacity var(--dur-base), transform var(--dur-slow) var(--ease-out-expo); }
   .tc:hover .tc-bio, .tc:focus-within .tc-bio { opacity: 1; transform: none; }
   @media (hover: none) { .tc-bio { display: none; } }

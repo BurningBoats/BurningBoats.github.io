@@ -98,33 +98,39 @@ const svgo = (svg, prefix) =>
 // Groups
 // ---------------------------------------------------------------------------------------------
 const groups = {
-  /** Studio mark: favicons, app icons, cleaned mark for press */
+  /** Studio mark (ORIGINAL colors, never recolored): favicons, app icons, cleaned mark for press */
   async brand() {
-    // Cleaned mark with CSS-variable fills already lives at src/assets/brand/bbs-mark.svg (hand-built).
+    // Cleaned mark with CSS-variable fills (defaults = original colors) lives at src/assets/brand/bbs-mark.svg.
     const markSvg = await readFile(resolve(ROOT, 'src/assets/brand/bbs-mark.svg'), 'utf8');
-    // Rasterizable version with fixed colors for dark backgrounds (favicon/app icon).
-    const onDark = markSvg
-      .replace(/var\(--logo-navy, #10212e\)/g, '#aab8c2')
-      .replace(/var\(--logo-ink, #020202\)/g, '#0b161e')
-      .replace(/var\(--logo-paper, #fffaf1\)/g, '#fffaf1')
-      .replace(/var\(--logo-shade, #8a8a8a\)/g, '#c9d3da');
     const brandColors = markSvg
       .replace(/var\(--logo-navy, #10212e\)/g, '#10212e')
       .replace(/var\(--logo-ink, #020202\)/g, '#020202')
       .replace(/var\(--logo-paper, #fffaf1\)/g, '#fffaf1')
       .replace(/var\(--logo-shade, #8a8a8a\)/g, '#8a8a8a');
+    const CREAM = '#fffaf1';
 
     // Trim the mark's own whitespace: render, measure the alpha bbox, and use it as the crop.
+    const fullVb = (markSvg.match(/viewBox="([^"]+)"/) || [])[1]?.split(/\s+/).map(Number) ?? [0, 0, 2484, 2484];
     const probe = await sharp(Buffer.from(brandColors), { density: 72 }).resize(1242, 1242).png().toBuffer();
     const { info } = await sharp(probe).trim({ threshold: 5 }).toBuffer({ resolveWithObject: true });
     const bbox = { left: -info.trimOffsetLeft, top: -info.trimOffsetTop, width: info.width, height: info.height };
-    const scale = 2484 / 1242;
-    const vb = { x: bbox.left * scale, y: bbox.top * scale, w: bbox.width * scale, h: bbox.height * scale };
+    const scale = fullVb[2] / 1242;
+    const vb = { x: fullVb[0] + bbox.left * scale, y: fullVb[1] + bbox.top * scale, w: bbox.width * scale, h: bbox.height * scale };
     const size = Math.max(vb.w, vb.h) * 1.18; // square canvas with breathing room
     const vx = vb.x - (size - vb.w) / 2, vy = vb.y - (size - vb.h) / 2;
-
     const inner = (svgStr) => svgStr.replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
-    const favSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vx.toFixed(0)} ${vy.toFixed(0)} ${size.toFixed(0)} ${size.toFixed(0)}"><rect x="${vx.toFixed(0)}" y="${vy.toFixed(0)}" width="${size.toFixed(0)}" height="${size.toFixed(0)}" rx="${(size * 0.22).toFixed(0)}" fill="#0e1b24"/>${inner(onDark)}</svg>`;
+
+    // Tight-viewBox component source (keeps the CSS variables) — what LogoMark.astro inlines.
+    const pad = Math.max(vb.w, vb.h) * 0.04;
+    const tightSize = Math.max(vb.w, vb.h) + pad * 2;
+    const tx = vb.x - (tightSize - vb.w) / 2, ty = vb.y - (tightSize - vb.h) / 2;
+    if (Math.abs(fullVb[2] - tightSize) > 1) {
+      const tight = markSvg.replace(/viewBox="[^"]+"/, `viewBox="${tx.toFixed(0)} ${ty.toFixed(0)} ${tightSize.toFixed(0)} ${tightSize.toFixed(0)}"`);
+      await emit('src/assets/brand/bbs-mark.svg', Buffer.from(tight), 24, 'tight viewBox');
+    }
+
+    // Favicon / app icons: original artwork on a cream rounded tile (like Logo3.png).
+    const favSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vx.toFixed(0)} ${vy.toFixed(0)} ${size.toFixed(0)} ${size.toFixed(0)}"><rect x="${vx.toFixed(0)}" y="${vy.toFixed(0)}" width="${size.toFixed(0)}" height="${size.toFixed(0)}" rx="${(size * 0.22).toFixed(0)}" fill="${CREAM}"/>${inner(brandColors)}</svg>`;
     await emit('public/favicon.svg', Buffer.from(svgo(favSvg, 'fav')), 24);
 
     const rasterize = (svgStr, px) => sharp(Buffer.from(svgStr), { density: 300 }).resize(px, px).png({ compressionLevel: 9, palette: true });
@@ -132,19 +138,18 @@ const groups = {
       await emit(out, await rasterize(favSvg, px).toBuffer(), px >= 512 ? 60 : 20);
     }
     // Maskable: same art, extra safe zone (icon occupies the inner 80%).
-    const maskSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${(vx - size * 0.15).toFixed(0)} ${(vy - size * 0.15).toFixed(0)} ${(size * 1.3).toFixed(0)} ${(size * 1.3).toFixed(0)}"><rect x="${(vx - size * 0.2).toFixed(0)}" y="${(vy - size * 0.2).toFixed(0)}" width="${(size * 1.4).toFixed(0)}" height="${(size * 1.4).toFixed(0)}" fill="#0e1b24"/>${inner(onDark)}</svg>`;
+    const maskSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${(vx - size * 0.15).toFixed(0)} ${(vy - size * 0.15).toFixed(0)} ${(size * 1.3).toFixed(0)} ${(size * 1.3).toFixed(0)}"><rect x="${(vx - size * 0.2).toFixed(0)}" y="${(vy - size * 0.2).toFixed(0)}" width="${(size * 1.4).toFixed(0)}" height="${(size * 1.4).toFixed(0)}" fill="${CREAM}"/>${inner(brandColors)}</svg>`;
     for (const [px, out] of [[512, 'public/favicons/maskable-512.png'], [192, 'public/favicons/maskable-192.png']]) {
       await emit(out, await rasterize(maskSvg, px).toBuffer(), px >= 512 ? 60 : 20);
     }
     const icoPngs = await Promise.all([16, 32, 48].map((px) => sharp(Buffer.from(favSvg), { density: 300 }).resize(px, px).png().toBuffer()));
     await emit('public/favicon.ico', await pngToIco(icoPngs), 20);
 
-    // Press: full-color mark PNGs (transparent + on navy) and the cleaned SVG.
+    // Press: original mark — SVG, transparent PNG, and on a cream tile.
     const markCropSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb.x.toFixed(0)} ${vb.y.toFixed(0)} ${vb.w.toFixed(0)} ${vb.h.toFixed(0)}">${inner(brandColors)}</svg>`;
     await emit('public/press/logos/bbs-mark.svg', Buffer.from(svgo(markCropSvg, 'bbs')), 20);
     await emit('public/press/logos/bbs-mark-2048.png', await sharp(Buffer.from(markCropSvg), { density: 300 }).resize({ width: 2048 }).png().toBuffer(), 400);
-    const onDarkCropSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb.x.toFixed(0)} ${vb.y.toFixed(0)} ${vb.w.toFixed(0)} ${vb.h.toFixed(0)}">${inner(onDark)}</svg>`;
-    await emit('public/press/logos/bbs-mark-on-navy-2048.png', await sharp(Buffer.from(onDarkCropSvg), { density: 300 }).resize({ width: 1800 }).extend({ top: 124, bottom: 124, left: 124, right: 124, background: '#0e1b24' }).png().toBuffer(), 400);
+    await emit('public/press/logos/bbs-mark-on-cream-2048.png', await sharp(Buffer.from(markCropSvg), { density: 300 }).resize({ width: 1800 }).extend({ top: 124, bottom: 124, left: 124, right: 124, background: CREAM }).flatten({ background: CREAM }).png().toBuffer(), 400);
 
     // Legacy horizontal wordmark (Next.js branch) → cleaned SVG for press.
     try {
@@ -286,10 +291,13 @@ const groups = {
     await emit('public/og/mindaro.jpg', await (await focalCrop(artTitle, 1200, 630, 0.5, 0.5)).jpeg({ quality: 84, mozjpeg: true }).toBuffer(), 220);
     // Studio card: dark navy field left with the mark + key art right
     const right = await (await focalCrop(artNoTitle, 700, 630, 0.5, 0.55)).toBuffer();
+    // Original mark colors on a cream rounded tile (the navy flame needs a light tile on the navy card).
     const markSvg = (await readFile(resolve(ROOT, 'src/assets/brand/bbs-mark.svg'), 'utf8'))
-      .replace(/var\(--logo-navy, #10212e\)/g, '#aab8c2').replace(/var\(--logo-ink, #020202\)/g, '#0b161e')
-      .replace(/var\(--logo-paper, #fffaf1\)/g, '#fffaf1').replace(/var\(--logo-shade, #8a8a8a\)/g, '#c9d3da');
-    const mark = await sharp(Buffer.from(markSvg), { density: 150 }).resize(360, 360).png().toBuffer();
+      .replace(/var\(--logo-navy, #10212e\)/g, '#10212e').replace(/var\(--logo-ink, #020202\)/g, '#020202')
+      .replace(/var\(--logo-paper, #fffaf1\)/g, '#fffaf1').replace(/var\(--logo-shade, #8a8a8a\)/g, '#8a8a8a');
+    const tile = Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="360" height="360"><rect width="360" height="360" rx="80" fill="#fffaf1"/></svg>');
+    const markArt = await sharp(Buffer.from(markSvg), { density: 150 }).resize(300, 300).png().toBuffer();
+    const mark = await sharp(tile).composite([{ input: markArt, left: 30, top: 30 }]).png().toBuffer();
     const gradient = Buffer.from(`<svg width="1200" height="630"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0.35" stop-color="#0e1b24"/><stop offset="0.6" stop-color="#0e1b24" stop-opacity="0.35"/><stop offset="1" stop-color="#0e1b24" stop-opacity="0"/></linearGradient></defs><rect width="1200" height="630" fill="url(#g)"/></svg>`);
     const og = await sharp({ create: { width: 1200, height: 630, channels: 3, background: '#0e1b24' } })
       .composite([{ input: right, left: 500, top: 0 }, { input: gradient, left: 0, top: 0 }, { input: mark, left: 90, top: 135 }])
@@ -356,8 +364,7 @@ const groups = {
     const assets = [];
     let order = 0;
     const L = (en, es, pt) => ({ en, es, pt });
-    const bundleBytes = await zipDirs(Object.keys(groupsMap), 'public/press/burning-boats-mindaro-presskit.zip');
-    assets.push({ id: 'bundle', group: 'bundle', title: L('Full press kit', 'Kit de prensa completo', 'Kit de imprensa completo'), href: '/press/burning-boats-mindaro-presskit.zip', bytes: bundleBytes, order: order++ });
+    // (no all-in-one bundle: per-group ZIPs only, keeps the repo lean)
     const titles = {
       logos: L('Logos (Burning Boats + Mindaro)', 'Logos (Burning Boats + Mindaro)', 'Logos (Burning Boats + Mindaro)'),
       'key-art': L('Key art & wallpapers', 'Arte clave y wallpapers', 'Key art e wallpapers'),
@@ -366,7 +373,7 @@ const groups = {
       characters: L('Characters & creatures', 'Personajes y criaturas', 'Personagens e criaturas'),
       team: L('Team portraits', 'Retratos del equipo', 'Retratos da equipe'),
     };
-    const previewPick = { logos: 'bbs-mark-on-navy-2048.png', 'key-art': 'mindaro-key-art-title.jpg', screenshots: 'denator-chasing.png', 'concept-art': 'wadook.jpg', characters: 'pioneer.png', team: 'venecia.jpg' };
+    const previewPick = { logos: 'bbs-mark-on-cream-2048.png', 'key-art': 'mindaro-key-art-title.jpg', screenshots: 'denator-chasing.png', 'concept-art': 'wadook.jpg', characters: 'pioneer.png', team: 'venecia.jpg' };
     for (const [dir, group] of Object.entries(groupsMap)) {
       if (!existsSync(dirOf(dir))) continue;
       const bytes = await zipDirs([dir], `public/press/${dir}.zip`);
@@ -374,7 +381,7 @@ const groups = {
       const pick = files.includes(previewPick[dir]) ? previewPick[dir] : files.find((f) => /\.(png|jpg)$/i.test(f));
       let preview;
       if (pick) {
-        const buf = await sharp(join(dirOf(dir), pick)).flatten({ background: '#10212e' }).resize({ width: 800, withoutEnlargement: true }).webp({ quality: 78 }).toBuffer();
+        const buf = await sharp(join(dirOf(dir), pick)).flatten({ background: dir === 'logos' ? '#fffaf1' : '#10212e' }).resize({ width: 800, withoutEnlargement: true }).webp({ quality: 78 }).toBuffer();
         await emit(`src/assets/press/${dir}.webp`, buf, 120);
         preview = dir;
       }

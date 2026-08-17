@@ -55,7 +55,7 @@ const jobs = defineCollection({
     title: z.string(),
     lang: localeEnum,
     translationOf: z.string(),
-    department: z.enum(['art', 'engineering', 'audio', 'design', 'production', 'other']),
+    department: z.enum(['art', 'engineering', 'audio', 'design', 'production', 'marketing', 'other']),
     engagement: z.enum(['tbd', 'collaboration', 'contract', 'part-time', 'full-time']).default('tbd'),
     location: z.string().default('remote'),
     open: z.boolean().default(true),

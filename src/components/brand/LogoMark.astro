@@ -1,54 +1,55 @@
 ---
 /**
- * The paper-boat mark (BBS_LOGO.svg, cleaned). Colors are CSS variables so the same
- * SVG works on navy (dark) and cream (light):
- *   --logo-navy (flame + water)  --logo-ink (outline)  --logo-paper (boat)  --logo-shade (shading)
+ * The paper-boat mark (BBS_LOGO.svg, cleaned) in its ORIGINAL colors: navy flame + water,
+ * black outline, cream boat. Never recolored.
+ *  - scheme="brand" (default): the artwork as-is — for cream/light surfaces.
+ *  - scheme="tile": the artwork on a cream rounded tile — for navy/dark surfaces (like Logo3.png).
+ *  - scheme="mono": single-color line version (currentColor) — decorative ghost use only.
  */
 import Mark from '~/assets/brand/bbs-mark.svg';
 
 interface Props {
   size?: number | string;
   class?: string;
-  /** 'auto' follows the theme; 'brand' forces the original navy/cream colors (light backgrounds) */
-  scheme?: 'auto' | 'brand' | 'onDark' | 'mono';
+  scheme?: 'brand' | 'tile' | 'mono';
+  /** tile shape */
+  shape?: 'circle' | 'rounded';
   title?: string;
 }
-const { size = 40, class: className, scheme = 'auto', title } = Astro.props;
+const { size = 40, class: className, scheme = 'brand', shape = 'rounded', title } = Astro.props;
+const px = typeof size === 'number' ? `${size}px` : size;
 ---
-<span class:list={['logo-mark', `logo-${scheme}`, className]} style={`--logo-size:${typeof size === 'number' ? `${size}px` : size}`} aria-hidden={title ? undefined : 'true'} title={title}>
+<span
+  class:list={['logo-mark', `logo-${scheme}`, `logo-shape-${shape}`, className]}
+  style={`--logo-size:${px}`}
+  aria-hidden={title ? undefined : 'true'}
+  role={title ? 'img' : undefined}
+  aria-label={title}
+>
   <Mark width="100%" height="100%" />
 </span>
 
 <style>
   .logo-mark {
-    display: inline-block;
+    position: relative;
+    display: inline-grid;
+    place-items: center;
     width: var(--logo-size);
     height: var(--logo-size);
     flex: none;
-    /* dark theme defaults: navy elements become slate so they read on navy backgrounds */
-    --logo-navy: var(--slate-300);
-    --logo-ink: var(--navy-950);
-    --logo-paper: var(--cream-50);
-    --logo-shade: color-mix(in oklab, var(--slate-300) 60%, var(--cream-50));
-  }
-  .logo-mark :global(svg) { width: 100%; height: 100%; display: block; overflow: visible; }
-
-  /* light theme (or forced brand colors): the original artwork */
-  :global([data-theme='light']) .logo-auto,
-  .logo-brand {
+    /* original artwork colors — do not theme */
     --logo-navy: #10212e;
     --logo-ink: #020202;
     --logo-paper: #fffaf1;
     --logo-shade: #8a8a8a;
   }
-  /* sections that stay dark inside light theme */
-  :global(.theme-dark) .logo-auto,
-  .logo-onDark {
-    --logo-navy: var(--slate-300);
-    --logo-ink: var(--navy-950);
-    --logo-paper: var(--cream-50);
-    --logo-shade: color-mix(in oklab, var(--slate-300) 60%, var(--cream-50));
-  }
+  .logo-mark :global(svg) { width: 100%; height: 100%; display: block; overflow: visible; }
+
+  /* Cream tile behind the mark for dark surfaces (the mark keeps ~78% of the tile) */
+  .logo-tile { background: #fffaf1; border-radius: 22%; box-shadow: inset 0 0 0 1px rgb(2 2 2 / 0.06), 0 6px 18px -8px rgb(0 0 0 / 0.5); }
+  .logo-tile.logo-shape-circle { border-radius: 50%; }
+  .logo-tile :global(svg) { width: 84%; height: 84%; }
+
   .logo-mono {
     --logo-navy: currentColor;
     --logo-ink: currentColor;

@@ -259,8 +259,7 @@ export const pt = {
   team: {
     title: 'A equipe',
     intro: 'Somos uma equipe pequena de desenvolvedores mexicanos com todas as disciplinas na mesma mesa: código, design, arte, som e as pessoas que mantêm tudo em movimento. Estas são as pessoas que estão construindo Mindaro.',
-    join: { line: 'Falta você? Estamos procurando ajuda em VFX, programação e SFX.', cta: 'Vagas abertas' },
-    badge: 'Tripulação',
+    join: { line: 'Falta você? Estamos procurando ajuda em VFX, programação e marketing.', cta: 'Vagas abertas' },
     bioPending: 'Bio em breve.',
   },
 
@@ -358,7 +357,7 @@ export const pt = {
     },
     careers: {
       title: 'Trabalhe conosco — Burning Boats Studios',
-      description: 'Junte-se a um estúdio indie de jogos do México. Buscamos apoio em VFX, programação de gameplay e SFX para Mindaro, e aceitamos candidaturas abertas.',
+      description: 'Junte-se a um estúdio indie de jogos do México. Buscamos apoio em VFX, programação de gameplay e marketing para Mindaro, e aceitamos candidaturas abertas.',
     },
     notFound: { title: 'Página não encontrada — Burning Boats Studios', description: 'Esta página não existe.' },
     postSuffix: ' — Burning Boats Studios',

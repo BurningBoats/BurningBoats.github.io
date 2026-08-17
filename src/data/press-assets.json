@@ -1,17 +1,5 @@
 [
   {
-    "id": "bundle",
-    "group": "bundle",
-    "title": {
-      "en": "Full press kit",
-      "es": "Kit de prensa completo",
-      "pt": "Kit de imprensa completo"
-    },
-    "href": "/press/burning-boats-mindaro-presskit.zip",
-    "bytes": 12202769,
-    "order": 0
-  },
-  {
     "id": "logos",
     "group": "logos",
     "title": {
@@ -20,8 +8,8 @@
       "pt": "Logos (Burning Boats + Mindaro)"
     },
     "href": "/press/logos.zip",
-    "bytes": 543196,
-    "order": 1,
+    "bytes": 527748,
+    "order": 0,
     "preview": "logos",
     "description": {
       "en": "7 files",
@@ -39,7 +27,7 @@
     },
     "href": "/press/key-art.zip",
     "bytes": 2805755,
-    "order": 2,
+    "order": 1,
     "preview": "key-art",
     "description": {
       "en": "6 files",
@@ -57,7 +45,7 @@
     },
     "href": "/press/screenshots.zip",
     "bytes": 3800066,
-    "order": 3,
+    "order": 2,
     "preview": "screenshots",
     "description": {
       "en": "3 files",
@@ -75,7 +63,7 @@
     },
     "href": "/press/concept-art.zip",
     "bytes": 1204038,
-    "order": 4,
+    "order": 3,
     "preview": "concept-art",
     "description": {
       "en": "6 files",
@@ -93,7 +81,7 @@
     },
     "href": "/press/characters.zip",
     "bytes": 3182228,
-    "order": 5,
+    "order": 4,
     "preview": "characters",
     "description": {
       "en": "5 files",
@@ -111,7 +99,7 @@
     },
     "href": "/press/team.zip",
     "bytes": 675231,
-    "order": 6,
+    "order": 5,
     "preview": "team",
     "description": {
       "en": "9 files",
@@ -129,6 +117,6 @@
     },
     "href": "/press/factsheet.md",
     "bytes": 2837,
-    "order": 7
+    "order": 6
   }
 ]

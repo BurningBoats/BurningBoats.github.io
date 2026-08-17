@@ -18,7 +18,7 @@ const siteLinks = [
   { label: t.nav.mindaro, href: localePath(locale, 'mindaro') },
   { label: t.nav.team, href: localePath(locale, 'team') },
   { label: t.nav.news, href: localePath(locale, 'news') },
-  { label: t.nav.careers, href: localePath(locale, 'careers') },
+  ...(SITE.sections.careers ? [{ label: t.nav.careers, href: localePath(locale, 'careers') }] : []),
   { label: t.nav.press, href: localePath(locale, 'press') },
 ];
 const gameLinks = [
@@ -39,7 +39,7 @@ const socials = [
     <div class="footer-grid">
       <div class="footer-brand">
         <a href={localePath(locale)} class="footer-logo" aria-label={t.nav.homeAria}>
-          <LogoMark size={56} scheme="onDark" />
+          <LogoMark size={56} scheme="tile" />
           <span class="footer-wordmark">Burning Boats<br /><small>Studios</small></span>
         </a>
         <p class="footer-tagline">{t.footer.tagline}</p>

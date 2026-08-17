@@ -16,7 +16,6 @@ const t = useDict(locale);
 const assets = (await getCollection('pressAssets')).sort((a, b) => a.data.order - b.data.order);
 const previews = import.meta.glob<{ default: ImageMetadata }>('~/assets/press/*.webp', { eager: true });
 const previewFor = (id?: string) => (id ? previews[`/src/assets/press/${id}.webp`]?.default : undefined);
-const bundle = assets.find((a) => a.data.group === 'bundle');
 const groups = assets.filter((a) => a.data.group !== 'bundle' && a.data.group !== 'docs');
 const docs = assets.filter((a) => a.data.group === 'docs');
 const mb = (b: number) => `${(b / 1024 / 1024).toFixed(1)} MB`;
@@ -40,7 +39,6 @@ const longDescription = [t.mindaro.about.p1, t.mindaro.about.p2, t.press.longP3]
 <BaseLayout locale={locale} title={t.seo.press.title} description={t.seo.press.description} current="press">
   <Section title={t.press.title} intro={t.press.intro} headingLevel="h1" width="wide">
     <div class="press-actions" data-reveal-item>
-      {bundle && <Button href={bundle.data.href} icon="download" iconPosition="start" size="lg" download>{t.common.cta.downloadAll} <span class="press-size">{mb(bundle.data.bytes)}</span></Button>}
       <Button href={`mailto:${SITE.email}`} variant="secondary" icon="mail" iconPosition="start" size="lg">{t.common.cta.emailUs}</Button>
     </div>
 

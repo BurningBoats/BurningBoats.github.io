@@ -9,7 +9,7 @@ import { SITE } from '~/config/site';
 import { DEFAULT_LOCALE, localeStaticPaths, useDict, fmt, localePath, type Locale } from '~/i18n';
 import pointing from '~/assets/pioneer/pointing.webp';
 
-export const getStaticPaths = localeStaticPaths;
+export const getStaticPaths = () => (SITE.sections.careers ? localeStaticPaths() : []);
 const { locale } = Astro.props as { locale: Locale };
 const t = useDict(locale);
 
@@ -20,7 +20,7 @@ for (const j of all) if (j.data.lang === locale) byKey.set(j.data.translationOf,
 const jobs = [...byKey.values()].sort((a, b) => a.data.order - b.data.order);
 const rendered = await Promise.all(jobs.map(async (j) => ({ job: j, Content: (await render(j)).Content })));
 const mailto = (subject: string) => `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}`;
-const deptLabel: Record<string, string> = { art: 'Art', engineering: 'Engineering', audio: 'Audio', design: 'Design', production: 'Production', other: 'Other' };
+const deptLabel: Record<string, string> = { art: 'Art', engineering: 'Engineering', audio: 'Audio', design: 'Design', production: 'Production', marketing: 'Marketing', other: 'Other' };
 ---
 <BaseLayout locale={locale} title={t.seo.careers.title} description={t.seo.careers.description} current="careers">
   <Section title={t.careers.title} intro={t.careers.intro} headingLevel="h1" width="wide">
