@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "bundle",
+    "group": "bundle",
+    "title": {
+      "en": "Full press kit",
+      "es": "Kit de prensa completo",
+      "pt": "Kit de imprensa completo"
+    },
+    "href": "/press/burning-boats-mindaro-presskit.zip",
+    "bytes": 12202769,
+    "order": 0
+  },
+  {
+    "id": "logos",
+    "group": "logos",
+    "title": {
+      "en": "Logos (Burning Boats + Mindaro)",
+      "es": "Logos (Burning Boats + Mindaro)",
+      "pt": "Logos (Burning Boats + Mindaro)"
+    },
+    "href": "/press/logos.zip",
+    "bytes": 543196,
+    "order": 1,
+    "preview": "logos",
+    "description": {
+      "en": "7 files",
+      "es": "7 archivos",
+      "pt": "7 arquivos"
+    }
+  },
+  {
+    "id": "key-art",
+    "group": "key-art",
+    "title": {
+      "en": "Key art & wallpapers",
+      "es": "Arte clave y wallpapers",
+      "pt": "Key art e wallpapers"
+    },
+    "href": "/press/key-art.zip",
+    "bytes": 2805755,
+    "order": 2,
+    "preview": "key-art",
+    "description": {
+      "en": "6 files",
+      "es": "6 archivos",
+      "pt": "6 arquivos"
+    }
+  },
+  {
+    "id": "screenshots",
+    "group": "screenshots",
+    "title": {
+      "en": "Screenshots (work in progress)",
+      "es": "Capturas (en desarrollo)",
+      "pt": "Capturas (em desenvolvimento)"
+    },
+    "href": "/press/screenshots.zip",
+    "bytes": 3800066,
+    "order": 3,
+    "preview": "screenshots",
+    "description": {
+      "en": "3 files",
+      "es": "3 archivos",
+      "pt": "3 arquivos"
+    }
+  },
+  {
+    "id": "concept-art",
+    "group": "concept-art",
+    "title": {
+      "en": "Concept art",
+      "es": "Arte conceptual",
+      "pt": "Arte conceitual"
+    },
+    "href": "/press/concept-art.zip",
+    "bytes": 1204038,
+    "order": 4,
+    "preview": "concept-art",
+    "description": {
+      "en": "6 files",
+      "es": "6 archivos",
+      "pt": "6 arquivos"
+    }
+  },
+  {
+    "id": "characters",
+    "group": "characters",
+    "title": {
+      "en": "Characters & creatures",
+      "es": "Personajes y criaturas",
+      "pt": "Personagens e criaturas"
+    },
+    "href": "/press/characters.zip",
+    "bytes": 3182228,
+    "order": 5,
+    "preview": "characters",
+    "description": {
+      "en": "5 files",
+      "es": "5 archivos",
+      "pt": "5 arquivos"
+    }
+  },
+  {
+    "id": "team",
+    "group": "team",
+    "title": {
+      "en": "Team portraits",
+      "es": "Retratos del equipo",
+      "pt": "Retratos da equipe"
+    },
+    "href": "/press/team.zip",
+    "bytes": 675231,
+    "order": 6,
+    "preview": "team",
+    "description": {
+      "en": "9 files",
+      "es": "9 archivos",
+      "pt": "9 arquivos"
+    }
+  },
+  {
+    "id": "factsheet",
+    "group": "docs",
+    "title": {
+      "en": "Fact sheet (Markdown)",
+      "es": "Ficha técnica (Markdown)",
+      "pt": "Ficha técnica (Markdown)"
+    },
+    "href": "/press/factsheet.md",
+    "bytes": 2837,
+    "order": 7
+  }
+]
