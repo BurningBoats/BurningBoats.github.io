@@ -61,6 +61,7 @@ async function boot() {
       else setTimeout(run, 200);
     }
 
+    document.documentElement.setAttribute('data-motion-ready', '');
     await document.fonts?.ready;
     ScrollTrigger.refresh();
     if (failsafe) { clearTimeout(failsafe); failsafe = null; }

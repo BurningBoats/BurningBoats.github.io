@@ -17,7 +17,7 @@
     "assets:check": "node scripts/import-assets.mjs --dry-run --strict",
     "fonts:build": "node scripts/build-fonts.mjs",
     "budgets": "node scripts/check-budgets.mjs",
-    "verify": "npm run check && npm run build && npm run budgets"
+    "verify": "npm run check && npm run build && npm run budgets && node scripts/check-locales.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

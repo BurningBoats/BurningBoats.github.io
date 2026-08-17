@@ -213,6 +213,16 @@
   }
 }
 
+/* ---- Hero entrance (pure CSS, JS-independent → LCP-safe) ------------------ */
+/* Items are visible at first paint; a short translate/opacity settle plays from the start.
+   While the logo intro is playing (desktop, first visit) the sequence waits for the curtain. */
+.hero-in { animation: hero-in 0.7s var(--ease-out-cubic) both; animation-delay: calc(var(--i, 0) * 70ms); }
+@media (min-width: 768px) {
+  html:not([data-intro='seen']):has([data-intro-overlay]) .hero-in { animation-delay: calc(1.05s + var(--i, 0) * 70ms); }
+}
+@keyframes hero-in { from { opacity: 0.001; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .hero-in { animation: none; } }
+
 /* ---- Motion tiers (set pre-paint by the head script) ---------------------- */
 /* Hidden initial state ONLY when JS + motion are available; failsafe restores. */
 html[data-motion='full'] [data-reveal-item],

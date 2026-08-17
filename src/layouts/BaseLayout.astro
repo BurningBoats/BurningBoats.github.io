@@ -57,8 +57,10 @@ const alternates = localeAlternates(rest, altOverrides);
 const effects = SITE.effects.enabled ? 'on' : 'off';
 const respectOs = SITE.respectOsColorScheme ? 'true' : 'false';
 
-/* Runs before paint: theme (no flash), intro-seen flag. Re-applied after view-transition swaps. */
-const headScript = `(function(){var d=document.documentElement;function apply(){var t='dark';try{var s=localStorage.getItem('bb.theme');if(s==='light'||s==='dark'){t=s}else if(${respectOs}&&matchMedia('(prefers-color-scheme: light)').matches){t='light'}}catch(e){}d.dataset.theme=t;var m=document.querySelector('meta[data-theme-color]');if(m)m.setAttribute('content',t==='light'?'#fffaf1':'#0e1b24');try{if(sessionStorage.getItem('bb.intro'))d.dataset.intro='seen'}catch(e){}}apply();document.addEventListener('astro:after-swap',apply);})();`;
+/* Runs before paint: theme (no flash), intro-seen flag, motion tier (so reveal items start hidden
+   only when JS will reveal them) + a failsafe that un-hides everything if the bundle never boots.
+   Re-applied after view-transition swaps. */
+const headScript = `(function(){var d=document.documentElement;function apply(){var t='dark';try{var s=localStorage.getItem('bb.theme');if(s==='light'||s==='dark'){t=s}else if(${respectOs}&&matchMedia('(prefers-color-scheme: light)').matches){t='light'}}catch(e){}d.dataset.theme=t;var m=document.querySelector('meta[data-theme-color]');if(m)m.setAttribute('content',t==='light'?'#fffaf1':'#0e1b24');try{if(sessionStorage.getItem('bb.intro'))d.dataset.intro='seen'}catch(e){}var rm=matchMedia('(prefers-reduced-motion: reduce)').matches;var c=navigator.connection||{};var lite=(matchMedia('(pointer: coarse)').matches&&innerWidth<768)||(navigator.hardwareConcurrency||8)<=4||(navigator.deviceMemory||8)<=4||c.saveData===true;d.dataset.motion=rm?'reduced':lite?'lite':'full';d.removeAttribute('data-motion-ready');setTimeout(function(){if(!d.hasAttribute('data-motion-ready'))d.setAttribute('data-motion-failed','')},3500)}apply();document.addEventListener('astro:after-swap',apply);})();`;
 ---
 <!doctype html>
 <html lang={locale} data-theme="dark" data-effects={effects} class="grain">

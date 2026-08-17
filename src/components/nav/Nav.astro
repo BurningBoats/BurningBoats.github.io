@@ -30,9 +30,9 @@ const links = [
 ---
 <header class:list={['site-header', `is-${variant}`]} data-nav data-variant={variant} transition:name="site-header" transition:animate="none">
   <div class="container-x nav-inner">
-    <a href={localePath(locale)} class="brand" aria-label={t.nav.homeAria}>
+    <a href={localePath(locale)} class="brand" title={t.nav.homeAria}>
       <LogoMark size={38} class="brand-mark" />
-      <span class="brand-name"><span class="brand-name-1">Burning Boats</span><span class="brand-name-2">Studios</span></span>
+      <span class="brand-name"><span class="brand-name-1">Burning Boats</span><span class="sr-only"> </span><span class="brand-name-2">Studios</span></span>
     </a>
 
     <nav class="nav-primary" aria-label={t.common.a11y.mainNav}>
@@ -143,8 +143,5 @@ const links = [
     .hide-mobile { display: none !important; }
     .nav-burger { display: grid; }
     .brand-name-1 { font-size: 0.9rem; }
-  }
-  @media (max-width: 24rem) {
-    .brand-name { display: none; }
   }
 </style>

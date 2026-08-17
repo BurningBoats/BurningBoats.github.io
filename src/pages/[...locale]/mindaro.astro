@@ -60,13 +60,13 @@ const stills = [
       <HeroArt wide={keyartWide} tablet={keyartTablet} mobile={keyartMobile} vignette="center" parallax={8} />
       <canvas class="hero-embers fx-only" data-embers aria-hidden="true"></canvas>
       <div class="container-x hero-inner">
-        <h1 class="hero-wordmark" data-reveal-item><Image src={wordmark} alt="Mindaro" width={720} densities={[1, 2]} loading="eager" fetchpriority="high" /></h1>
-        <p class="hero-tagline" data-reveal-item>{t.mindaro.tagline}</p>
-        <p class="hero-sub" data-reveal-item>{t.mindaro.oneLiner}</p>
-        <ul class="stats" data-reveal-item>
+        <h1 class="hero-wordmark hero-in" style="--i:0"><Image src={wordmark} alt="Mindaro" width={720} densities={[1, 2]} loading="eager" fetchpriority="high" /></h1>
+        <p class="hero-tagline hero-in" style="--i:1">{t.mindaro.tagline}</p>
+        <p class="hero-sub hero-in" style="--i:2">{t.mindaro.oneLiner}</p>
+        <ul class="stats hero-in" style="--i:3">
           {t.mindaro.stats.map((s) => <li><strong>{s.value}</strong><span>{s.label}</span></li>)}
         </ul>
-        <div class="hero-ctas" data-reveal-item>
+        <div class="hero-ctas hero-in" style="--i:4">
           <Button href={MINDARO.steam.url} external variant="mindaro" icon="steam" iconPosition="start" size="lg" magnetic>{t.common.cta.wishlist}</Button>
           <Button href={MINDARO.discord.invite} external variant="secondary" icon="discord" iconPosition="start" size="lg">{t.common.cta.discord}</Button>
           <a href="#trailer" class="hero-trailer-link">{MINDARO.media.youtubeId ? t.common.cta.watchTrailer : t.mindaro.trailer.soonPill} <Icon name="chevron-down" size={16} /></a>

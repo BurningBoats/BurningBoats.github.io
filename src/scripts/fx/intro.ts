@@ -3,7 +3,8 @@ function setup() {
   const intro = document.querySelector<HTMLElement>('[data-intro-overlay]');
   if (!intro) return;
   const seen = document.documentElement.dataset.intro === 'seen';
-  if (seen) { intro.remove(); return; }
+  const mobile = !matchMedia('(min-width: 768px)').matches; // desktop-only (see Intro.astro)
+  if (seen || mobile) { intro.remove(); return; }
   try { sessionStorage.setItem('bb.intro', '1'); } catch { /* ignore */ }
   document.documentElement.dataset.intro = 'playing';
 

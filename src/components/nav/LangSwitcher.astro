@@ -25,9 +25,9 @@ const id = `lang-menu-${variant}`;
   </ul>
 ) : (
   <div class:list={['lang', className]} data-lang-switcher>
-    <button type="button" class="lang-btn" aria-haspopup="true" aria-expanded="false" aria-controls={id} aria-label={fmt(t.lang.current, { lang: localeMeta[locale].label })}>
+    <button type="button" class="lang-btn" aria-haspopup="true" aria-expanded="false" aria-controls={id} title={fmt(t.lang.current, { lang: localeMeta[locale].label })}>
       <Icon name="globe" size={18} />
-      <span class="lang-current">{localeMeta[locale].short}</span>
+      <span class="sr-only">{t.lang.label}: </span><span class="lang-current">{localeMeta[locale].short}</span>
       <Icon name="chevron-down" size={14} class="lang-chev" />
     </button>
     <ul id={id} class="lang-menu" role="menu" hidden>

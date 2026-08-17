@@ -40,7 +40,7 @@ export default defineConfig({
       cssVariable: '--ff-display',
       weights: ['200 800'],
       styles: ['normal'],
-      subsets: ['latin', 'latin-ext'],
+      subsets: ['latin'],
       fallbacks: ['ui-sans-serif', 'system-ui', 'sans-serif'],
     },
     {
@@ -49,7 +49,7 @@ export default defineConfig({
       cssVariable: '--ff-body',
       weights: ['400 700'],
       styles: ['normal'],
-      subsets: ['latin', 'latin-ext'],
+      subsets: ['latin'],
       fallbacks: ['ui-sans-serif', 'system-ui', 'sans-serif'],
     },
     {

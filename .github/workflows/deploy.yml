@@ -61,6 +61,9 @@ jobs:
       - name: Size budgets
         run: npm run budgets
 
+      - name: Locale & SEO checklist
+        run: node scripts/check-locales.mjs
+
       - name: Sanity-check critical outputs
         run: |
           for f in index.html 404.html es/index.html pt/index.html sitemap-index.xml robots.txt .nojekyll; do

@@ -29,6 +29,8 @@ const t = useDict(locale);
     pointer-events: auto;
   }
   :global(html[data-intro='seen']) .intro, .intro.is-done { display: none; }
+  /* Desktop-only: on phones the intro would only delay the first meaningful paint. */
+  @media (max-width: 767px) { .intro { display: none; } }
   .intro.is-skipped { animation: intro-out 0.2s var(--ease-in-out) 0s both; }
 
   .intro-mark :global(.logo-water) { animation: wipe-x 0.45s var(--ease-out-cubic) 0s both; }
