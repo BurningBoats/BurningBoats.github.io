@@ -1,0 +1,18 @@
+# Normalize line endings (Windows checkout uses core.autocrlf=true)
+* text=auto eol=lf
+
+# Binary assets
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.mp4 binary
+*.webm binary
+*.zip binary
