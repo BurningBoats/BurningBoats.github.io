@@ -1,0 +1,25 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Section from '~/components/layout/Section.astro';
+import Button from '~/components/ui/Button.astro';
+import { localeStaticPaths, useDict, localePath, type Locale } from '~/i18n';
+
+export const getStaticPaths = localeStaticPaths;
+const { locale } = Astro.props as { locale: Locale };
+const t = useDict(locale);
+---
+<BaseLayout locale={locale} title={t.seo.team.title} description={t.seo.team.description} current="team">
+  <Section eyebrow={t.home.team.eyebrow} title={t.team.title} intro={t.team.intro} headingLevel="h1">
+    <div class="team-slot" data-reveal-item>
+      <!-- TeamGrid arrives with the imported avatars (Phase 2/4) -->
+    </div>
+    <div class="join" data-reveal-item>
+      <p>{t.team.join.line}</p>
+      <Button href={localePath(locale, 'careers')} variant="secondary" icon="arrow-right">{t.team.join.cta}</Button>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .join { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 3rem; padding: 1.5rem; border: 1px dashed var(--border-strong); border-radius: var(--radius-lg); }
+</style>

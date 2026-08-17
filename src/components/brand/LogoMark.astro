@@ -1,0 +1,58 @@
+---
+/**
+ * The paper-boat mark (BBS_LOGO.svg, cleaned). Colors are CSS variables so the same
+ * SVG works on navy (dark) and cream (light):
+ *   --logo-navy (flame + water)  --logo-ink (outline)  --logo-paper (boat)  --logo-shade (shading)
+ */
+import Mark from '~/assets/brand/bbs-mark.svg';
+
+interface Props {
+  size?: number | string;
+  class?: string;
+  /** 'auto' follows the theme; 'brand' forces the original navy/cream colors (light backgrounds) */
+  scheme?: 'auto' | 'brand' | 'onDark' | 'mono';
+  title?: string;
+}
+const { size = 40, class: className, scheme = 'auto', title } = Astro.props;
+---
+<span class:list={['logo-mark', `logo-${scheme}`, className]} style={`--logo-size:${typeof size === 'number' ? `${size}px` : size}`} aria-hidden={title ? undefined : 'true'} title={title}>
+  <Mark width="100%" height="100%" />
+</span>
+
+<style>
+  .logo-mark {
+    display: inline-block;
+    width: var(--logo-size);
+    height: var(--logo-size);
+    flex: none;
+    /* dark theme defaults: navy elements become slate so they read on navy backgrounds */
+    --logo-navy: var(--slate-300);
+    --logo-ink: var(--navy-950);
+    --logo-paper: var(--cream-50);
+    --logo-shade: color-mix(in oklab, var(--slate-300) 60%, var(--cream-50));
+  }
+  .logo-mark :global(svg) { width: 100%; height: 100%; display: block; overflow: visible; }
+
+  /* light theme (or forced brand colors): the original artwork */
+  :global([data-theme='light']) .logo-auto,
+  .logo-brand {
+    --logo-navy: #10212e;
+    --logo-ink: #020202;
+    --logo-paper: #fffaf1;
+    --logo-shade: #8a8a8a;
+  }
+  /* sections that stay dark inside light theme */
+  :global(.theme-dark) .logo-auto,
+  .logo-onDark {
+    --logo-navy: var(--slate-300);
+    --logo-ink: var(--navy-950);
+    --logo-paper: var(--cream-50);
+    --logo-shade: color-mix(in oklab, var(--slate-300) 60%, var(--cream-50));
+  }
+  .logo-mono {
+    --logo-navy: currentColor;
+    --logo-ink: currentColor;
+    --logo-paper: transparent;
+    --logo-shade: currentColor;
+  }
+</style>

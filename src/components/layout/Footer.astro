@@ -1,0 +1,130 @@
+---
+/** Site footer — always cinematic dark. Socials, legal line, language links, back to top. */
+import { SITE } from '~/config/site';
+import { MINDARO } from '~/data/mindaro';
+import { useDict, localePath, fmt, type Locale } from '~/i18n';
+import LogoMark from '~/components/brand/LogoMark.astro';
+import Icon from '~/components/ui/Icon.astro';
+import LangSwitcher from '~/components/nav/LangSwitcher.astro';
+import ThemeToggle from '~/components/nav/ThemeToggle.astro';
+
+interface Props { locale: Locale; alternates: Record<Locale, string> }
+const { locale, alternates } = Astro.props;
+const t = useDict(locale);
+const year = new Date().getFullYear();
+
+const siteLinks = [
+  { label: t.nav.home, href: localePath(locale) },
+  { label: t.nav.mindaro, href: localePath(locale, 'mindaro') },
+  { label: t.nav.team, href: localePath(locale, 'team') },
+  { label: t.nav.news, href: localePath(locale, 'news') },
+  { label: t.nav.careers, href: localePath(locale, 'careers') },
+  { label: t.nav.press, href: localePath(locale, 'press') },
+];
+const gameLinks = [
+  { label: t.common.cta.wishlist, href: MINDARO.steam.url, external: true },
+  { label: t.common.cta.discord, href: MINDARO.discord.invite, external: true },
+  ...(MINDARO.media.youtubeId ? [{ label: t.common.cta.watchTrailer, href: `${localePath(locale, 'mindaro')}#trailer`, external: false }] : []),
+  { label: t.common.cta.pressKit, href: localePath(locale, 'press'), external: false },
+];
+const socials = [
+  { name: 'Instagram', icon: 'instagram', href: SITE.socials.instagram },
+  { name: 'LinkedIn', icon: 'linkedin', href: SITE.socials.linkedin },
+  { name: 'Steam', icon: 'steam', href: SITE.socials.steam },
+  { name: 'Discord', icon: 'discord', href: SITE.socials.discord },
+] as const;
+---
+<footer class="site-footer theme-dark" data-footer>
+  <div class="container-x">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href={localePath(locale)} class="footer-logo" aria-label={t.nav.homeAria}>
+          <LogoMark size={56} scheme="onDark" />
+          <span class="footer-wordmark">Burning Boats<br /><small>Studios</small></span>
+        </a>
+        <p class="footer-tagline">{t.footer.tagline}</p>
+        <p class="footer-madein">{t.footer.madeIn}</p>
+      </div>
+
+      <nav aria-label={t.footer.sections.site} class="footer-col">
+        <h2 class="footer-heading">{t.footer.sections.site}</h2>
+        <ul>{siteLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+      </nav>
+
+      <nav aria-label={t.footer.sections.mindaro} class="footer-col">
+        <h2 class="footer-heading">{t.footer.sections.mindaro}</h2>
+        <ul>
+          {gameLinks.map((l) => (
+            <li>
+              <a href={l.href} {...(l.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                {l.label}{l.external && <span class="sr-only"> {t.common.a11y.externalLink}</span>}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="footer-col">
+        <h2 class="footer-heading">{t.footer.sections.contact}</h2>
+        <p class="footer-email">
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+          <button type="button" class="copy-btn" data-copy={SITE.email} data-copied-label={t.common.cta.copied} aria-label={t.common.cta.copyEmail} title={t.common.cta.copyEmail}>
+            <Icon name="copy" size={15} />
+          </button>
+        </p>
+        <h2 class="footer-heading mt-6">{t.footer.sections.follow}</h2>
+        <ul class="footer-socials">
+          {socials.map((s) => (
+            <li>
+              <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={`${s.name} ${t.common.a11y.externalLink}`} title={s.name}>
+                <Icon name={s.icon} size={20} />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-legal">{fmt(t.footer.legal, { year })}</p>
+      <div class="footer-bottom-actions">
+        <LangSwitcher locale={locale} alternates={alternates} variant="inline" />
+        <ThemeToggle locale={locale} />
+        <a href="#top" class="to-top" data-to-top><Icon name="arrow-up" size={16} /><span>{t.common.cta.backToTop}</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-boat fx-only" aria-hidden="true"><LogoMark size={260} scheme="mono" /></div>
+</footer>
+
+<style>
+  .site-footer { position: relative; overflow: hidden; padding-block: clamp(3rem, 6vw, 5rem) 2rem; border-top: 1px solid var(--border); }
+  .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1.2fr; gap: 2.5rem; }
+  .footer-logo { display: inline-flex; align-items: center; gap: 0.9rem; text-decoration: none; color: inherit; }
+  .footer-wordmark { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; line-height: 1.05; }
+  .footer-wordmark small { font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--fg-subtle); font-weight: 500; }
+  .footer-tagline { margin-top: 1.25rem; font-family: var(--font-display); font-size: var(--text-lg); font-weight: 500; max-width: 24ch; }
+  .footer-madein { margin-top: 0.5rem; font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: 0.06em; color: var(--fg-subtle); }
+  .footer-heading { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-subtle); font-weight: 500; margin-bottom: 0.9rem; }
+  .footer-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+  .footer-col a { text-decoration: none; color: var(--fg-muted); transition: color var(--dur-base); }
+  .footer-col a:hover { color: var(--fg); text-decoration: underline; }
+  .footer-email { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+  .footer-email a { color: var(--fg); text-decoration: none; }
+  .footer-email a:hover { text-decoration: underline; }
+  .copy-btn { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: var(--radius-xs); border: 1px solid var(--border); background: transparent; color: var(--fg-muted); }
+  .copy-btn:hover { color: var(--fg); border-color: var(--fg-muted); }
+  .footer-socials { display: flex !important; flex-direction: row !important; gap: 0.5rem !important; }
+  .footer-socials a { display: inline-grid; place-items: center; width: 42px; height: 42px; border-radius: var(--radius-sm); border: 1px solid var(--border); color: var(--fg-muted); transition: color var(--dur-base), border-color var(--dur-base), transform var(--dur-base) var(--ease-out-cubic); }
+  .footer-socials a:hover { color: var(--fg); border-color: var(--fg-muted); transform: translateY(-2px); text-decoration: none; }
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+  .footer-legal { font-size: 0.85rem; color: var(--fg-subtle); }
+  .footer-bottom-actions { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+  .to-top { display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; color: var(--fg-muted); font-size: 0.875rem; }
+  .to-top:hover { color: var(--fg); }
+  .footer-boat { position: absolute; right: -2rem; bottom: -3rem; opacity: 0.07; pointer-events: none; color: var(--cream-50); animation: boat-float 6s ease-in-out infinite; }
+  @keyframes boat-float { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-8px) rotate(-1.5deg); } }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  @media (max-width: 63.999rem) { .footer-grid { grid-template-columns: 1fr 1fr; } .footer-brand { grid-column: 1 / -1; } }
+  @media (max-width: 40rem) { .footer-grid { grid-template-columns: 1fr; gap: 2rem; } }
+</style>

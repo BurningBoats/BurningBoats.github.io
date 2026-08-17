@@ -1,0 +1,73 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Section from '~/components/layout/Section.astro';
+import Button from '~/components/ui/Button.astro';
+import { SITE } from '~/config/site';
+import { MINDARO } from '~/data/mindaro';
+import { localeStaticPaths, useDict, localePath, type Locale } from '~/i18n';
+
+export const getStaticPaths = localeStaticPaths;
+const { locale } = Astro.props as { locale: Locale };
+const t = useDict(locale);
+---
+<BaseLayout locale={locale} title={t.seo.home.title} description={t.seo.home.description} current="home" navVariant="overlay">
+  <section class="hero theme-dark" data-embers-wrap>
+    <div class="container-x hero-inner">
+      <p class="eyebrow" data-reveal-item>{t.home.hero.eyebrow}</p>
+      <h1 class="hero-title" data-split="hero">{t.home.hero.title}</h1>
+      <p class="hero-sub" data-reveal-item>{t.home.hero.sub}</p>
+      <div class="hero-ctas" data-reveal-item>
+        <Button href={MINDARO.steam.url} external icon="steam" iconPosition="start" size="lg" magnetic>{t.common.cta.wishlist}</Button>
+        <Button href={localePath(locale, 'mindaro')} variant="secondary" size="lg" icon="arrow-right">{t.common.cta.seeMindaro}</Button>
+      </div>
+      <p class="hero-micro" data-reveal-item>{t.home.hero.micro}</p>
+    </div>
+    <canvas class="hero-embers fx-only" data-embers aria-hidden="true"></canvas>
+  </section>
+
+  <Section id="mindaro" eyebrow={t.home.teaser.eyebrow} title={t.home.teaser.title} intro={t.home.teaser.body} bg="sunken">
+    <ul class="chips" data-reveal-item>{t.home.teaser.chips.map((c) => <li>{c}</li>)}</ul>
+    <div class="mt-8 flex flex-wrap gap-3" data-reveal-item>
+      <Button href={MINDARO.steam.url} external icon="steam" iconPosition="start">{t.common.cta.wishlist}</Button>
+      <Button href={localePath(locale, 'mindaro')} variant="ghost" icon="arrow-right">{t.common.cta.learnMore}</Button>
+    </div>
+  </Section>
+
+  <Section id="about" eyebrow={t.home.about.eyebrow} title={t.home.about.title} intro={t.home.about.body}>
+    <ul class="values">
+      {t.home.values.map((v, i) => (
+        <li data-reveal-item>
+          <span class="values-index">0{i + 1}</span>
+          <h3>{v.title}</h3>
+          <p>{v.body}</p>
+        </li>
+      ))}
+    </ul>
+  </Section>
+
+  <Section id="cta" theme="dark" align="center" width="narrow">
+    <h2 class="cta-title" data-reveal-item>{t.home.ctaStrip.title}</h2>
+    <div class="mt-8 flex flex-wrap justify-center gap-3" data-reveal-item>
+      <Button href={MINDARO.steam.url} external icon="steam" iconPosition="start" size="lg">{t.common.cta.wishlist}</Button>
+      <Button href={SITE.discord.invite} external variant="secondary" size="lg" icon="discord" iconPosition="start">{t.common.cta.discord}</Button>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .hero { position: relative; min-height: 100svh; display: flex; align-items: center; padding-top: var(--nav-h); overflow: clip; background: radial-gradient(120% 80% at 70% 20%, var(--navy-700) 0%, var(--navy-900) 55%, var(--navy-950) 100%); }
+  .hero-inner { position: relative; z-index: 1; padding-block: clamp(4rem, 10vh, 8rem); max-width: 60rem; }
+  .hero-title { margin-top: 1.25rem; font-size: var(--text-display); font-weight: 600; line-height: 0.95; letter-spacing: -0.02em; max-width: 12ch; min-height: 2lh; }
+  .hero-sub { margin-top: 1.5rem; font-size: var(--text-lg); color: var(--fg-muted); max-width: 46ch; }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.25rem; }
+  .hero-micro { margin-top: 1rem; font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: 0.04em; color: var(--fg-subtle); }
+  .hero-embers { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; margin: 0; }
+  .chips li { padding: 0.4rem 0.75rem; border: 1px solid var(--border-strong); border-radius: var(--radius-full); font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: 0.04em; color: var(--fg-muted); }
+  .values { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1.5rem; list-style: none; padding: 0; margin: 0; }
+  .values li { padding: 1.5rem; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg-elevated); box-shadow: var(--shadow-1); }
+  .values-index { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; color: var(--fg-subtle); }
+  .values h3 { margin-top: 1rem; font-size: var(--text-lg); }
+  .values p { margin-top: 0.5rem; color: var(--fg-muted); }
+  .cta-title { font-size: var(--text-2xl); font-weight: 600; letter-spacing: -0.02em; text-wrap: balance; }
+</style>

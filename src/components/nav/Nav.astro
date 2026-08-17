@@ -1,0 +1,150 @@
+---
+/**
+ * Site header: brand, primary nav, language menu, theme toggle, Wishlist CTA, mobile drawer.
+ * `variant="overlay"` renders transparent over hero art and turns solid on scroll (scripts/ui/nav.ts).
+ */
+import { SITE } from '~/config/site';
+import { useDict, localePath, type Locale } from '~/i18n';
+import LogoMark from '~/components/brand/LogoMark.astro';
+import Icon from '~/components/ui/Icon.astro';
+import Button from '~/components/ui/Button.astro';
+import LangSwitcher from './LangSwitcher.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  locale: Locale;
+  alternates: Record<Locale, string>;
+  variant?: 'overlay' | 'solid';
+  current?: 'home' | 'mindaro' | 'team' | 'news' | 'careers' | 'press' | 'none';
+}
+const { locale, alternates, variant = 'solid', current = 'none' } = Astro.props;
+const t = useDict(locale);
+
+const links = [
+  { key: 'mindaro', label: t.nav.mindaro, href: localePath(locale, 'mindaro') },
+  { key: 'team', label: t.nav.team, href: localePath(locale, 'team') },
+  { key: 'news', label: t.nav.news, href: localePath(locale, 'news') },
+  { key: 'careers', label: t.nav.careers, href: localePath(locale, 'careers') },
+  { key: 'press', label: t.nav.press, href: localePath(locale, 'press') },
+] as const;
+---
+<header class:list={['site-header', `is-${variant}`]} data-nav data-variant={variant} transition:name="site-header" transition:animate="none">
+  <div class="container-x nav-inner">
+    <a href={localePath(locale)} class="brand" aria-label={t.nav.homeAria}>
+      <LogoMark size={38} class="brand-mark" />
+      <span class="brand-name"><span class="brand-name-1">Burning Boats</span><span class="brand-name-2">Studios</span></span>
+    </a>
+
+    <nav class="nav-primary" aria-label={t.common.a11y.mainNav}>
+      <ul>
+        {links.map((l) => (
+          <li><a href={l.href} aria-current={current === l.key ? 'page' : undefined}>{l.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <LangSwitcher locale={locale} alternates={alternates} class="hide-mobile" />
+      <ThemeToggle locale={locale} class="hide-mobile" />
+      <Button href={SITE.socials.steam} external size="sm" icon="steam" iconPosition="start" class="nav-cta hide-mobile">{t.nav.wishlist}</Button>
+      <button type="button" class="nav-burger" data-nav-toggle aria-expanded="false" aria-controls="site-drawer" aria-label={t.common.a11y.openMenu} data-label-open={t.common.a11y.openMenu} data-label-close={t.common.a11y.closeMenu}>
+        <span class="burger-icon burger-open"><Icon name="menu" size={22} /></span>
+        <span class="burger-icon burger-close"><Icon name="x" size={22} /></span>
+      </button>
+    </div>
+  </div>
+
+  <div id="site-drawer" class="drawer" data-nav-drawer hidden>
+    <div class="drawer-panel theme-dark" role="dialog" aria-modal="true" aria-label={t.common.menu.open} tabindex="-1">
+      <nav aria-label={t.common.a11y.mainNav}>
+        <ul class="drawer-links">
+          <li><a href={localePath(locale)} aria-current={current === 'home' ? 'page' : undefined}>{t.nav.home}</a></li>
+          {links.map((l) => (
+            <li><a href={l.href} aria-current={current === l.key ? 'page' : undefined}>{l.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+      <div class="drawer-bottom">
+        <Button href={SITE.socials.steam} external size="lg" icon="steam" iconPosition="start" class="w-full">{t.common.cta.wishlist}</Button>
+        <Button href={SITE.discord.invite} external variant="secondary" size="lg" icon="discord" iconPosition="start" class="w-full">{t.common.cta.discord}</Button>
+        <div class="drawer-row">
+          <LangSwitcher locale={locale} alternates={alternates} variant="inline" />
+          <ThemeToggle locale={locale} />
+        </div>
+      </div>
+    </div>
+    <button type="button" class="drawer-backdrop" data-nav-close aria-label={t.common.a11y.closeMenu} tabindex="-1"></button>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: var(--z-header);
+    height: var(--nav-h);
+    background: color-mix(in oklab, var(--bg) 82%, transparent);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    transition: height var(--dur-base) var(--ease-out-cubic), background-color var(--dur-base), border-color var(--dur-base), transform var(--dur-slow) var(--ease-out-expo);
+  }
+  .site-header.is-overlay {
+    position: fixed; left: 0; right: 0;
+    background: transparent; border-bottom-color: transparent; -webkit-backdrop-filter: none; backdrop-filter: none;
+    color: var(--cream-50);
+  }
+  .site-header.is-overlay:not(.is-scrolled) { --fg: var(--cream-50); --fg-muted: var(--slate-200); --border: transparent; }
+  .site-header.is-scrolled { height: var(--nav-h-scrolled); background: color-mix(in oklab, var(--bg) 86%, transparent); border-bottom-color: var(--border); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+  .site-header.is-hidden { transform: translateY(-105%); }
+  .site-header.is-open { transform: none; }
+
+  .nav-inner { height: 100%; display: flex; align-items: center; gap: 1.5rem; }
+  .brand { display: inline-flex; align-items: center; gap: 0.7rem; text-decoration: none; color: inherit; margin-right: auto; }
+  .brand-mark { transition: transform var(--dur-slow) var(--ease-out-expo); }
+  .brand:hover .brand-mark { transform: translateY(-2px) rotate(-3deg); }
+  .brand-name { display: flex; flex-direction: column; line-height: 1; font-family: var(--font-display); font-weight: 600; letter-spacing: 0.01em; }
+  .brand-name-1 { font-size: 0.95rem; }
+  .brand-name-2 { font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--fg-subtle); margin-top: 0.2rem; }
+
+  .nav-primary ul { display: flex; gap: 0.25rem; list-style: none; margin: 0; padding: 0; }
+  .nav-primary a {
+    display: inline-block; padding: 0.5rem 0.75rem; border-radius: var(--radius-sm);
+    font-family: var(--font-display); font-weight: 500; font-size: 0.95rem; text-decoration: none; color: var(--fg-muted);
+    transition: color var(--dur-base), background-color var(--dur-base);
+  }
+  .nav-primary a:hover { color: var(--fg); background: color-mix(in oklab, var(--fg) 6%, transparent); }
+  .nav-primary a[aria-current='page'] { color: var(--fg); text-decoration: underline; text-underline-offset: 0.45em; text-decoration-thickness: 1px; }
+
+  .nav-actions { display: flex; align-items: center; gap: 0.35rem; }
+  .nav-cta { margin-left: 0.4rem; }
+  .nav-burger { display: none; position: relative; width: 44px; height: 44px; place-items: center; border-radius: var(--radius-sm); border: 1px solid transparent; background: transparent; color: var(--fg); }
+  .nav-burger:hover { background: var(--bg-elevated); border-color: var(--border); }
+  .burger-icon { grid-area: 1/1; display: grid; place-items: center; transition: opacity var(--dur-base), transform var(--dur-base) var(--ease-out-cubic); }
+  .burger-close { opacity: 0; transform: rotate(-90deg) scale(0.7); }
+  .nav-burger[aria-expanded='true'] .burger-open { opacity: 0; transform: rotate(90deg) scale(0.7); }
+  .nav-burger[aria-expanded='true'] .burger-close { opacity: 1; transform: none; }
+
+  /* Drawer */
+  .drawer { position: fixed; inset: 0; z-index: var(--z-drawer); display: grid; grid-template-columns: 1fr min(86vw, 400px); }
+  .drawer[hidden] { display: none; }
+  .drawer-backdrop { grid-area: 1 / 1; background: color-mix(in oklab, var(--navy-950) 55%, transparent); border: 0; cursor: pointer; -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
+  .drawer-panel {
+    grid-area: 1 / 2; display: flex; flex-direction: column; justify-content: space-between;
+    padding: calc(var(--nav-h) + 1rem) var(--gutter) 1.5rem;
+    background: var(--navy-900); color: var(--cream-50); border-left: 1px solid var(--border);
+    box-shadow: var(--shadow-2); overflow-y: auto;
+  }
+  .drawer-links { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+  .drawer-links a { display: block; padding: 0.7rem 0.25rem; font-family: var(--font-display); font-size: var(--text-xl); font-weight: 600; text-decoration: none; color: var(--fg-muted); border-bottom: 1px solid var(--border); }
+  .drawer-links a:hover, .drawer-links a[aria-current='page'] { color: var(--fg); }
+  .drawer-bottom { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 2rem; }
+  .drawer-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 0.75rem; }
+
+  @media (max-width: 63.999rem) {
+    .nav-primary { display: none; }
+    .hide-mobile { display: none !important; }
+    .nav-burger { display: grid; }
+    .brand-name-1 { font-size: 0.9rem; }
+  }
+  @media (max-width: 24rem) {
+    .brand-name { display: none; }
+  }
+</style>

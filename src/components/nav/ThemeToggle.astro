@@ -1,0 +1,40 @@
+---
+/** Light/dark toggle. State is applied by the inline head script + src/scripts/ui/theme.ts. */
+import { useDict, type Locale } from '~/i18n';
+import Icon from '~/components/ui/Icon.astro';
+
+interface Props { locale: Locale; class?: string }
+const { locale, class: className } = Astro.props;
+const t = useDict(locale);
+---
+<button
+  type="button"
+  class:list={['theme-toggle', className]}
+  data-theme-toggle
+  data-label-light={t.theme.switchTo.replace('{mode}', t.theme.light.toLowerCase())}
+  data-label-dark={t.theme.switchTo.replace('{mode}', t.theme.dark.toLowerCase())}
+  aria-label={t.theme.label}
+  aria-pressed="false"
+  title={t.theme.label}
+>
+  <span class="theme-icon theme-icon-sun"><Icon name="sun" size={18} /></span>
+  <span class="theme-icon theme-icon-moon"><Icon name="moon" size={18} /></span>
+</button>
+
+<style>
+  .theme-toggle {
+    position: relative;
+    display: inline-grid; place-items: center;
+    width: 40px; height: 40px;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    background: transparent; color: var(--fg-muted);
+    transition: color var(--dur-base), background-color var(--dur-base), border-color var(--dur-base);
+  }
+  .theme-toggle:hover { color: var(--fg); background: var(--bg-elevated); border-color: var(--border); }
+  .theme-icon { grid-area: 1 / 1; display: grid; place-items: center; transition: opacity var(--dur-base) var(--ease-out-cubic), transform var(--dur-slow) var(--ease-out-expo); }
+  /* dark → show the sun (switch to light); light → show the moon */
+  .theme-icon-moon { opacity: 0; transform: rotate(-40deg) scale(0.6); }
+  :global([data-theme='light']) .theme-icon-sun { opacity: 0; transform: rotate(40deg) scale(0.6); }
+  :global([data-theme='light']) .theme-icon-moon { opacity: 1; transform: none; }
+</style>

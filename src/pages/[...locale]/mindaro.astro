@@ -1,0 +1,107 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Section from '~/components/layout/Section.astro';
+import Button from '~/components/ui/Button.astro';
+import { MINDARO } from '~/data/mindaro';
+import { localeStaticPaths, useDict, localePath, type Locale } from '~/i18n';
+import { videoGameLd, organizationLd } from '~/lib/schema';
+
+export const getStaticPaths = localeStaticPaths;
+const { locale } = Astro.props as { locale: Locale };
+const t = useDict(locale);
+const url = new URL(Astro.url.pathname, Astro.site).href;
+---
+<BaseLayout
+  locale={locale}
+  title={t.seo.mindaro.title}
+  description={t.seo.mindaro.description}
+  ogTitle={t.seo.mindaro.ogTitle}
+  image="/og/mindaro.jpg"
+  imageAlt="Mindaro key art"
+  current="mindaro"
+  navVariant="overlay"
+  jsonLd={[organizationLd(), videoGameLd(locale, t.seo.mindaro.description, url, '/og/mindaro.jpg')]}
+>
+  <div data-scope="mindaro">
+    <section class="hero theme-dark" data-embers-wrap>
+      <div class="container-x hero-inner">
+        <p class="hero-wordmark mindaro-face" aria-label="Mindaro">MINDARO</p>
+        <p class="hero-tagline" data-reveal-item>{t.mindaro.tagline}</p>
+        <p class="hero-sub" data-reveal-item>{t.mindaro.oneLiner}</p>
+        <ul class="stats" data-reveal-item>
+          {t.mindaro.stats.map((s) => <li><strong>{s.value}</strong><span>{s.label}</span></li>)}
+        </ul>
+        <div class="hero-ctas" data-reveal-item>
+          <Button href={MINDARO.steam.url} external variant="mindaro" icon="steam" iconPosition="start" size="lg" magnetic>{t.common.cta.wishlist}</Button>
+          <Button href={MINDARO.discord.invite} external variant="secondary" icon="discord" iconPosition="start" size="lg">{t.common.cta.discord}</Button>
+        </div>
+      </div>
+      <canvas class="hero-embers fx-only" data-embers aria-hidden="true"></canvas>
+    </section>
+
+    <Section id="about" eyebrow={t.mindaro.about.eyebrow} title={t.mindaro.about.title}>
+      <div class="prose-2col">
+        <p data-reveal-item>{t.mindaro.about.p1}</p>
+        <p data-reveal-item>{t.mindaro.about.p2}</p>
+      </div>
+    </Section>
+
+    <Section id="pillars" eyebrow={t.mindaro.pillars.eyebrow} title={t.mindaro.pillars.title} bg="sunken">
+      <ul class="pillars">
+        {t.mindaro.pillars.items.map((p, i) => (
+          <li data-reveal-item>
+            <span class="pillar-index">0{i + 1}</span>
+            <h3>{p.title}</h3>
+            <p>{p.body}</p>
+          </li>
+        ))}
+      </ul>
+    </Section>
+
+    <Section id="faq" title={t.mindaro.faq.title} width="narrow">
+      <dl class="faq">
+        {t.mindaro.faq.items.map((f) => (
+          <div data-reveal-item>
+            <dt>{f.q}</dt>
+            <dd>{f.a}</dd>
+          </div>
+        ))}
+      </dl>
+    </Section>
+
+    <Section id="wishlist" theme="dark" align="center" width="narrow">
+      <h2 class="cta-title" data-reveal-item>{t.mindaro.ctaFooter.title}</h2>
+      <p class="mt-3 text-fg-muted" data-reveal-item>{t.mindaro.ctaFooter.sub}</p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3" data-reveal-item>
+        <Button href={MINDARO.steam.url} external variant="mindaro" icon="steam" iconPosition="start" size="lg">{t.common.cta.wishlist}</Button>
+        <Button href={MINDARO.discord.invite} external variant="secondary" icon="discord" iconPosition="start" size="lg">{t.common.cta.discord}</Button>
+      </div>
+      <p class="mt-8 text-sm text-fg-subtle" data-reveal-item>{t.mindaro.pressLine} <a href={localePath(locale, 'press')} class="underline">{t.common.cta.pressKit}</a></p>
+    </Section>
+  </div>
+</BaseLayout>
+
+<style>
+  .hero { position: relative; min-height: 100svh; display: flex; align-items: center; padding-top: var(--nav-h); overflow: clip; background: radial-gradient(120% 90% at 50% 100%, var(--m-brown-900) 0%, var(--m-abyss) 45%, var(--navy-950) 100%); }
+  .hero-inner { position: relative; z-index: 1; padding-block: clamp(4rem, 10vh, 8rem); max-width: 60rem; text-align: center; margin-inline: auto; }
+  .hero-wordmark { font-size: clamp(3.5rem, 14vw, 11rem); line-height: 0.9; letter-spacing: 0.02em; color: var(--m-cream); text-shadow: 0 0 40px color-mix(in oklab, var(--m-orange) 35%, transparent); }
+  .hero-tagline { margin-top: 1.5rem; font-family: var(--font-mono); font-size: clamp(0.9rem, 1.6vw, 1.1rem); letter-spacing: 0.04em; color: var(--m-yellow); }
+  .hero-sub { margin-top: 1.25rem; font-size: var(--text-lg); color: var(--fg-muted); max-width: 52ch; margin-inline: auto; }
+  .stats { display: flex; justify-content: center; flex-wrap: wrap; gap: 0; margin: 2rem auto 0; padding: 0; list-style: none; border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+  .stats li { display: flex; flex-direction: column; align-items: center; gap: 0.15rem; padding: 0.9rem 1.5rem; border-right: 1px solid var(--border); }
+  .stats li:last-child { border-right: 0; }
+  .stats strong { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 600; letter-spacing: -0.01em; }
+  .stats span { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-subtle); }
+  .hero-ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-top: 2.25rem; }
+  .hero-embers { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+  .prose-2col { display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: 2rem; font-size: var(--text-lg); color: var(--fg-muted); }
+  .pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.25rem; list-style: none; padding: 0; margin: 0; }
+  .pillars li { padding: 1.5rem; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg-elevated); }
+  .pillar-index { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; color: var(--m-yellow); }
+  .pillars h3 { margin-top: 1rem; font-size: var(--text-lg); }
+  .pillars p { margin-top: 0.5rem; color: var(--fg-muted); }
+  .faq div { padding-block: 1.25rem; border-bottom: 1px solid var(--border); }
+  .faq dt { font-family: var(--font-display); font-weight: 600; font-size: var(--text-lg); }
+  .faq dd { margin-top: 0.4rem; color: var(--fg-muted); }
+  .cta-title { font-size: var(--text-2xl); font-weight: 600; letter-spacing: -0.02em; }
+</style>

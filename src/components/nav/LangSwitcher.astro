@@ -1,0 +1,80 @@
+---
+/** Server-rendered language menu; each link points at the same page in another locale. */
+import { LOCALES, localeMeta, useDict, fmt, type Locale } from '~/i18n';
+import Icon from '~/components/ui/Icon.astro';
+
+interface Props {
+  locale: Locale;
+  alternates: Record<Locale, string>;
+  class?: string;
+  variant?: 'menu' | 'inline';
+}
+const { locale, alternates, class: className, variant = 'menu' } = Astro.props;
+const t = useDict(locale);
+const id = `lang-menu-${variant}`;
+---
+{variant === 'inline' ? (
+  <ul class:list={['lang-inline', className]} aria-label={t.lang.label}>
+    {LOCALES.map((l) => (
+      <li>
+        <a href={alternates[l]} lang={l} hreflang={localeMeta[l].hreflang} aria-current={l === locale ? 'true' : undefined} title={fmt(t.lang.switchTo, { lang: localeMeta[l].label })}>
+          {localeMeta[l].label}
+        </a>
+      </li>
+    ))}
+  </ul>
+) : (
+  <div class:list={['lang', className]} data-lang-switcher>
+    <button type="button" class="lang-btn" aria-haspopup="true" aria-expanded="false" aria-controls={id} aria-label={fmt(t.lang.current, { lang: localeMeta[locale].label })}>
+      <Icon name="globe" size={18} />
+      <span class="lang-current">{localeMeta[locale].short}</span>
+      <Icon name="chevron-down" size={14} class="lang-chev" />
+    </button>
+    <ul id={id} class="lang-menu" role="menu" hidden>
+      {LOCALES.map((l) => (
+        <li role="none">
+          <a role="menuitem" href={alternates[l]} lang={l} hreflang={localeMeta[l].hreflang} aria-current={l === locale ? 'true' : undefined}>
+            <span class="lang-short">{localeMeta[l].short}</span>
+            <span>{localeMeta[l].label}</span>
+            {l === locale && <Icon name="check" size={14} class="ml-auto" />}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+<style>
+  .lang { position: relative; }
+  .lang-btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    height: 40px; padding-inline: 0.6rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    background: transparent; color: var(--fg-muted);
+    font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: 0.06em;
+    transition: color var(--dur-base), background-color var(--dur-base), border-color var(--dur-base);
+  }
+  .lang-btn:hover, .lang-btn[aria-expanded='true'] { color: var(--fg); background: var(--bg-elevated); border-color: var(--border); }
+  .lang-chev { transition: transform var(--dur-base) var(--ease-out-cubic); }
+  .lang-btn[aria-expanded='true'] .lang-chev { transform: rotate(180deg); }
+  .lang-menu {
+    position: absolute; right: 0; top: calc(100% + 8px);
+    min-width: 12rem; padding: 0.35rem;
+    background: var(--bg-elevated); border: 1px solid var(--border);
+    border-radius: var(--radius-md); box-shadow: var(--shadow-2);
+    z-index: var(--z-drawer);
+  }
+  .lang-menu a {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.55rem 0.7rem; border-radius: var(--radius-sm);
+    text-decoration: none; font-size: 0.925rem; color: var(--fg-muted);
+  }
+  .lang-menu a:hover, .lang-menu a:focus-visible { background: var(--bg-sunken); color: var(--fg); }
+  .lang-menu a[aria-current='true'] { color: var(--fg); }
+  .lang-short { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--fg-subtle); width: 1.6rem; }
+  .lang-inline { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; list-style: none; padding: 0; margin: 0; }
+  .lang-inline a { text-decoration: none; color: var(--fg-muted); font-size: 0.9rem; }
+  .lang-inline a:hover, .lang-inline a[aria-current='true'] { color: var(--fg); }
+  .lang-inline a[aria-current='true'] { text-decoration: underline; text-underline-offset: 0.3em; }
+</style>

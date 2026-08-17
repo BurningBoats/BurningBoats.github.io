@@ -1,0 +1,15 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Section from '~/components/layout/Section.astro';
+import { localeStaticPaths, useDict, type Locale } from '~/i18n';
+
+export const getStaticPaths = localeStaticPaths;
+const { locale } = Astro.props as { locale: Locale };
+const t = useDict(locale);
+---
+<BaseLayout locale={locale} title={t.seo.news.title} description={t.seo.news.description} current="news">
+  <Section title={t.news.title} intro={t.news.intro} headingLevel="h1">
+    <p class="text-fg-muted" data-reveal-item>{t.news.empty}</p>
+    <!-- NewsList arrives with the news collection (Phase 3/4) -->
+  </Section>
+</BaseLayout>

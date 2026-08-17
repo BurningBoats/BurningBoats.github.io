@@ -1,0 +1,59 @@
+---
+/**
+ * Single 404 (GitHub Pages serves only the root 404.html). Rendered in English with the ES/PT
+ * strings inlined; a tiny script swaps the copy when the missing URL starts with /es/ or /pt/.
+ */
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Button from '~/components/ui/Button.astro';
+import LogoMark from '~/components/brand/LogoMark.astro';
+import { MINDARO } from '~/data/mindaro';
+import { LOCALES, useDict, localePath, DEFAULT_LOCALE } from '~/i18n';
+
+const t = useDict(DEFAULT_LOCALE);
+const strings = Object.fromEntries(
+  LOCALES.map((l) => {
+    const d = useDict(l);
+    return [l, { title: d.notFound.title, body: d.notFound.body, back: d.common.cta.backHome, wishlist: d.common.cta.wishlist, home: localePath(l), docTitle: d.seo.notFound.title }];
+  }),
+);
+---
+<BaseLayout locale={DEFAULT_LOCALE} title={t.seo.notFound.title} description={t.seo.notFound.description} noindex>
+  <section class="nf theme-dark">
+    <div class="container-x nf-inner">
+      <div class="nf-boat" aria-hidden="true"><LogoMark size={200} scheme="onDark" /></div>
+      <p class="eyebrow">{t.notFound.code}</p>
+      <h1 class="nf-title" data-nf="title">{t.notFound.title}</h1>
+      <p class="nf-body" data-nf="body">{t.notFound.body}</p>
+      <div class="nf-ctas">
+        <Button href={localePath(DEFAULT_LOCALE)} icon="arrow-right" data-nf-home><span data-nf="back">{t.common.cta.backHome}</span></Button>
+        <Button href={MINDARO.steam.url} external variant="secondary" icon="steam" iconPosition="start"><span data-nf="wishlist">{t.common.cta.wishlist}</span></Button>
+      </div>
+    </div>
+  </section>
+  <script is:inline define:vars={{ strings }}>
+    (() => {
+      const m = location.pathname.match(/^\/(es|pt)(\/|$)/);
+      const l = m ? m[1] : null;
+      if (!l || !strings[l]) return;
+      const s = strings[l];
+      document.documentElement.lang = l;
+      document.title = s.docTitle;
+      for (const [k, v] of Object.entries({ title: s.title, body: s.body, back: s.back, wishlist: s.wishlist })) {
+        const el = document.querySelector('[data-nf="' + k + '"]');
+        if (el) el.textContent = v;
+      }
+      const home = document.querySelector('[data-nf-home]');
+      if (home) home.setAttribute('href', s.home);
+    })();
+  </script>
+</BaseLayout>
+
+<style>
+  .nf { min-height: calc(100svh - var(--nav-h)); display: flex; align-items: center; background: radial-gradient(100% 70% at 50% 100%, var(--navy-700) 0%, var(--navy-900) 60%, var(--navy-950) 100%); }
+  .nf-inner { text-align: center; padding-block: 4rem; display: flex; flex-direction: column; align-items: center; }
+  .nf-boat { animation: nf-bob 4s ease-in-out infinite; margin-bottom: 1.5rem; }
+  @keyframes nf-bob { 0%, 100% { transform: translateY(0) rotate(-1.5deg); } 50% { transform: translateY(-8px) rotate(1.5deg); } }
+  .nf-title { margin-top: 1rem; font-size: var(--text-3xl); font-weight: 600; letter-spacing: -0.02em; }
+  .nf-body { margin-top: 1rem; color: var(--fg-muted); max-width: 40ch; }
+  .nf-ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-top: 2rem; }
+</style>

@@ -1,0 +1,120 @@
+---
+/**
+ * Button / link button.
+ *  primary   → cream on navy (dark) / navy on cream (light). Finished with effects OFF; ember glow only `fx:hover`.
+ *  secondary → 1px border, transparent.
+ *  ghost     → text + underline.
+ *  mindaro   → game palette (only inside [data-scope="mindaro"]).
+ */
+import Icon, { type IconName } from './Icon.astro';
+
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'ghost' | 'mindaro';
+  size?: 'sm' | 'md' | 'lg';
+  icon?: IconName;
+  iconPosition?: 'start' | 'end';
+  external?: boolean;
+  magnetic?: boolean;
+  type?: 'button' | 'submit';
+  class?: string;
+  ariaLabel?: string;
+  [key: string]: unknown;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  icon,
+  iconPosition = 'end',
+  external = false,
+  magnetic = false,
+  type = 'button',
+  class: className,
+  ariaLabel,
+  ...rest
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+const attrs = href
+  ? { href, ...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {}) }
+  : { type };
+---
+<Tag
+  class:list={['btn', `btn-${variant}`, `btn-${size}`, { 'btn-magnetic': magnetic }, className]}
+  aria-label={ariaLabel}
+  data-magnetic={magnetic ? '' : undefined}
+  {...attrs}
+  {...rest}
+>
+  {icon && iconPosition === 'start' && <Icon name={icon} size={size === 'sm' ? 16 : 18} class="btn-icon" />}
+  <span class="btn-label"><slot /></span>
+  {icon && iconPosition === 'end' && <Icon name={icon} size={size === 'sm' ? 16 : 18} class="btn-icon" />}
+</Tag>
+
+<style>
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.005em;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    transition:
+      background-color var(--dur-base) var(--ease-out-cubic),
+      color var(--dur-base) var(--ease-out-cubic),
+      border-color var(--dur-base) var(--ease-out-cubic),
+      box-shadow var(--dur-slow) var(--ease-out-cubic),
+      transform var(--dur-fast) var(--ease-out-cubic);
+    will-change: transform;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-sm { height: 40px; padding-inline: 0.9rem; font-size: 0.875rem; }
+  .btn-md { height: 48px; padding-inline: 1.25rem; font-size: 0.95rem; }
+  .btn-lg { height: 56px; padding-inline: 1.6rem; font-size: 1.05rem; }
+
+  .btn-primary {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-fg);
+    border-color: var(--btn-primary-bg);
+  }
+  .btn-primary:hover { background: var(--btn-primary-bg-hover); border-color: var(--btn-primary-bg-hover); transform: translateY(-1px); }
+  :global([data-effects='on']) .btn-primary:hover { box-shadow: var(--glow-accent); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--fg);
+    border-color: var(--border-strong);
+  }
+  .btn-secondary:hover { background: var(--bg-elevated); border-color: var(--fg-muted); transform: translateY(-1px); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--fg);
+    padding-inline: 0.25rem;
+    border-radius: var(--radius-xs);
+  }
+  .btn-ghost .btn-label { text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--fg) 35%, transparent); text-underline-offset: 0.3em; transition: text-decoration-color var(--dur-base); }
+  .btn-ghost:hover .btn-label { text-decoration-color: var(--fg); }
+  .btn-ghost:hover .btn-icon { transform: translateX(3px); }
+
+  .btn-mindaro {
+    background: var(--m-btn-bg, var(--btn-primary-bg));
+    color: var(--m-btn-fg, var(--btn-primary-fg));
+    border-color: var(--m-btn-bg, var(--btn-primary-bg));
+  }
+  .btn-mindaro:hover { filter: brightness(1.06); transform: translateY(-1px); }
+  :global([data-effects='on']) .btn-mindaro:hover { box-shadow: 0 0 0 1px color-mix(in oklab, var(--m-orange, var(--accent)) 45%, transparent), 0 0 28px -6px color-mix(in oklab, var(--m-orange, var(--accent)) 60%, transparent); }
+
+  .btn-icon { transition: transform var(--dur-base) var(--ease-out-cubic); flex: none; }
+  .btn:hover .icon-arrow-right { transform: translateX(3px); }
+  .btn:hover .icon-arrow-up-right { transform: translate(2px, -2px); }
+</style>

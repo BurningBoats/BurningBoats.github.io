@@ -1,0 +1,95 @@
+---
+/**
+ * Base document: <html lang data-theme data-effects data-intro>, head (SEO/fonts/theme script),
+ * skip link, header, <main>, footer, and the single client entry (scripts/main.ts).
+ */
+import 'lenis/dist/lenis.css';
+import '~/styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import { SITE } from '~/config/site';
+import { useDict, localeAlternates, stripLocale, type Locale } from '~/i18n';
+import BaseHead from '~/components/seo/BaseHead.astro';
+import JsonLd from '~/components/seo/JsonLd.astro';
+import { organizationLd } from '~/lib/schema';
+import Nav from '~/components/nav/Nav.astro';
+import Footer from '~/components/layout/Footer.astro';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  image?: string;
+  imageAlt?: string;
+  ogTitle?: string;
+  type?: 'website' | 'article';
+  /** Override sibling URLs (e.g. localized news slugs). Defaults to the same path in every locale. */
+  alternates?: Partial<Record<Locale, string>>;
+  noindex?: boolean;
+  navVariant?: 'overlay' | 'solid';
+  current?: 'home' | 'mindaro' | 'team' | 'news' | 'careers' | 'press' | 'none';
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  bodyClass?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
+}
+
+const {
+  locale,
+  title,
+  description,
+  image,
+  imageAlt,
+  ogTitle,
+  type,
+  alternates: altOverrides,
+  noindex,
+  navVariant = 'solid',
+  current = 'none',
+  jsonLd,
+  bodyClass,
+  publishedTime,
+  modifiedTime,
+} = Astro.props;
+
+const t = useDict(locale);
+const { rest } = stripLocale(Astro.url.pathname);
+const alternates = localeAlternates(rest, altOverrides);
+const effects = SITE.effects.enabled ? 'on' : 'off';
+const respectOs = SITE.respectOsColorScheme ? 'true' : 'false';
+
+/* Runs before paint: theme (no flash), intro-seen flag. Re-applied after view-transition swaps. */
+const headScript = `(function(){var d=document.documentElement;function apply(){var t='dark';try{var s=localStorage.getItem('bb.theme');if(s==='light'||s==='dark'){t=s}else if(${respectOs}&&matchMedia('(prefers-color-scheme: light)').matches){t='light'}}catch(e){}d.dataset.theme=t;var m=document.querySelector('meta[data-theme-color]');if(m)m.setAttribute('content',t==='light'?'#fffaf1':'#0e1b24');try{if(sessionStorage.getItem('bb.intro'))d.dataset.intro='seen'}catch(e){}}apply();document.addEventListener('astro:after-swap',apply);})();`;
+---
+<!doctype html>
+<html lang={locale} data-theme="dark" data-effects={effects} class="grain">
+  <head>
+    <BaseHead
+      locale={locale}
+      title={title}
+      description={description}
+      image={image}
+      imageAlt={imageAlt}
+      ogTitle={ogTitle}
+      type={type}
+      alternates={alternates}
+      noindex={noindex}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
+    />
+    <script is:inline set:html={headScript} />
+    <JsonLd data={jsonLd ?? organizationLd()} />
+    {SITE.effects.pageTransitions && <ClientRouter />}
+  </head>
+  <body class:list={[bodyClass]} data-nav-variant={navVariant}>
+    <a href="#main" class="skip-link">{t.common.a11y.skipToContent}</a>
+    <div id="top"></div>
+    <Nav locale={locale} alternates={alternates} variant={navVariant} current={current} />
+    <main id="main" tabindex="-1" data-main>
+      <slot />
+    </main>
+    <Footer locale={locale} alternates={alternates} />
+    <script>
+      import '~/scripts/main.ts';
+    </script>
+  </body>
+</html>

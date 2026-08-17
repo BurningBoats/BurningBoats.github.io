@@ -1,0 +1,194 @@
+/* ==========================================================================
+   Burning Boats Studios — design tokens
+   Dark is the default; `[data-theme="light"]` remaps the semantic layer.
+   The ember accent lives in ONE line (`--accent-ember`) and every fire effect
+   sits behind `<html data-effects="on|off">` (see src/config/site.ts).
+   ========================================================================== */
+
+:root {
+  /* — Brand primitives (from BBS_LOGO.svg + live site) — */
+  --navy-950: #0b161e;
+  --navy-900: #0e1b24;
+  --navy-800: #10212e;
+  --navy-700: #17303f;
+  --navy-600: #1f4054;
+  --slate-700: #465562;
+  --slate-600: #4d5f6e;
+  --slate-500: #556776;
+  --slate-400: #6a8194;
+  --slate-300: #8fa1ae;
+  --slate-200: #aab8c2;
+  --slate-100: #c9d3da;
+  --cream-50: #fffaf1;
+  --cream-100: #f6efe2;
+  --cream-200: #ede4d3;
+  --cream-300: #e0d5c0;
+  --ink: #020202;
+
+  /* — Ember: the ONLY fire/motion accent. Recolor here. — */
+  --ember-300: #ffcf80;
+  --ember-400: #ffb454;
+  --ember-500: #f28c28;
+  --ember-600: #d9641b;
+  --ember-700: #b84f12;
+  --ember-800: #8f3a0c;
+  --accent-ember: var(--ember-500);       /* ← change this line to recolor the accent */
+  --accent-ember-hot: var(--ember-300);   /* particle core / hottest tint */
+  --accent-ember-deep: var(--ember-600);  /* particle tail / deeper tint */
+
+  /* — Semantic (dark = default) — */
+  --bg: var(--navy-900);
+  --bg-sunken: var(--navy-950);
+  --bg-elevated: var(--navy-800);
+  --bg-overlay: color-mix(in oklab, var(--navy-950) 72%, transparent);
+  --fg: var(--cream-50);
+  --fg-muted: var(--slate-200);
+  --fg-subtle: var(--slate-300);
+  --border: color-mix(in oklab, var(--slate-500) 38%, transparent);
+  --border-strong: var(--slate-500);
+  --accent: var(--accent-ember);          /* collapses to --fg when effects are off */
+  --focus: var(--cream-50);
+  --btn-primary-bg: var(--cream-50);
+  --btn-primary-fg: var(--navy-900);
+  --btn-primary-bg-hover: #ffffff;
+  --ok: #3ba55d;
+  --danger: #e5484d;
+
+  /* — Shape / depth — */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+  --shadow-1: inset 0 1px 0 rgb(255 250 241 / 0.05), 0 8px 24px -12px rgb(0 0 0 / 0.6);
+  --shadow-2: inset 0 1px 0 rgb(255 250 241 / 0.06), 0 24px 48px -24px rgb(0 0 0 / 0.7);
+  --glow-accent:
+    0 0 0 1px color-mix(in oklab, var(--accent) 40%, transparent),
+    0 0 28px -6px color-mix(in oklab, var(--accent) 55%, transparent);
+  --grain-opacity: 0.045;
+
+  /* — Space / layout — */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --section-y: clamp(4rem, 8vw, 8rem);
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --container: 80rem;
+  --container-narrow: 44rem;
+  --container-wide: 96rem;
+  --nav-h: 72px;
+  --nav-h-scrolled: 60px;
+
+  /* — Z layers — */
+  --z-canvas: 0;
+  --z-content: 1;
+  --z-sticky: 20;
+  --z-header: 40;
+  --z-drawer: 50;
+  --z-modal: 60;
+  --z-toast: 70;
+  --z-intro: 100;
+
+  /* — Motion — */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-cubic: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+  --dur-fast: 150ms;
+  --dur-base: 250ms;
+  --dur-slow: 600ms;
+
+  /* — Typography (families come from the Astro Fonts API as --ff-*) — */
+  --font-display: var(--ff-display, ui-sans-serif, system-ui, sans-serif);
+  --font-body: var(--ff-body, ui-sans-serif, system-ui, sans-serif);
+  --font-mono: var(--ff-mono, ui-monospace, 'JetBrains Mono', Menlo, Consolas, monospace);
+  --font-mindaro: var(--ff-mindaro, var(--font-display));
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1.05rem + 0.35vw, 1.375rem);
+  --text-xl: clamp(1.375rem, 1.2rem + 0.8vw, 1.875rem);
+  --text-2xl: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);
+  --text-3xl: clamp(2.25rem, 1.6rem + 2.8vw, 3.5rem);
+  --text-display: clamp(2.75rem, 1.5rem + 6vw, 6.5rem);
+  --text-display-xl: clamp(3.25rem, 1rem + 9vw, 9rem);
+
+  color-scheme: dark;
+}
+
+/* — Light theme (chrome + content sections; heroes/footer stay .theme-dark) — */
+[data-theme='light'] {
+  --bg: var(--cream-50);
+  --bg-sunken: var(--cream-100);
+  --bg-elevated: #ffffff;
+  --bg-overlay: color-mix(in oklab, var(--cream-100) 80%, transparent);
+  --fg: var(--navy-900);
+  --fg-muted: var(--slate-600);
+  --fg-subtle: var(--slate-500);
+  --border: color-mix(in oklab, var(--slate-500) 30%, transparent);
+  --border-strong: var(--slate-500);
+  --accent-ember: var(--ember-700);
+  --accent-ember-hot: var(--ember-500);
+  --accent-ember-deep: var(--ember-800);
+  --focus: var(--navy-900);
+  --btn-primary-bg: var(--navy-900);
+  --btn-primary-fg: var(--cream-50);
+  --btn-primary-bg-hover: var(--navy-800);
+  --shadow-1: 0 1px 2px rgb(14 27 36 / 0.06), 0 8px 24px -12px rgb(14 27 36 / 0.18);
+  --shadow-2: 0 2px 4px rgb(14 27 36 / 0.06), 0 24px 48px -24px rgb(14 27 36 / 0.25);
+  --grain-opacity: 0.06;
+  color-scheme: light;
+}
+
+/* Sections that stay cinematic in both themes (heroes, footer, intro) */
+.theme-dark {
+  --bg: var(--navy-900);
+  --bg-sunken: var(--navy-950);
+  --bg-elevated: var(--navy-800);
+  --bg-overlay: color-mix(in oklab, var(--navy-950) 72%, transparent);
+  --fg: var(--cream-50);
+  --fg-muted: var(--slate-200);
+  --fg-subtle: var(--slate-300);
+  --border: color-mix(in oklab, var(--slate-500) 38%, transparent);
+  --border-strong: var(--slate-500);
+  --accent-ember: var(--ember-500);
+  --accent-ember-hot: var(--ember-300);
+  --accent-ember-deep: var(--ember-600);
+  --focus: var(--cream-50);
+  --btn-primary-bg: var(--cream-50);
+  --btn-primary-fg: var(--navy-900);
+  --btn-primary-bg-hover: #ffffff;
+  --shadow-1: inset 0 1px 0 rgb(255 250 241 / 0.05), 0 8px 24px -12px rgb(0 0 0 / 0.6);
+  --shadow-2: inset 0 1px 0 rgb(255 250 241 / 0.06), 0 24px 48px -24px rgb(0 0 0 / 0.7);
+  --grain-opacity: 0.045;
+  color-scheme: dark;
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+/* — Effects switch: neutral, finished state when the fire is off — */
+[data-effects='off'] {
+  --accent: var(--fg);
+  --glow-accent: 0 0 0 1px color-mix(in oklab, var(--fg) 25%, transparent);
+}
+[data-effects='off'] .fx-only {
+  display: none !important;
+}
+
+/* — Mindaro-scoped palette: undefined outside the game scope on purpose — */
+[data-scope='mindaro'] {
+  --m-yellow: #f8db5d;
+  --m-orange: #f28236;
+  --m-cream: #e9d69f;
+  --m-brown-950: #1f1009;
+  --m-brown-900: #290f06;
+  --m-brown-800: #461a0a;
+  --m-abyss: #02101c; /* sampled from key-art corner; hero blending only */
+  --m-btn-bg: var(--m-yellow);
+  --m-btn-fg: var(--m-brown-950);
+}

@@ -1,5 +1,5 @@
 import { writeFile } from 'node:fs/promises';
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import type { AstroIntegration } from 'astro';
@@ -32,6 +32,47 @@ export default defineConfig({
     layout: 'constrained',
     responsiveStyles: true,
   },
+  // Self-hosted at build time (no runtime requests to Google). Families map to --ff-* → tokens.css.
+  fonts: [
+    {
+      provider: fontProviders.google(),
+      name: 'Bricolage Grotesque',
+      cssVariable: '--ff-display',
+      weights: ['200 800'],
+      styles: ['normal'],
+      subsets: ['latin', 'latin-ext'],
+      fallbacks: ['ui-sans-serif', 'system-ui', 'sans-serif'],
+    },
+    {
+      provider: fontProviders.google(),
+      name: 'Instrument Sans',
+      cssVariable: '--ff-body',
+      weights: ['400 700'],
+      styles: ['normal'],
+      subsets: ['latin', 'latin-ext'],
+      fallbacks: ['ui-sans-serif', 'system-ui', 'sans-serif'],
+    },
+    {
+      provider: fontProviders.google(),
+      name: 'JetBrains Mono',
+      cssVariable: '--ff-mono',
+      weights: [400, 500],
+      styles: ['normal'],
+      subsets: ['latin'],
+      fallbacks: ['ui-monospace', 'Menlo', 'Consolas', 'monospace'],
+    },
+    {
+      // Studio's hand-drawn face (Calligraphr). Only A–Z/a–z exist → restricted with unicode-range.
+      provider: fontProviders.local(),
+      name: 'Mindaro',
+      cssVariable: '--ff-mindaro',
+      fallbacks: ['Bricolage Grotesque', 'ui-sans-serif', 'sans-serif'],
+      unicodeRange: ['U+0020', 'U+0041-005A', 'U+0061-007A'],
+      options: {
+        variants: [{ weight: 400, style: 'normal', src: ['./src/assets/fonts/mindaro-display.woff2'] }],
+      },
+    },
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

@@ -1,0 +1,68 @@
+---
+/**
+ * Page section wrapper: vertical rhythm, container width, optional eyebrow/title header,
+ * optional reveal hooks. `theme="dark"` keeps the section cinematic in light mode.
+ */
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  intro?: string;
+  width?: 'default' | 'narrow' | 'wide' | 'full';
+  theme?: 'dark' | 'inherit';
+  bg?: 'default' | 'sunken' | 'elevated' | 'transparent';
+  reveal?: boolean;
+  headingLevel?: 'h1' | 'h2';
+  class?: string;
+  align?: 'start' | 'center';
+  [key: string]: unknown;
+}
+const {
+  id,
+  eyebrow,
+  title,
+  intro,
+  width = 'default',
+  theme = 'inherit',
+  bg = 'default',
+  reveal = true,
+  headingLevel = 'h2',
+  class: className,
+  align = 'start',
+  ...rest
+} = Astro.props;
+const Heading = headingLevel;
+const containerClass = width === 'full' ? '' : `container-x ${width === 'narrow' ? 'container-narrow' : width === 'wide' ? 'container-wide' : ''}`;
+---
+<section
+  id={id}
+  class:list={['section section-y', `section-bg-${bg}`, { 'theme-dark': theme === 'dark', 'text-center': align === 'center' }, className]}
+  data-reveal={reveal ? '' : undefined}
+  {...rest}
+>
+  <div class={containerClass}>
+    {(eyebrow || title || intro) && (
+      <header class:list={['section-header', { 'mx-auto': align === 'center' }]} data-reveal-item={reveal ? '' : undefined}>
+        {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+        {title && <Heading class="section-title">{title}</Heading>}
+        {intro && <p class="section-intro">{intro}</p>}
+      </header>
+    )}
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section { position: relative; }
+  .section-bg-default { background: var(--bg); }
+  .section-bg-sunken { background: var(--bg-sunken); }
+  .section-bg-elevated { background: var(--bg-elevated); }
+  .section-bg-transparent { background: transparent; }
+  .section-header { max-width: 44rem; margin-bottom: clamp(2rem, 4vw, 3.5rem); }
+  .section-header .eyebrow { margin-bottom: 1rem; }
+  .section-title { font-size: var(--text-3xl); font-weight: 600; letter-spacing: -0.02em; line-height: 1.02; }
+  .section-intro { margin-top: 1rem; font-size: var(--text-lg); color: var(--fg-muted); max-width: 60ch; }
+  .text-center .section-header { text-align: center; }
+  .text-center .section-header .eyebrow::before { display: none; }
+  .text-center .section-intro { margin-inline: auto; }
+</style>

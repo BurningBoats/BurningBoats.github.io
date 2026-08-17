@@ -1,0 +1,28 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Section from '~/components/layout/Section.astro';
+import Button from '~/components/ui/Button.astro';
+import { SITE } from '~/config/site';
+import { localeStaticPaths, useDict, fmt, type Locale } from '~/i18n';
+
+export const getStaticPaths = localeStaticPaths;
+const { locale } = Astro.props as { locale: Locale };
+const t = useDict(locale);
+const mailto = `mailto:${SITE.email}?subject=${encodeURIComponent(t.careers.open.subject)}`;
+---
+<BaseLayout locale={locale} title={t.seo.careers.title} description={t.seo.careers.description} current="careers">
+  <Section title={t.careers.title} intro={t.careers.intro} headingLevel="h1">
+    <!-- JobCards arrive with the jobs collection (Phase 3/4) -->
+    <div class="open-application" data-reveal-item>
+      <h2>{t.careers.open.title}</h2>
+      <p>{fmt(t.careers.open.body, { email: SITE.email })}</p>
+      <Button href={mailto} icon="mail" iconPosition="start">{t.common.cta.applyByEmail}</Button>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .open-application { margin-top: 2rem; padding: 2rem; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg-elevated); display: grid; gap: 1rem; justify-items: start; }
+  .open-application h2 { font-size: var(--text-xl); }
+  .open-application p { color: var(--fg-muted); max-width: 60ch; }
+</style>

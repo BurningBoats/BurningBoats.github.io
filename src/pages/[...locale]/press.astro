@@ -1,0 +1,19 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Section from '~/components/layout/Section.astro';
+import Button from '~/components/ui/Button.astro';
+import { SITE } from '~/config/site';
+import { localeStaticPaths, useDict, type Locale } from '~/i18n';
+
+export const getStaticPaths = localeStaticPaths;
+const { locale } = Astro.props as { locale: Locale };
+const t = useDict(locale);
+---
+<BaseLayout locale={locale} title={t.seo.press.title} description={t.seo.press.description} current="press">
+  <Section title={t.press.title} intro={t.press.intro} headingLevel="h1">
+    <div class="flex flex-wrap gap-3" data-reveal-item>
+      <Button href={`mailto:${SITE.email}`} icon="mail" iconPosition="start">{t.common.cta.emailUs}</Button>
+    </div>
+    <!-- FactSheet + PressGrid arrive with the asset pipeline (Phase 2/4) -->
+  </Section>
+</BaseLayout>
