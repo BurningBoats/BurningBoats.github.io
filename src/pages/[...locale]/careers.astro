@@ -1,28 +1,91 @@
 ---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import Section from '~/components/layout/Section.astro';
 import Button from '~/components/ui/Button.astro';
+import DiscordWidget from '~/components/social/DiscordWidget.astro';
 import { SITE } from '~/config/site';
-import { localeStaticPaths, useDict, fmt, type Locale } from '~/i18n';
+import { DEFAULT_LOCALE, localeStaticPaths, useDict, fmt, localePath, type Locale } from '~/i18n';
+import pointing from '~/assets/pioneer/pointing.webp';
 
 export const getStaticPaths = localeStaticPaths;
 const { locale } = Astro.props as { locale: Locale };
 const t = useDict(locale);
-const mailto = `mailto:${SITE.email}?subject=${encodeURIComponent(t.careers.open.subject)}`;
+
+const all = (await getCollection('jobs')).filter((j) => j.data.open);
+const byKey = new Map<string, (typeof all)[number]>();
+for (const j of all) if (j.data.lang === DEFAULT_LOCALE) byKey.set(j.data.translationOf, j);
+for (const j of all) if (j.data.lang === locale) byKey.set(j.data.translationOf, j);
+const jobs = [...byKey.values()].sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(jobs.map(async (j) => ({ job: j, Content: (await render(j)).Content })));
+const mailto = (subject: string) => `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}`;
+const deptLabel: Record<string, string> = { art: 'Art', engineering: 'Engineering', audio: 'Audio', design: 'Design', production: 'Production', other: 'Other' };
 ---
 <BaseLayout locale={locale} title={t.seo.careers.title} description={t.seo.careers.description} current="careers">
-  <Section title={t.careers.title} intro={t.careers.intro} headingLevel="h1">
-    <!-- JobCards arrive with the jobs collection (Phase 3/4) -->
-    <div class="open-application" data-reveal-item>
-      <h2>{t.careers.open.title}</h2>
-      <p>{fmt(t.careers.open.body, { email: SITE.email })}</p>
-      <Button href={mailto} icon="mail" iconPosition="start">{t.common.cta.applyByEmail}</Button>
+  <Section title={t.careers.title} intro={t.careers.intro} headingLevel="h1" width="wide">
+    <div class="careers-layout">
+      <div class="jobs">
+        {rendered.length === 0 && <p class="text-fg-muted" data-reveal-item>{t.careers.none}</p>}
+        {rendered.map(({ job, Content }) => (
+          <article class="job" data-reveal-item id={job.data.translationOf}>
+            <header class="job-head">
+              <div>
+                <p class="job-dept">{deptLabel[job.data.department]}</p>
+                <h2 class="job-title">{job.data.title}</h2>
+              </div>
+              <ul class="job-meta">
+                <li>{t.labels.remote}</li>
+                <li>{job.data.engagement === 'tbd' ? t.careers.meta.engagement : job.data.engagement}</li>
+                {job.data.example && <li class="job-example">{t.careers.meta.example}</li>}
+              </ul>
+            </header>
+            <div class="job-body prose"><Content /></div>
+            <footer class="job-foot">
+              <p class="text-fg-subtle text-sm">{t.careers.applyHint}</p>
+              <Button href={mailto(job.data.applySubject)} icon="mail" iconPosition="start" size="sm">{t.common.cta.applyByEmail}</Button>
+            </footer>
+          </article>
+        ))}
+
+        <div class="open-application" data-reveal-item>
+          <div class="open-figure" aria-hidden="true"><Image src={pointing} alt="" width={200} densities={[1, 2]} loading="lazy" /></div>
+          <div>
+            <h2>{t.careers.open.title}</h2>
+            <p>{fmt(t.careers.open.body, { email: SITE.email })}</p>
+            <div class="mt-4"><Button href={mailto(t.careers.open.subject)} icon="mail" iconPosition="start">{t.common.cta.applyByEmail}</Button></div>
+          </div>
+        </div>
+      </div>
+      <aside class="careers-side" data-reveal-item>
+        <DiscordWidget locale={locale} compact />
+        <p class="side-note">{t.team.join.line} <a href={localePath(locale, 'team')}>{t.common.cta.meetTeam}</a></p>
+      </aside>
     </div>
   </Section>
 </BaseLayout>
 
 <style>
-  .open-application { margin-top: 2rem; padding: 2rem; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg-elevated); display: grid; gap: 1rem; justify-items: start; }
+  .careers-layout { display: grid; grid-template-columns: minmax(0, 3fr) minmax(16rem, 1.3fr); gap: 3rem; align-items: start; }
+  .jobs { display: grid; gap: 1.25rem; }
+  .job { padding: 1.5rem 1.75rem; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg-elevated); box-shadow: var(--shadow-1); }
+  .job-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+  .job-dept { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-subtle); }
+  .job-title { margin-top: 0.35rem; font-size: var(--text-xl); font-weight: 600; letter-spacing: -0.01em; }
+  .job-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; padding: 0; margin: 0; }
+  .job-meta li { padding: 0.25rem 0.6rem; border: 1px solid var(--border-strong); border-radius: var(--radius-full); font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; color: var(--fg-muted); }
+  .job-example { border-style: dashed !important; }
+  .job-body { margin-top: 1rem; }
+  .prose :global(h2) { margin-top: 1.25rem; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-subtle); font-weight: 500; }
+  .prose :global(p) { margin-top: 0.4rem; color: var(--fg-muted); }
+  .job-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .open-application { display: flex; align-items: center; gap: 1.5rem; padding: 1.75rem; border: 1px dashed var(--border-strong); border-radius: var(--radius-lg); }
+  .open-figure { flex: none; width: 110px; }
+  .open-figure :global(img) { width: 100%; height: auto; }
   .open-application h2 { font-size: var(--text-xl); }
-  .open-application p { color: var(--fg-muted); max-width: 60ch; }
+  .open-application p { margin-top: 0.5rem; color: var(--fg-muted); max-width: 60ch; }
+  .careers-side { display: grid; gap: 1.25rem; position: sticky; top: calc(var(--nav-h) + 1rem); }
+  .side-note { color: var(--fg-muted); font-size: 0.95rem; }
+  .side-note a { color: var(--fg); }
+  @media (max-width: 63.999rem) { .careers-layout { grid-template-columns: 1fr; } .careers-side { position: static; } .open-application { flex-direction: column; align-items: flex-start; } }
 </style>

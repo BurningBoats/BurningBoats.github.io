@@ -215,6 +215,11 @@ export const es = {
       empty: 'Las capturas reales del juego vienen en camino. Mientras tanto, esto es lo que podemos mostrar.',
       badge: 'Captura en desarrollo',
     },
+    pioneers: {
+      eyebrow: 'Pioneros',
+      title: 'Los pioneros',
+      body: 'Tripulaciones desechables en trajes amarillos y cascos de tubo. Nueve poses del cuaderno del estudio: lo más cerca que vas a estar antes de ser uno de ellos.',
+    },
     origins: {
       eyebrow: 'Orígenes',
       title: 'Cómo empezó',

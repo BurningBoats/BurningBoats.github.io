@@ -1,43 +1,79 @@
 ---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import Section from '~/components/layout/Section.astro';
 import Button from '~/components/ui/Button.astro';
+import HeroArt from '~/components/hero/HeroArt.astro';
+import LogoMark from '~/components/brand/LogoMark.astro';
+import TeamCard from '~/components/team/TeamCard.astro';
+import NewsCard from '~/components/news/NewsCard.astro';
+import DiscordWidget from '~/components/social/DiscordWidget.astro';
+import SteamCTA from '~/components/social/SteamCTA.astro';
 import { SITE } from '~/config/site';
 import { MINDARO } from '~/data/mindaro';
 import { localeStaticPaths, useDict, localePath, type Locale } from '~/i18n';
+import { getNewsForLocale } from '~/lib/news';
+import keyartWide from '~/assets/mindaro/keyart-wide.webp';
+import keyartTablet from '~/assets/mindaro/keyart-tablet.webp';
+import keyartMobile from '~/assets/mindaro/keyart-mobile.webp';
+import pioneerHero from '~/assets/pioneer/pioneer-hero.webp';
+import persecution from '~/assets/stills/persecution.webp';
+import wordmark from '~/assets/mindaro/mindaro-wordmark.png';
 
 export const getStaticPaths = localeStaticPaths;
 const { locale } = Astro.props as { locale: Locale };
 const t = useDict(locale);
+const team = (await getCollection('team', (e) => e.data.active)).sort((a, b) => a.data.order - b.data.order);
+const posts = (await getNewsForLocale(locale)).slice(0, 3);
 ---
 <BaseLayout locale={locale} title={t.seo.home.title} description={t.seo.home.description} current="home" navVariant="overlay">
-  <section class="hero theme-dark" data-embers-wrap>
-    <div class="container-x hero-inner">
-      <p class="eyebrow" data-reveal-item>{t.home.hero.eyebrow}</p>
-      <h1 class="hero-title" data-split="hero">{t.home.hero.title}</h1>
-      <p class="hero-sub" data-reveal-item>{t.home.hero.sub}</p>
-      <div class="hero-ctas" data-reveal-item>
-        <Button href={MINDARO.steam.url} external icon="steam" iconPosition="start" size="lg" magnetic>{t.common.cta.wishlist}</Button>
-        <Button href={localePath(locale, 'mindaro')} variant="secondary" size="lg" icon="arrow-right">{t.common.cta.seeMindaro}</Button>
-      </div>
-      <p class="hero-micro" data-reveal-item>{t.home.hero.micro}</p>
-    </div>
+  <!-- HERO -->
+  <section class="hero theme-dark" data-embers-wrap data-parallax-root>
+    <HeroArt wide={keyartWide} tablet={keyartTablet} mobile={keyartMobile} vignette="left" parallax={10} />
     <canvas class="hero-embers fx-only" data-embers aria-hidden="true"></canvas>
+    <div class="container-x hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow" data-reveal-item>{t.home.hero.eyebrow}</p>
+        <h1 class="hero-title" data-split="hero">{t.home.hero.title}</h1>
+        <p class="hero-sub" data-reveal-item>{t.home.hero.sub}</p>
+        <div class="hero-ctas" data-reveal-item>
+          <Button href={MINDARO.steam.url} external icon="steam" iconPosition="start" size="lg" magnetic>{t.common.cta.wishlist}</Button>
+          <Button href={localePath(locale, 'mindaro')} variant="secondary" size="lg" icon="arrow-right">{t.common.cta.seeMindaro}</Button>
+        </div>
+        <p class="hero-micro" data-reveal-item>{t.home.hero.micro}</p>
+      </div>
+      <div class="hero-figure" aria-hidden="true">
+        <Image src={pioneerHero} alt="" width={520} densities={[1, 2]} loading="eager" data-parallax="22" class="hero-pioneer" />
+      </div>
+    </div>
+    <a href="#mindaro" class="hero-scroll" aria-label={t.common.cta.learnMore}><span></span></a>
   </section>
 
-  <Section id="mindaro" eyebrow={t.home.teaser.eyebrow} title={t.home.teaser.title} intro={t.home.teaser.body} bg="sunken">
-    <ul class="chips" data-reveal-item>{t.home.teaser.chips.map((c) => <li>{c}</li>)}</ul>
-    <div class="mt-8 flex flex-wrap gap-3" data-reveal-item>
-      <Button href={MINDARO.steam.url} external icon="steam" iconPosition="start">{t.common.cta.wishlist}</Button>
-      <Button href={localePath(locale, 'mindaro')} variant="ghost" icon="arrow-right">{t.common.cta.learnMore}</Button>
+  <!-- FEATURED GAME -->
+  <Section id="mindaro" width="wide" bg="sunken">
+    <div class="showcase" data-scope="mindaro">
+      <div class="showcase-media" data-reveal-item>
+        <Image src={persecution} alt="" width={1200} sizes="(min-width: 64rem) 58vw, 100vw" loading="lazy" class="showcase-img" />
+      </div>
+      <div class="showcase-copy">
+        <p class="eyebrow" data-reveal-item>{t.home.teaser.eyebrow}</p>
+        <h2 class="showcase-title" data-reveal-item><Image src={wordmark} alt="Mindaro" width={520} densities={[1, 2]} loading="lazy" class="showcase-wordmark" /></h2>
+        <p class="showcase-body" data-reveal-item>{t.home.teaser.body}</p>
+        <ul class="chips" data-reveal-item>{t.home.teaser.chips.map((c) => <li>{c}</li>)}</ul>
+        <div class="showcase-ctas" data-reveal-item>
+          <Button href={MINDARO.steam.url} external variant="mindaro" icon="steam" iconPosition="start">{t.common.cta.wishlist}</Button>
+          <Button href={localePath(locale, 'mindaro')} variant="ghost" icon="arrow-right">{t.common.cta.learnMore}</Button>
+        </div>
+      </div>
     </div>
   </Section>
 
+  <!-- ABOUT + VALUES -->
   <Section id="about" eyebrow={t.home.about.eyebrow} title={t.home.about.title} intro={t.home.about.body}>
     <ul class="values">
-      {t.home.values.map((v, i) => (
+      {t.home.values.map((v) => (
         <li data-reveal-item>
-          <span class="values-index">0{i + 1}</span>
           <h3>{v.title}</h3>
           <p>{v.body}</p>
         </li>
@@ -45,29 +81,117 @@ const t = useDict(locale);
     </ul>
   </Section>
 
+  <!-- MANIFESTO -->
+  <Section id="manifesto" theme="dark" bg="sunken" width="wide">
+    <div class="manifesto">
+      <div class="manifesto-copy">
+        <p class="eyebrow" data-reveal-item>{t.home.manifesto.eyebrow}</p>
+        <blockquote class="manifesto-quote" data-split="lines"><p>{t.home.manifesto.quote}</p></blockquote>
+        <p class="manifesto-body" data-reveal-item>{t.home.manifesto.body}</p>
+      </div>
+      <div class="manifesto-mark fx-only" aria-hidden="true"><LogoMark size="min(52vw, 420px)" scheme="onDark" /></div>
+    </div>
+  </Section>
+
+  <!-- TEAM TEASER -->
+  <Section id="team" eyebrow={t.home.team.eyebrow}>
+    <div class="team-teaser" data-reveal-item>
+      <div class="chips-row" aria-hidden="true">
+        {team.map((m, i) => <TeamCard member={m} locale={locale} index={i} variant="chip" />)}
+      </div>
+      <p class="team-line">{t.home.team.line}</p>
+      <Button href={localePath(locale, 'team')} variant="secondary" icon="arrow-right">{t.common.cta.meetTeam}</Button>
+    </div>
+  </Section>
+
+  <!-- COMMUNITY -->
+  <Section id="community" bg="sunken">
+    <div class="community">
+      <div data-reveal-item><DiscordWidget locale={locale} /></div>
+      <div data-reveal-item><SteamCTA locale={locale} variant="card" body={t.home.hero.micro} /></div>
+    </div>
+  </Section>
+
+  <!-- NEWS -->
+  {posts.length > 0 && (
+    <Section id="news" eyebrow={t.home.news.eyebrow} title={t.home.news.title} intro={t.home.news.sub}>
+      <div class="news-grid">
+        {posts.map((p, i) => <NewsCard post={p} locale={locale} eager={i === 0} />)}
+      </div>
+      <div class="mt-8" data-reveal-item><Button href={localePath(locale, 'news')} variant="ghost" icon="arrow-right">{t.common.cta.allPosts}</Button></div>
+    </Section>
+  )}
+
+  <!-- CTA STRIP -->
   <Section id="cta" theme="dark" align="center" width="narrow">
     <h2 class="cta-title" data-reveal-item>{t.home.ctaStrip.title}</h2>
     <div class="mt-8 flex flex-wrap justify-center gap-3" data-reveal-item>
-      <Button href={MINDARO.steam.url} external icon="steam" iconPosition="start" size="lg">{t.common.cta.wishlist}</Button>
+      <Button href={MINDARO.steam.url} external icon="steam" iconPosition="start" size="lg" magnetic>{t.common.cta.wishlist}</Button>
       <Button href={SITE.discord.invite} external variant="secondary" size="lg" icon="discord" iconPosition="start">{t.common.cta.discord}</Button>
     </div>
   </Section>
 </BaseLayout>
 
 <style>
-  .hero { position: relative; min-height: 100svh; display: flex; align-items: center; padding-top: var(--nav-h); overflow: clip; background: radial-gradient(120% 80% at 70% 20%, var(--navy-700) 0%, var(--navy-900) 55%, var(--navy-950) 100%); }
-  .hero-inner { position: relative; z-index: 1; padding-block: clamp(4rem, 10vh, 8rem); max-width: 60rem; }
-  .hero-title { margin-top: 1.25rem; font-size: var(--text-display); font-weight: 600; line-height: 0.95; letter-spacing: -0.02em; max-width: 12ch; min-height: 2lh; }
-  .hero-sub { margin-top: 1.5rem; font-size: var(--text-lg); color: var(--fg-muted); max-width: 46ch; }
+  /* Hero */
+  .hero { position: relative; min-height: 100svh; display: flex; align-items: center; overflow: clip; background: var(--navy-900); color: var(--cream-50); }
+  .hero-embers { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+  .hero-inner { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end; gap: 2rem; padding-top: calc(var(--nav-h) + 3rem); padding-bottom: clamp(4rem, 10vh, 7rem); min-height: 100svh; }
+  .hero-copy { max-width: 40rem; padding-bottom: 6vh; }
+  .hero-title { margin-top: 1.25rem; font-size: var(--text-display); font-weight: 600; line-height: 0.95; letter-spacing: -0.02em; max-width: 12ch; min-height: 2lh; text-wrap: balance; }
+  .hero-sub { margin-top: 1.5rem; font-size: var(--text-lg); color: var(--slate-200); max-width: 44ch; }
   .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.25rem; }
-  .hero-micro { margin-top: 1rem; font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: 0.04em; color: var(--fg-subtle); }
-  .hero-embers { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-  .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; margin: 0; }
-  .chips li { padding: 0.4rem 0.75rem; border: 1px solid var(--border-strong); border-radius: var(--radius-full); font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: 0.04em; color: var(--fg-muted); }
-  .values { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1.5rem; list-style: none; padding: 0; margin: 0; }
+  .hero-micro { margin-top: 1rem; font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: 0.04em; color: var(--slate-300); }
+  .hero-figure { position: relative; align-self: end; display: flex; justify-content: center; }
+  .hero-figure :global(.hero-pioneer) { width: min(100%, 400px); height: auto; filter: drop-shadow(0 30px 40px rgb(0 0 0 / 0.55)); will-change: transform; }
+  .hero-scroll { position: absolute; left: 50%; bottom: 1.5rem; z-index: 2; width: 26px; height: 42px; border: 1px solid color-mix(in oklab, var(--cream-50) 45%, transparent); border-radius: 13px; transform: translateX(-50%); }
+  .hero-scroll span { position: absolute; left: 50%; top: 8px; width: 3px; height: 8px; margin-left: -1.5px; border-radius: 2px; background: var(--cream-50); animation: scroll-hint 2.2s ease-in-out infinite; }
+  @keyframes scroll-hint { 0%, 100% { transform: translateY(0); opacity: 1; } 60% { transform: translateY(14px); opacity: 0; } 61% { opacity: 0; } }
+  @media (max-width: 63.999rem) {
+    .hero-inner { grid-template-columns: 1fr; align-items: end; }
+    .hero-figure { display: none; }
+    .hero-copy { padding-bottom: 3rem; }
+  }
+
+  /* Showcase */
+  .showcase { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 2.5rem; align-items: center; padding: clamp(1.5rem, 3vw, 2.5rem); border: 1px solid var(--border); border-radius: var(--radius-xl); background: radial-gradient(90% 120% at 15% 50%, var(--m-abyss) 0%, var(--navy-800) 60%, var(--navy-900) 100%); box-shadow: var(--shadow-2); overflow: hidden; }
+  .showcase-media { position: relative; }
+  .showcase-media :global(.showcase-img) { width: 100%; height: auto; filter: drop-shadow(0 24px 40px rgb(0 0 0 / 0.5)); transition: transform 0.6s var(--ease-out-cubic); }
+  .showcase:hover .showcase-media :global(.showcase-img) { transform: translateX(-8px); }
+  .showcase-copy { color: var(--cream-50); }
+  .showcase-title { margin-top: 1rem; }
+  .showcase-title :global(.showcase-wordmark) { width: min(100%, 360px); height: auto; }
+  .showcase-body { margin-top: 1.25rem; font-size: var(--text-lg); color: var(--slate-200); max-width: 46ch; }
+  .showcase-ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 1.75rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; margin: 1.5rem 0 0; }
+  .chips li { padding: 0.35rem 0.7rem; border: 1px solid color-mix(in oklab, var(--m-cream) 40%, transparent); border-radius: var(--radius-full); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; color: var(--m-cream); }
+  @media (max-width: 63.999rem) { .showcase { grid-template-columns: 1fr; } }
+
+  /* Values */
+  .values { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1.25rem; list-style: none; padding: 0; margin: 0; }
   .values li { padding: 1.5rem; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg-elevated); box-shadow: var(--shadow-1); }
-  .values-index { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; color: var(--fg-subtle); }
-  .values h3 { margin-top: 1rem; font-size: var(--text-lg); }
+  .values h3 { font-size: var(--text-lg); }
   .values p { margin-top: 0.5rem; color: var(--fg-muted); }
+
+  /* Manifesto */
+  .manifesto { position: relative; display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 2rem; align-items: center; }
+  .manifesto-quote { margin-top: 1.25rem; font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; max-width: 18ch; text-wrap: balance; }
+  .manifesto-body { margin-top: 1.5rem; font-size: var(--text-lg); color: var(--fg-muted); max-width: 52ch; }
+  .manifesto-mark { justify-self: end; opacity: 0.85; }
+  @media (max-width: 63.999rem) { .manifesto { grid-template-columns: 1fr; } .manifesto-mark { justify-self: center; opacity: 0.6; } }
+
+  /* Team teaser */
+  .team-teaser { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem 2.5rem; }
+  .chips-row { display: flex; }
+  .chips-row > :global(*) + :global(*) { margin-left: -12px; }
+  .team-line { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 500; flex: 1; min-width: 16rem; }
+
+  /* Community */
+  .community { display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: 1.5rem; align-items: stretch; }
+  .community > div { display: grid; }
+
+  /* News */
+  .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); gap: 1.5rem; }
+
   .cta-title { font-size: var(--text-2xl); font-weight: 600; letter-spacing: -0.02em; text-wrap: balance; }
 </style>

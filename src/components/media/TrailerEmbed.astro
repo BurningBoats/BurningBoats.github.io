@@ -1,0 +1,57 @@
+---
+/**
+ * Trailer slot. youtubeId === null → poster + "coming soon" pill + wishlist CTA.
+ * With an id → click-to-play façade that injects the youtube-nocookie iframe (scripts/ui/media.ts).
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { MINDARO } from '~/data/mindaro';
+import { useDict, type Locale } from '~/i18n';
+import Icon from '~/components/ui/Icon.astro';
+import Button from '~/components/ui/Button.astro';
+
+interface Props { locale: Locale; poster: ImageMetadata; youtubeId?: string | null; class?: string }
+const { locale, poster, youtubeId = MINDARO.media.youtubeId, class: className } = Astro.props;
+const t = useDict(locale);
+---
+<div class:list={['trailer', className]} data-yt={youtubeId ?? undefined} data-yt-title="Mindaro — Official Trailer" data-yt-state={youtubeId ? 'idle' : 'soon'}>
+  <Image src={poster} alt="" width={1600} height={900} sizes="(min-width: 64rem) 960px, 100vw" loading="lazy" class="trailer-poster" />
+  <div class="trailer-overlay">
+    {youtubeId ? (
+      <button type="button" class="trailer-play" data-yt-play aria-label={t.common.a11y.playTrailer}>
+        <span class="trailer-play-ring"><Icon name="play" size={28} /></span>
+        <span class="trailer-play-label">{t.mindaro.trailer.play}</span>
+      </button>
+    ) : (
+      <div class="trailer-soon">
+        <span class="trailer-pill">{t.mindaro.trailer.soonPill}</span>
+        <p>{t.mindaro.trailer.soon}</p>
+        <Button href={MINDARO.steam.url} external variant="mindaro" icon="steam" iconPosition="start" size="sm">{t.common.cta.wishlist}</Button>
+      </div>
+    )}
+  </div>
+  <span class="trailer-corner tl" aria-hidden="true"></span><span class="trailer-corner tr" aria-hidden="true"></span>
+  <span class="trailer-corner bl" aria-hidden="true"></span><span class="trailer-corner br" aria-hidden="true"></span>
+  {youtubeId && <p class="trailer-consent">{t.mindaro.trailer.consent}</p>}
+</div>
+
+<style>
+  .trailer { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius-lg); overflow: hidden; background: var(--m-brown-950, var(--navy-950)); border: 1px solid color-mix(in oklab, var(--m-brown-800, var(--border-strong)) 70%, transparent); box-shadow: var(--shadow-2); }
+  .trailer :global(iframe) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .trailer :global(.trailer-poster) { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.85) brightness(0.72); }
+  .trailer-overlay { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 1.5rem; }
+  .trailer-play { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; background: none; border: 0; color: var(--cream-50); }
+  .trailer-play-ring { display: grid; place-items: center; width: 84px; height: 84px; border-radius: 50%; border: 1px solid color-mix(in oklab, var(--cream-50) 55%, transparent); background: color-mix(in oklab, var(--navy-950) 55%, transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: transform var(--dur-slow) var(--ease-out-expo), background-color var(--dur-base); }
+  .trailer-play:hover .trailer-play-ring { transform: scale(1.06); background: color-mix(in oklab, var(--navy-950) 75%, transparent); }
+  .trailer-play-label { font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: 0.12em; text-transform: uppercase; }
+  .trailer-soon { display: flex; flex-direction: column; align-items: center; gap: 0.9rem; max-width: 34ch; color: var(--cream-50); }
+  .trailer-soon p { color: var(--slate-200); }
+  .trailer-pill { padding: 0.35rem 0.75rem; border-radius: var(--radius-full); border: 1px solid color-mix(in oklab, var(--m-yellow, var(--cream-50)) 55%, transparent); color: var(--m-yellow, var(--cream-50)); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; }
+  .trailer-corner { position: absolute; width: 18px; height: 18px; border-color: color-mix(in oklab, var(--m-cream, var(--cream-50)) 55%, transparent); border-style: solid; border-width: 0; pointer-events: none; }
+  .tl { top: 12px; left: 12px; border-top-width: 1px; border-left-width: 1px; }
+  .tr { top: 12px; right: 12px; border-top-width: 1px; border-right-width: 1px; }
+  .bl { bottom: 12px; left: 12px; border-bottom-width: 1px; border-left-width: 1px; }
+  .br { bottom: 12px; right: 12px; border-bottom-width: 1px; border-right-width: 1px; }
+  .trailer-consent { position: absolute; bottom: 0.75rem; left: 0; right: 0; text-align: center; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; color: var(--slate-300); }
+  [data-yt-state='playing'] .trailer-corner, [data-yt-state='playing'] .trailer-consent { display: none; }
+</style>

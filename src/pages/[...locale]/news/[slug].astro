@@ -1,0 +1,146 @@
+---
+import { render } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Button from '~/components/ui/Button.astro';
+import Icon from '~/components/ui/Icon.astro';
+import SteamCTA from '~/components/social/SteamCTA.astro';
+import NewsCard from '~/components/news/NewsCard.astro';
+import { LOCALES, DEFAULT_LOCALE, useDict, localePath, formatDate, localeMeta, fmt, type Locale } from '~/i18n';
+import { getNewsForLocale, newsAlternates, readingTime, type NewsEntry } from '~/lib/news';
+import { blogPostingLd, breadcrumbLd, organizationLd } from '~/lib/schema';
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (const locale of LOCALES) {
+    const posts = await getNewsForLocale(locale);
+    for (const post of posts) {
+      paths.push({
+        params: { locale: locale === DEFAULT_LOCALE ? undefined : locale, slug: post.slug },
+        props: { locale, post, isFallback: post.data.lang !== locale },
+      });
+    }
+  }
+  return paths;
+}
+
+const { locale, post, isFallback } = Astro.props as { locale: Locale; post: NewsEntry; isFallback: boolean };
+const t = useDict(locale);
+const { Content, headings } = await render(post);
+const alternates = await newsAlternates(post.data.translationOf);
+// The page for a fallback post lives at the EN slug under the locale prefix.
+alternates[locale] = localePath(locale, `news/${post.slug}`);
+const minutes = readingTime(post.body ?? '');
+const related = (await getNewsForLocale(locale)).filter((p) => p.data.translationOf !== post.data.translationOf).slice(0, 3);
+const url = localePath(locale, `news/${post.slug}`);
+const cover = post.data.cover;
+const isMindaro = post.data.tags.includes('mindaro');
+---
+<BaseLayout
+  locale={locale}
+  title={`${post.data.title}${t.seo.postSuffix}`}
+  description={post.data.excerpt}
+  ogTitle={post.data.title}
+  image={cover?.src}
+  imageAlt={post.data.coverAlt}
+  type="article"
+  current="news"
+  alternates={alternates}
+  publishedTime={post.data.date.toISOString()}
+  modifiedTime={(post.data.updated ?? post.data.date).toISOString()}
+  jsonLd={[
+    organizationLd(),
+    blogPostingLd({ locale, title: post.data.title, description: post.data.excerpt, url, image: cover?.src, datePublished: post.data.date, dateModified: post.data.updated }),
+    breadcrumbLd([{ name: t.nav.home, url: localePath(locale) }, { name: t.nav.news, url: localePath(locale, 'news') }, { name: post.data.title, url }]),
+  ]}
+>
+  <article class="post">
+    <div class="post-progress" aria-hidden="true"><span data-reading-progress></span></div>
+    <header class="post-header container-x container-narrow">
+      <nav class="post-crumbs" aria-label={t.common.a11y.breadcrumb}>
+        <a href={localePath(locale, 'news')}><Icon name="chevron-right" size={14} class="rotate-180" /> {t.nav.news}</a>
+      </nav>
+      <p class="post-meta">
+        <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, locale)}</time>
+        <span>·</span>
+        <span>{fmt(t.labels.readingTime, { min: minutes })}</span>
+        {post.data.tags.length > 0 && <span>·</span>}
+        {post.data.tags.map((tag) => <span class="post-tag">#{tag}</span>)}
+      </p>
+      <h1 class="post-title" data-split="lines">{post.data.title}</h1>
+      <p class="post-excerpt">{post.data.excerpt}</p>
+      {isFallback && (
+        <p class="post-fallback" role="note">{fmt(t.news.notTranslated, { lang: localeMeta[locale].label })}</p>
+      )}
+    </header>
+
+    {cover && (
+      <div class="post-cover container-x">
+        <Image src={cover} alt={post.data.coverAlt ?? ''} width={1600} sizes="(min-width: 80rem) 1200px, 100vw" loading="eager" fetchpriority="high" transition:name={`cover-${post.data.translationOf}`} />
+      </div>
+    )}
+
+    <div class="post-body container-x container-narrow prose">
+      <Content />
+    </div>
+
+    <footer class="post-footer container-x container-narrow">
+      {isMindaro && <SteamCTA locale={locale} variant="bar" title={t.news.ctaBlock.title} body={t.news.ctaBlock.body} />}
+      <div class="post-langs">
+        <span class="eyebrow">{t.lang.label}</span>
+        <ul>
+          {LOCALES.filter((l) => alternates[l] && l !== locale).map((l) => (
+            <li><a href={alternates[l]} hreflang={localeMeta[l].hreflang} lang={l}>{localeMeta[l].label}</a></li>
+          ))}
+        </ul>
+      </div>
+      <Button href={localePath(locale, 'news')} variant="ghost" icon="arrow-right">{t.common.cta.allPosts}</Button>
+    </footer>
+
+    {related.length > 0 && (
+      <section class="post-related container-x container-wide">
+        <h2 class="eyebrow">{t.news.related}</h2>
+        <div class="related-grid">{related.map((p) => <NewsCard post={p} locale={locale} />)}</div>
+      </section>
+    )}
+  </article>
+</BaseLayout>
+
+<style>
+  .post { padding-block: 2rem var(--section-y); }
+  .post-progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: var(--z-header); pointer-events: none; }
+  .post-progress span { display: block; height: 100%; width: 100%; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); }
+  .post-header { padding-top: 2rem; }
+  .post-crumbs a { display: inline-flex; align-items: center; gap: 0.25rem; font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: 0.06em; text-decoration: none; color: var(--fg-subtle); }
+  .post-crumbs a:hover { color: var(--fg); }
+  .post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-top: 1.5rem; font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: 0.06em; color: var(--fg-subtle); }
+  .post-title { margin-top: 1rem; font-size: var(--text-3xl); font-weight: 600; letter-spacing: -0.02em; line-height: 1.02; }
+  .post-excerpt { margin-top: 1.25rem; font-size: var(--text-lg); color: var(--fg-muted); }
+  .post-fallback { margin-top: 1.25rem; padding: 0.75rem 1rem; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); font-size: 0.9rem; color: var(--fg-muted); }
+  .post-cover { margin-top: 2.5rem; max-width: 80rem; }
+  .post-cover :global(img) { width: 100%; height: auto; border-radius: var(--radius-lg); border: 1px solid var(--border); }
+  .post-body { margin-top: 3rem; }
+  .post-footer { margin-top: 3rem; display: grid; gap: 1.5rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+  .post-langs { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
+  .post-langs ul { display: flex; gap: 1rem; list-style: none; padding: 0; margin: 0; }
+  .post-langs a { color: var(--fg-muted); }
+  .post-related { margin-top: var(--section-y); }
+  .related-grid { margin-top: 1.5rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); gap: 1.5rem; }
+
+  /* Markdown prose */
+  .prose { font-size: var(--text-base); line-height: 1.7; color: var(--fg); }
+  .prose :global(h2) { margin-top: 2.5rem; font-size: var(--text-xl); font-weight: 600; letter-spacing: -0.01em; }
+  .prose :global(h3) { margin-top: 2rem; font-size: var(--text-lg); font-weight: 600; }
+  .prose :global(p) { margin-top: 1rem; }
+  .prose :global(p:first-child) { margin-top: 0; }
+  .prose :global(ul), .prose :global(ol) { margin-top: 1rem; padding-left: 1.4rem; }
+  .prose :global(li) { margin-top: 0.4rem; }
+  .prose :global(li::marker) { color: var(--fg-subtle); }
+  .prose :global(a) { color: var(--fg); text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--fg) 35%, transparent); text-underline-offset: 0.2em; }
+  .prose :global(a:hover) { text-decoration-color: var(--fg); }
+  .prose :global(strong) { font-weight: 600; }
+  .prose :global(blockquote) { margin-top: 1.5rem; padding-left: 1.25rem; border-left: 2px solid var(--border-strong); color: var(--fg-muted); font-style: italic; }
+  .prose :global(img) { margin-top: 1.5rem; border-radius: var(--radius-md); }
+  .prose :global(hr) { margin-block: 2rem; border: 0; border-top: 1px solid var(--border); }
+  .prose :global(code) { font-family: var(--font-mono); font-size: 0.9em; padding: 0.1em 0.35em; border-radius: var(--radius-xs); background: var(--bg-elevated); }
+</style>

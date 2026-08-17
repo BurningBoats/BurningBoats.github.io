@@ -1,15 +1,32 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import Section from '~/components/layout/Section.astro';
+import NewsCard from '~/components/news/NewsCard.astro';
 import { localeStaticPaths, useDict, type Locale } from '~/i18n';
+import { getNewsForLocale } from '~/lib/news';
 
 export const getStaticPaths = localeStaticPaths;
 const { locale } = Astro.props as { locale: Locale };
 const t = useDict(locale);
+const posts = await getNewsForLocale(locale);
+const [first, ...rest] = posts;
 ---
 <BaseLayout locale={locale} title={t.seo.news.title} description={t.seo.news.description} current="news">
-  <Section title={t.news.title} intro={t.news.intro} headingLevel="h1">
-    <p class="text-fg-muted" data-reveal-item>{t.news.empty}</p>
-    <!-- NewsList arrives with the news collection (Phase 3/4) -->
+  <Section title={t.news.title} intro={t.news.intro} headingLevel="h1" width="wide">
+    {posts.length === 0 ? (
+      <p class="text-fg-muted" data-reveal-item>{t.news.empty}</p>
+    ) : (
+      <div class="news-layout">
+        {first && <div class="news-featured"><NewsCard post={first} locale={locale} eager featured /></div>}
+        {rest.length > 0 && <div class="news-grid">{rest.map((p) => <NewsCard post={p} locale={locale} />)}</div>}
+      </div>
+    )}
   </Section>
 </BaseLayout>
+
+<style>
+  .news-layout { display: grid; gap: 1.5rem; }
+  .news-featured { display: grid; }
+  .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); gap: 1.5rem; }
+  @media (min-width: 64rem) { .news-featured :global(.nc-link) { display: grid; grid-template-columns: 3fr 2fr; } .news-featured :global(.nc-cover) { aspect-ratio: auto; min-height: 320px; } }
+</style>

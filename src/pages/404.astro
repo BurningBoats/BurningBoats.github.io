@@ -3,10 +3,12 @@
  * Single 404 (GitHub Pages serves only the root 404.html). Rendered in English with the ES/PT
  * strings inlined; a tiny script swaps the copy when the missing URL starts with /es/ or /pt/.
  */
+import { Image } from 'astro:assets';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import Button from '~/components/ui/Button.astro';
-import LogoMark from '~/components/brand/LogoMark.astro';
 import { MINDARO } from '~/data/mindaro';
+import dead from '~/assets/pioneer/dead.webp';
+import emote from '~/assets/creatures/emotes/koi_bungus_hi.png';
 import { LOCALES, useDict, localePath, DEFAULT_LOCALE } from '~/i18n';
 
 const t = useDict(DEFAULT_LOCALE);
@@ -20,7 +22,10 @@ const strings = Object.fromEntries(
 <BaseLayout locale={DEFAULT_LOCALE} title={t.seo.notFound.title} description={t.seo.notFound.description} noindex>
   <section class="nf theme-dark">
     <div class="container-x nf-inner">
-      <div class="nf-boat" aria-hidden="true"><LogoMark size={200} scheme="onDark" /></div>
+      <div class="nf-figure" aria-hidden="true">
+        <Image src={dead} alt="" width={420} densities={[1, 2]} loading="eager" class="nf-pioneer" />
+        <Image src={emote} alt="" width={64} height={64} loading="eager" class="nf-emote" />
+      </div>
       <p class="eyebrow">{t.notFound.code}</p>
       <h1 class="nf-title" data-nf="title">{t.notFound.title}</h1>
       <p class="nf-body" data-nf="body">{t.notFound.body}</p>
@@ -51,8 +56,10 @@ const strings = Object.fromEntries(
 <style>
   .nf { min-height: calc(100svh - var(--nav-h)); display: flex; align-items: center; background: radial-gradient(100% 70% at 50% 100%, var(--navy-700) 0%, var(--navy-900) 60%, var(--navy-950) 100%); }
   .nf-inner { text-align: center; padding-block: 4rem; display: flex; flex-direction: column; align-items: center; }
-  .nf-boat { animation: nf-bob 4s ease-in-out infinite; margin-bottom: 1.5rem; }
-  @keyframes nf-bob { 0%, 100% { transform: translateY(0) rotate(-1.5deg); } 50% { transform: translateY(-8px) rotate(1.5deg); } }
+  .nf-figure { position: relative; margin-bottom: 1.5rem; }
+  .nf-figure :global(.nf-pioneer) { width: min(70vw, 360px); height: auto; filter: drop-shadow(0 20px 30px rgb(0 0 0 / 0.5)); }
+  .nf-figure :global(.nf-emote) { position: absolute; right: -6px; top: 10%; width: 56px; height: 56px; animation: nf-bob 3s ease-in-out infinite; }
+  @keyframes nf-bob { 0%, 100% { transform: translateY(0) rotate(-6deg); } 50% { transform: translateY(-8px) rotate(6deg); } }
   .nf-title { margin-top: 1rem; font-size: var(--text-3xl); font-weight: 600; letter-spacing: -0.02em; }
   .nf-body { margin-top: 1rem; color: var(--fg-muted); max-width: 40ch; }
   .nf-ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-top: 2rem; }

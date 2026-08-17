@@ -4,4 +4,6 @@
  */
 import './ui/theme';
 import './ui/nav';
+import './ui/discord';
+import './ui/media';
 import './motion';

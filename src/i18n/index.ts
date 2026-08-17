@@ -66,6 +66,7 @@ export function localeAlternates(rest: string, overrides: Partial<Record<Locale,
   return Object.fromEntries(LOCALES.map((l) => [l, overrides[l] ?? localePath(l, rest)])) as Record<Locale, string>;
 }
 
+/** Content dates are date-only (parsed as UTC midnight) → format in UTC so the day never shifts. */
 export function formatDate(date: Date, locale: Locale, opts: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' }): string {
-  return new Intl.DateTimeFormat(localeMeta[locale].intl, opts).format(date);
+  return new Intl.DateTimeFormat(localeMeta[locale].intl, { timeZone: 'UTC', ...opts }).format(date);
 }

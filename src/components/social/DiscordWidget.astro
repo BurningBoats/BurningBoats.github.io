@@ -1,0 +1,61 @@
+---
+/**
+ * Discord card: a lightweight façade (member counts fetched from the public widget JSON) with a
+ * "show live widget" button that loads the iframe on demand. Always falls back to the invite link.
+ */
+import { MINDARO } from '~/data/mindaro';
+import { useDict, type Locale } from '~/i18n';
+import Icon from '~/components/ui/Icon.astro';
+import Button from '~/components/ui/Button.astro';
+
+interface Props { locale: Locale; class?: string; compact?: boolean }
+const { locale, class: className, compact = false } = Astro.props;
+const t = useDict(locale);
+const { serverId, invite } = MINDARO.discord;
+---
+<div class:list={['discord', { 'discord-compact': compact }, className]} data-discord data-server={serverId} data-online-label={t.mindaro.community.online} data-members-label={t.mindaro.community.members}>
+  <div class="discord-head">
+    <span class="discord-logo"><Icon name="discord" size={26} /></span>
+    <div class="discord-meta">
+      <strong>Discord</strong>
+      <span class="discord-count" data-discord-count aria-live="polite"><span class="discord-dot" aria-hidden="true"></span><span data-discord-count-text>{t.mindaro.community.loading}</span></span>
+    </div>
+  </div>
+  {!compact && <p class="discord-body">{t.mindaro.community.body}</p>}
+  <div class="discord-actions">
+    <Button href={invite} external icon="discord" iconPosition="start">{t.common.cta.discord}</Button>
+    <button type="button" class="discord-toggle" data-discord-toggle>{t.mindaro.community.showWidget}</button>
+  </div>
+  <div class="discord-frame" data-discord-frame hidden>
+    <iframe
+      title="Discord"
+      data-src={`https://discord.com/widget?id=${serverId}&theme=dark`}
+      width="350"
+      height="500"
+      allowtransparency="true"
+      frameborder="0"
+      loading="lazy"
+      sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+    ></iframe>
+    <p class="discord-fallback">{t.mindaro.community.fallback} <a href={invite} target="_blank" rel="noopener noreferrer">{invite.replace('https://', '')}</a></p>
+  </div>
+</div>
+
+<style>
+  .discord { display: flex; flex-direction: column; gap: 1rem; padding: 1.5rem; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg-elevated); box-shadow: var(--shadow-1); }
+  .discord-head { display: flex; align-items: center; gap: 0.9rem; }
+  .discord-logo { display: grid; place-items: center; width: 48px; height: 48px; border-radius: var(--radius-md); background: #5865f2; color: #fff; flex: none; }
+  .discord-meta { display: flex; flex-direction: column; line-height: 1.2; }
+  .discord-meta strong { font-family: var(--font-display); font-size: var(--text-lg); }
+  .discord-count { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--font-mono); font-size: 0.8125rem; color: var(--fg-subtle); }
+  .discord-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--fg-subtle); }
+  [data-discord-state='ok'] .discord-dot { background: var(--ok); box-shadow: 0 0 0 3px color-mix(in oklab, var(--ok) 25%, transparent); }
+  .discord-body { color: var(--fg-muted); }
+  .discord-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; }
+  .discord-toggle { background: none; border: 0; color: var(--fg-muted); font-size: 0.9rem; text-decoration: underline; text-underline-offset: 0.3em; }
+  .discord-toggle:hover { color: var(--fg); }
+  .discord-frame { display: grid; gap: 0.75rem; }
+  .discord-frame iframe { width: 100%; max-width: 350px; height: 500px; border-radius: var(--radius-md); background: #313338; }
+  .discord-fallback { font-size: 0.85rem; color: var(--fg-subtle); }
+  .discord-compact { padding: 1.1rem 1.25rem; }
+</style>

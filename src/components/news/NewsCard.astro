@@ -1,0 +1,53 @@
+---
+import { Image } from 'astro:assets';
+import { formatDate, localePath, useDict, type Locale } from '~/i18n';
+import type { NewsEntry } from '~/lib/news';
+import Icon from '~/components/ui/Icon.astro';
+
+interface Props { post: NewsEntry; locale: Locale; eager?: boolean; featured?: boolean }
+const { post, locale, eager = false, featured = false } = Astro.props;
+const t = useDict(locale);
+const href = localePath(locale, `news/${post.slug}`);
+const fallback = post.data.lang !== locale;
+---
+<article class:list={['nc', { 'nc-featured': featured }]} data-reveal-item>
+  <a href={href} class="nc-link">
+    <div class="nc-cover">
+      {post.data.cover ? (
+        <Image src={post.data.cover} alt={post.data.coverAlt ?? ''} width={960} height={540} loading={eager ? 'eager' : 'lazy'} sizes="(min-width: 64rem) 33vw, (min-width: 40rem) 50vw, 100vw" transition:name={`cover-${post.data.translationOf}`} />
+      ) : (
+        <div class="nc-cover-empty" aria-hidden="true"></div>
+      )}
+    </div>
+    <div class="nc-body">
+      <p class="nc-meta">
+        <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, locale)}</time>
+        {post.data.tags.length > 0 && <span class="nc-tags">{post.data.tags.map((tag) => <span>#{tag}</span>)}</span>}
+        {fallback && <span class="nc-fallback" title={t.news.notTranslated.replace('{lang}', '')}>EN</span>}
+      </p>
+      <h3 class="nc-title">{post.data.title}</h3>
+      <p class="nc-excerpt">{post.data.excerpt}</p>
+      <span class="nc-more">{t.common.cta.readMore} <Icon name="arrow-right" size={16} /></span>
+    </div>
+  </a>
+</article>
+
+<style>
+  .nc { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; background: var(--bg-elevated); box-shadow: var(--shadow-1); transition: transform var(--dur-base) var(--ease-out-cubic), border-color var(--dur-base); }
+  .nc:hover { transform: translateY(-2px); border-color: var(--fg-subtle); }
+  .nc-link { display: flex; flex-direction: column; height: 100%; text-decoration: none; color: inherit; }
+  .nc-cover { aspect-ratio: 16 / 9; overflow: hidden; background: var(--bg-sunken); }
+  .nc-cover :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease-out-cubic); }
+  .nc:hover .nc-cover :global(img) { transform: scale(1.03); }
+  .nc-cover-empty { width: 100%; height: 100%; background: radial-gradient(80% 80% at 50% 100%, var(--navy-700), var(--navy-900)); }
+  .nc-body { display: flex; flex-direction: column; gap: 0.5rem; padding: 1.25rem; flex: 1; }
+  .nc-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; color: var(--fg-subtle); }
+  .nc-tags { display: inline-flex; gap: 0.5rem; }
+  .nc-fallback { padding: 0.1rem 0.35rem; border: 1px solid var(--border-strong); border-radius: var(--radius-xs); }
+  .nc-title { font-size: var(--text-xl); font-weight: 600; letter-spacing: -0.01em; }
+  .nc-featured .nc-title { font-size: var(--text-2xl); }
+  .nc-excerpt { color: var(--fg-muted); }
+  .nc-more { margin-top: auto; padding-top: 0.5rem; display: inline-flex; align-items: center; gap: 0.35rem; font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; }
+  .nc:hover .nc-more :global(svg) { transform: translateX(3px); }
+  .nc-more :global(svg) { transition: transform var(--dur-base) var(--ease-out-cubic); }
+</style>

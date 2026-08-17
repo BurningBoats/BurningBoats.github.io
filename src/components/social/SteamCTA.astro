@@ -1,0 +1,30 @@
+---
+/** Wishlist call-to-action: card (with the game icon) or full-width bar. */
+import { MINDARO } from '~/data/mindaro';
+import { useDict, type Locale } from '~/i18n';
+import Button from '~/components/ui/Button.astro';
+import MindaroIcon from '~/assets/mindaro/mindaro-icon.svg';
+
+interface Props { locale: Locale; variant?: 'card' | 'bar'; class?: string; title?: string; body?: string; buttonVariant?: 'primary' | 'mindaro' }
+const { locale, variant = 'card', class: className, title, body, buttonVariant = 'primary' } = Astro.props;
+const t = useDict(locale);
+---
+<div class:list={['steam', `steam-${variant}`, className]}>
+  <div class="steam-icon" aria-hidden="true"><MindaroIcon width="100%" height="100%" /></div>
+  <div class="steam-copy">
+    <p class="steam-title">{title ?? t.common.cta.wishlistLong}</p>
+    {body && <p class="steam-body">{body}</p>}
+  </div>
+  <Button href={MINDARO.steam.url} external variant={buttonVariant} icon="steam" iconPosition="start" size={variant === 'bar' ? 'lg' : 'md'} magnetic>{t.common.cta.wishlist}</Button>
+</div>
+
+<style>
+  .steam { display: flex; align-items: center; gap: 1.25rem; padding: 1.25rem 1.5rem; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg-elevated); box-shadow: var(--shadow-1); }
+  .steam-card { flex-direction: column; align-items: flex-start; padding: 1.5rem; }
+  .steam-icon { width: 64px; height: 64px; flex: none; filter: drop-shadow(0 6px 14px rgb(0 0 0 / 0.35)); }
+  .steam-bar .steam-icon { width: 72px; height: 72px; }
+  .steam-copy { flex: 1; min-width: 0; }
+  .steam-title { font-family: var(--font-display); font-weight: 600; font-size: var(--text-lg); line-height: 1.2; }
+  .steam-body { margin-top: 0.35rem; color: var(--fg-muted); }
+  @media (max-width: 40rem) { .steam-bar { flex-direction: column; align-items: flex-start; } }
+</style>

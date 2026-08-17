@@ -1,0 +1,79 @@
+---
+/**
+ * Art-directed hero background: three crops (wide / tablet / mobile), AVIF + WebP, LCP-friendly.
+ * Sits behind hero copy; a navy vignette keeps text legible. `data-parallax` for the scrub.
+ */
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  wide: ImageMetadata;
+  tablet: ImageMetadata;
+  mobile: ImageMetadata;
+  alt?: string;
+  vignette?: 'left' | 'center' | 'bottom';
+  parallax?: number;
+  priority?: boolean;
+  class?: string;
+}
+const { wide, tablet, mobile, alt = '', vignette = 'left', parallax = 12, priority = true, class: className } = Astro.props;
+
+const mk = async (src: ImageMetadata, widths: number[], format: 'avif' | 'webp') =>
+  getImage({ src, widths, format, quality: format === 'avif' ? 62 : 80 });
+
+const [wAvif, wWebp, tAvif, tWebp, mAvif, mWebp] = await Promise.all([
+  mk(wide, [1280, 1920, 2400], 'avif'),
+  mk(wide, [1280, 1920, 2400], 'webp'),
+  mk(tablet, [1024, 1600], 'avif'),
+  mk(tablet, [1024, 1600], 'webp'),
+  mk(mobile, [600, 900], 'avif'),
+  mk(mobile, [600, 900], 'webp'),
+]);
+---
+<div class:list={['hero-art', `vignette-${vignette}`, className]} aria-hidden={alt ? undefined : 'true'}>
+  <picture>
+    <source media="(max-width: 767px)" type="image/avif" srcset={mAvif.srcSet.attribute} sizes="100vw" />
+    <source media="(max-width: 767px)" type="image/webp" srcset={mWebp.srcSet.attribute} sizes="100vw" />
+    <source media="(max-width: 1279px)" type="image/avif" srcset={tAvif.srcSet.attribute} sizes="100vw" />
+    <source media="(max-width: 1279px)" type="image/webp" srcset={tWebp.srcSet.attribute} sizes="100vw" />
+    <source type="image/avif" srcset={wAvif.srcSet.attribute} sizes="100vw" />
+    <img
+      src={wWebp.src}
+      srcset={wWebp.srcSet.attribute}
+      sizes="100vw"
+      width={wide.width}
+      height={wide.height}
+      alt={alt}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : 'auto'}
+      decoding="async"
+      data-parallax={parallax}
+      data-settle
+    />
+  </picture>
+  <div class="hero-vignette"></div>
+</div>
+
+<style>
+  .hero-art { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+  .hero-art picture, .hero-art img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hero-art img { object-fit: cover; object-position: 50% 55%; transform-origin: 50% 60%; will-change: transform; }
+  .hero-vignette { position: absolute; inset: 0; pointer-events: none; }
+  .vignette-left .hero-vignette {
+    background:
+      linear-gradient(90deg, var(--navy-900) 0%, color-mix(in oklab, var(--navy-900) 88%, transparent) 30%, color-mix(in oklab, var(--navy-900) 30%, transparent) 62%, transparent 85%),
+      linear-gradient(180deg, color-mix(in oklab, var(--navy-950) 55%, transparent) 0%, transparent 25%, transparent 70%, var(--navy-900) 100%);
+  }
+  .vignette-center .hero-vignette {
+    background:
+      radial-gradient(55% 50% at 50% 48%, color-mix(in oklab, var(--navy-950) 66%, transparent) 0%, color-mix(in oklab, var(--navy-950) 48%, transparent) 55%, color-mix(in oklab, var(--navy-950) 70%, transparent) 100%),
+      linear-gradient(180deg, color-mix(in oklab, var(--navy-950) 70%, transparent) 0%, transparent 28%, transparent 62%, var(--bg) 100%);
+  }
+  .vignette-bottom .hero-vignette { background: linear-gradient(180deg, transparent 40%, var(--bg) 100%); }
+  @media (max-width: 767px) {
+    .vignette-left .hero-vignette {
+      background:
+        linear-gradient(180deg, color-mix(in oklab, var(--navy-950) 55%, transparent) 0%, transparent 25%, color-mix(in oklab, var(--navy-900) 70%, transparent) 60%, var(--navy-900) 100%);
+    }
+  }
+</style>

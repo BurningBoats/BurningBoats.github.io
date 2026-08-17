@@ -217,6 +217,11 @@ export const en = {
       empty: "Real in-game captures are coming. Until then, here's what we can show.",
       badge: 'Work-in-progress capture',
     },
+    pioneers: {
+      eyebrow: 'Pioneers',
+      title: 'The pioneers',
+      body: "Disposable crews in yellow suits and CRT helmets. Nine poses from the studio's sketchbook — the closest you'll get before you're one of them.",
+    },
     origins: {
       eyebrow: 'Origins',
       title: 'How it started',

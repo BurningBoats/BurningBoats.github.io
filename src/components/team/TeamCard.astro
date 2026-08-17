@@ -1,0 +1,75 @@
+---
+/**
+ * "Crew ID badge": square avatar in a uniform frame, name + role always visible, bio on hover/focus.
+ * Heterogeneous illustration backgrounds are kept — the frame + badge grammar makes them read as ID photos.
+ */
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { useDict, type Locale } from '~/i18n';
+import Icon from '~/components/ui/Icon.astro';
+
+interface Props { member: CollectionEntry<'team'>; locale: Locale; index: number; variant?: 'card' | 'chip' }
+const { member, locale, index, variant = 'card' } = Astro.props;
+const t = useDict(locale);
+const m = member.data;
+const displayName = m.nickname ? `${m.name.split(' ')[0]} "${m.nickname}" ${m.name.split(' ').slice(1).join(' ')}`.trim() : m.name;
+const role = m.role[locale];
+const bio = m.bio[locale];
+---
+{variant === 'chip' ? (
+  <span class="chip" title={`${m.name} — ${role}`}>
+    <Image src={m.avatar} alt={m.name} width={96} height={96} densities={[1, 2]} loading="lazy" style={`object-position:${m.focal.x * 100}% ${m.focal.y * 100}%`} />
+  </span>
+) : (
+  <article class="tc" data-reveal-item>
+    <div class="tc-frame">
+      <span class="tc-badge">{t.team.badge} · {String(index + 1).padStart(2, '0')}</span>
+      <Image
+        src={m.avatar}
+        alt={`${m.name} — ${role}`}
+        width={480}
+        height={480}
+        densities={[1, 2]}
+        loading={index < 3 ? 'eager' : 'lazy'}
+        sizes="(min-width: 64rem) 320px, (min-width: 40rem) 45vw, 90vw"
+        style={`object-position:${m.focal.x * 100}% ${m.focal.y * 100}%`}
+      />
+      <div class="tc-bio" aria-hidden="true"><p>{bio}</p></div>
+    </div>
+    <div class="tc-meta">
+      <h3 class="tc-name">{displayName}{m.surnameTbd && <span class="sr-only"> (surname pending)</span>}</h3>
+      <p class="tc-role">{role}</p>
+      <p class="sr-only">{bio}</p>
+      {m.links && (
+        <ul class="tc-links">
+          {m.links.linkedin && <li><a href={m.links.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`LinkedIn — ${m.name}`}><Icon name="linkedin" size={16} /></a></li>}
+          {m.links.instagram && <li><a href={m.links.instagram} target="_blank" rel="noopener noreferrer" aria-label={`Instagram — ${m.name}`}><Icon name="instagram" size={16} /></a></li>}
+          {m.links.website && <li><a href={m.links.website} target="_blank" rel="noopener noreferrer" aria-label={`Website — ${m.name}`}><Icon name="external" size={16} /></a></li>}
+        </ul>
+      )}
+    </div>
+  </article>
+)}
+
+<style>
+  .chip { display: inline-block; width: 48px; height: 48px; border-radius: 50%; overflow: hidden; border: 2px solid var(--bg); box-shadow: 0 0 0 1px var(--border); background: var(--bg-elevated); transition: transform var(--dur-base) var(--ease-out-cubic); }
+  .chip:hover { transform: translateY(-4px); z-index: 1; }
+  .chip :global(img) { width: 100%; height: 100%; object-fit: cover; }
+
+  .tc { display: flex; flex-direction: column; gap: 0.9rem; }
+  .tc-frame { position: relative; aspect-ratio: 1; border-radius: var(--radius-lg); overflow: hidden; background: var(--bg-elevated); border: 1px solid var(--border); box-shadow: var(--shadow-1); isolation: isolate; }
+  .tc-frame :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease-out-cubic); }
+  .tc:hover .tc-frame :global(img), .tc:focus-within .tc-frame :global(img) { transform: scale(1.04); }
+  :global([data-effects='on']) .tc:hover .tc-frame { box-shadow: var(--glow-accent); }
+  .tc-badge { position: absolute; top: 0.75rem; left: 0.75rem; z-index: 2; padding: 0.3rem 0.55rem; border-radius: var(--radius-xs); background: color-mix(in oklab, var(--navy-950) 78%, transparent); color: var(--cream-50); font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .tc-bio { position: absolute; inset: auto 0 0 0; z-index: 2; padding: 2.5rem 1rem 1rem; background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--navy-950) 88%, transparent) 40%); color: var(--cream-50); font-size: 0.9rem; line-height: 1.45; opacity: 0; transform: translateY(8px); transition: opacity var(--dur-base), transform var(--dur-slow) var(--ease-out-expo); }
+  .tc:hover .tc-bio, .tc:focus-within .tc-bio { opacity: 1; transform: none; }
+  @media (hover: none) { .tc-bio { display: none; } }
+  .tc-meta { display: flex; flex-direction: column; gap: 0.15rem; }
+  .tc-name { font-size: var(--text-lg); font-weight: 600; letter-spacing: -0.01em; }
+  .tc-role { color: var(--fg-muted); font-size: 0.95rem; }
+  .tc-links { display: flex; gap: 0.35rem; margin-top: 0.4rem; list-style: none; padding: 0; }
+  .tc-links a { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: var(--radius-xs); border: 1px solid var(--border); color: var(--fg-muted); }
+  .tc-links a:hover { color: var(--fg); border-color: var(--fg-muted); }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+</style>

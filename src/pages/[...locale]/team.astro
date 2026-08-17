@@ -1,25 +1,40 @@
 ---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import Section from '~/components/layout/Section.astro';
 import Button from '~/components/ui/Button.astro';
+import TeamCard from '~/components/team/TeamCard.astro';
 import { localeStaticPaths, useDict, localePath, type Locale } from '~/i18n';
+import pointing from '~/assets/pioneer/pointing.webp';
 
 export const getStaticPaths = localeStaticPaths;
 const { locale } = Astro.props as { locale: Locale };
 const t = useDict(locale);
+const team = (await getCollection('team', (e) => e.data.active)).sort((a, b) => a.data.order - b.data.order);
 ---
 <BaseLayout locale={locale} title={t.seo.team.title} description={t.seo.team.description} current="team">
-  <Section eyebrow={t.home.team.eyebrow} title={t.team.title} intro={t.team.intro} headingLevel="h1">
-    <div class="team-slot" data-reveal-item>
-      <!-- TeamGrid arrives with the imported avatars (Phase 2/4) -->
+  <Section eyebrow={t.home.team.eyebrow} title={t.team.title} intro={t.team.intro} headingLevel="h1" width="wide">
+    <div class="team-grid">
+      {team.map((m, i) => <TeamCard member={m} locale={locale} index={i} />)}
     </div>
-    <div class="join" data-reveal-item>
-      <p>{t.team.join.line}</p>
-      <Button href={localePath(locale, 'careers')} variant="secondary" icon="arrow-right">{t.team.join.cta}</Button>
-    </div>
+    <aside class="join" data-reveal-item>
+      <div class="join-figure" aria-hidden="true"><Image src={pointing} alt="" width={220} densities={[1, 2]} loading="lazy" /></div>
+      <div class="join-copy">
+        <p>{t.team.join.line}</p>
+        <Button href={localePath(locale, 'careers')} variant="secondary" icon="arrow-right">{t.team.join.cta}</Button>
+      </div>
+    </aside>
   </Section>
 </BaseLayout>
 
 <style>
-  .join { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 3rem; padding: 1.5rem; border: 1px dashed var(--border-strong); border-radius: var(--radius-lg); }
+  .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); gap: 2rem 1.5rem; }
+  @media (min-width: 64rem) { .team-grid { grid-template-columns: repeat(3, 1fr); gap: 2.5rem 2rem; } }
+  .join { display: flex; align-items: center; gap: 1.5rem; margin-top: 4rem; padding: 1.5rem 2rem; border: 1px dashed var(--border-strong); border-radius: var(--radius-lg); background: var(--bg-elevated); }
+  .join-figure { flex: none; width: 120px; }
+  .join-figure :global(img) { width: 100%; height: auto; }
+  .join-copy { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; flex: 1; }
+  .join-copy p { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 500; max-width: 36ch; }
+  @media (max-width: 40rem) { .join { flex-direction: column; align-items: flex-start; } }
 </style>
