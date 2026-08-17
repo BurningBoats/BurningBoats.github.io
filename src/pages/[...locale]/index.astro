@@ -5,6 +5,7 @@ import BaseLayout from '~/layouts/BaseLayout.astro';
 import Section from '~/components/layout/Section.astro';
 import Button from '~/components/ui/Button.astro';
 import HeroArt from '~/components/hero/HeroArt.astro';
+import Intro from '~/components/hero/Intro.astro';
 import LogoMark from '~/components/brand/LogoMark.astro';
 import TeamCard from '~/components/team/TeamCard.astro';
 import NewsCard from '~/components/news/NewsCard.astro';
@@ -28,6 +29,7 @@ const team = (await getCollection('team', (e) => e.data.active)).sort((a, b) => 
 const posts = (await getNewsForLocale(locale)).slice(0, 3);
 ---
 <BaseLayout locale={locale} title={t.seo.home.title} description={t.seo.home.description} current="home" navVariant="overlay">
+  <Intro locale={locale} />
   <!-- HERO -->
   <section class="hero theme-dark" data-embers-wrap data-parallax-root>
     <HeroArt wide={keyartWide} tablet={keyartTablet} mobile={keyartMobile} vignette="left" parallax={10} />

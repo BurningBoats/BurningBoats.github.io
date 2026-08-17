@@ -71,6 +71,35 @@ matchMedia('(min-width: 64rem)').addEventListener('change', (m) => { if (m.match
 document.addEventListener('astro:before-swap', () => { if (isOpen) setOpen(false); });
 document.addEventListener('astro:page-load', () => { isOpen = false; lastY = window.scrollY; onScroll(); });
 
+// Language menu ([data-lang-switcher]): toggle, outside click, Escape, arrow keys.
+function setLang(root: HTMLElement, open: boolean) {
+  const btn = root.querySelector<HTMLButtonElement>('.lang-btn');
+  const menu = root.querySelector<HTMLElement>('.lang-menu');
+  if (!btn || !menu) return;
+  btn.setAttribute('aria-expanded', String(open));
+  menu.hidden = !open;
+  if (open) menu.querySelector<HTMLElement>('a[aria-current="true"], a')?.focus({ preventScroll: true });
+}
+document.addEventListener('click', (e) => {
+  const target = e.target as Element | null;
+  const btn = target?.closest<HTMLElement>('[data-lang-switcher] .lang-btn');
+  document.querySelectorAll<HTMLElement>('[data-lang-switcher]').forEach((root) => {
+    if (btn && root.contains(btn)) setLang(root, root.querySelector('.lang-btn')?.getAttribute('aria-expanded') !== 'true');
+    else if (!target || !root.contains(target)) setLang(root, false);
+  });
+});
+document.addEventListener('keydown', (e) => {
+  const openRoot = [...document.querySelectorAll<HTMLElement>('[data-lang-switcher]')].find((r) => r.querySelector('.lang-btn')?.getAttribute('aria-expanded') === 'true');
+  if (!openRoot) return;
+  if (e.key === 'Escape') { setLang(openRoot, false); openRoot.querySelector<HTMLElement>('.lang-btn')?.focus(); return; }
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    const items = [...openRoot.querySelectorAll<HTMLElement>('.lang-menu a')];
+    const i = items.indexOf(document.activeElement as HTMLElement);
+    const next = e.key === 'ArrowDown' ? items[(i + 1) % items.length] : items[(i - 1 + items.length) % items.length];
+    next?.focus(); e.preventDefault();
+  }
+});
+
 // Copy-to-clipboard buttons ([data-copy]).
 document.addEventListener('click', async (e) => {
   const btn = (e.target as Element | null)?.closest<HTMLElement>('[data-copy]');

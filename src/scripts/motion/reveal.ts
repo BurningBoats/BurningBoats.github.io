@@ -17,19 +17,20 @@ export function initReveals(tier: MotionTier) {
     return;
   }
 
-  const y = tier === 'lite' ? 16 : 24;
   ScrollTrigger.batch(items, {
     start: 'top 88%',
     once: true,
     onEnter: (batch) =>
       gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.06, overwrite: true, clearProps: 'transform' }),
   });
-  revealAboveFold(items, 0.7, y);
+  revealAboveFold(items, 0.7);
 }
 
 /** Items already inside the viewport at load reveal immediately (ScrollTrigger.batch handles the rest). */
-function revealAboveFold(items: HTMLElement[], duration: number, _y = 0) {
+function revealAboveFold(items: HTMLElement[], duration: number) {
   const vh = window.innerHeight;
   const visible = items.filter((el) => el.getBoundingClientRect().top < vh * 0.88);
-  if (visible.length) gsap.to(visible, { autoAlpha: 1, y: 0, duration, ease: 'power3.out', stagger: 0.06, overwrite: true, clearProps: 'transform' });
+  // Hold above-the-fold reveals until the logo intro's curtain lifts (Home, first visit).
+  const delay = document.documentElement.dataset.intro === 'playing' ? 1.05 : 0;
+  if (visible.length) gsap.to(visible, { autoAlpha: 1, y: 0, duration, ease: 'power3.out', stagger: 0.06, delay, overwrite: true, clearProps: 'transform' });
 }

@@ -19,6 +19,8 @@ const HEIGHT = Number(arg('height', has('mobile') ? 844 : 900));
 const THEME = arg('theme', 'dark');
 const FULL = has('full');
 const MOTION_OFF = arg('motion', 'on') === 'off';
+const INTRO = has('intro');            // do not pre-mark the intro as seen
+const DELAY = Number(arg('delay', 0));  // ms to wait after load before shooting (skips the scroll pass)
 
 const candidates = [
   process.env.BROWSER_PATH,
@@ -36,7 +38,7 @@ try {
   const page = await browser.newPage();
   await page.setViewport({ width: WIDTH, height: HEIGHT, deviceScaleFactor: 1, isMobile: has('mobile'), hasTouch: has('mobile') });
   if (MOTION_OFF) await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
-  await page.evaluateOnNewDocument((theme) => { try { localStorage.setItem('bb.theme', theme); sessionStorage.setItem('bb.intro', '1'); } catch {} }, THEME);
+  await page.evaluateOnNewDocument((theme, intro) => { try { localStorage.setItem('bb.theme', theme); if (!intro) sessionStorage.setItem('bb.intro', '1'); } catch {} }, THEME, INTRO);
   const errors = [];
   page.on('console', (m) => { if (m.type() === 'error') errors.push(`${m.type()}: ${m.text()}`); });
   page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
@@ -46,9 +48,9 @@ try {
     errors.length = 0;
     const url = new URL(path, BASE).href;
     const slug = (path.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '') || 'home') + (THEME === 'light' ? '-light' : '') + (has('mobile') ? '-mobile' : '');
-    const res = await page.goto(url, { waitUntil: 'networkidle0', timeout: 60000 });
-    // let reveals/fonts settle; scroll through the page so lazy images + reveals fire
-    await page.evaluate(async () => {
+    const res = await page.goto(url, { waitUntil: DELAY ? 'domcontentloaded' : 'networkidle0', timeout: 60000 });
+    if (DELAY) { await new Promise((r) => setTimeout(r, DELAY)); }
+    else await page.evaluate(async () => {
       await (document.fonts?.ready ?? Promise.resolve());
       const h = document.documentElement.scrollHeight;
       for (let y = 0; y < h; y += 500) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 90)); }

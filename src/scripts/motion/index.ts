@@ -12,6 +12,7 @@ import { initReveals } from './reveal';
 import { initHeadings } from './split';
 import { initParallax } from './parallax';
 import { initMagnetic } from './magnetic';
+import { initReadingProgress } from './progress';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -40,6 +41,7 @@ async function boot() {
 
     ctx = gsap.context(() => {
       initReveals(tier);
+      initReadingProgress();
       if (tier !== 'reduced') initHeadings(tier);
       if (tier === 'full') { initParallax(); initMagnetic(); }
     });
