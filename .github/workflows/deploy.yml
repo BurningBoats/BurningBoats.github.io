@@ -24,7 +24,7 @@ concurrency:
 env:
   # Launch gate: while "false", pushes to main only build + verify (no publish).
   # Flip to "true" at launch so every push to main goes live on new-pages.
-  AUTO_PUBLISH: "false"
+  AUTO_PUBLISH: "true"
   ASTRO_TELEMETRY_DISABLED: "1"
 
 jobs:
