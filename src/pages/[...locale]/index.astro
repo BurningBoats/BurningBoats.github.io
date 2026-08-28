@@ -184,8 +184,9 @@ const posts = (await getNewsForLocale(locale)).slice(0, 3);
 
   /* Team teaser */
   .team-teaser { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem 2.5rem; }
-  .chips-row { display: flex; }
-  .chips-row > :global(*) + :global(*) { margin-left: -12px; }
+  /* Overlapping avatars; wraps on narrow screens. The row's padding cancels the first chip's pull-back so wrapped rows stay flush left. */
+  .chips-row { display: flex; flex-wrap: wrap; row-gap: 0.5rem; padding-left: 12px; }
+  .chips-row > :global(*) { margin-left: -12px; }
   .team-line { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 500; flex: 1; min-width: 16rem; }
 
   /* Community */

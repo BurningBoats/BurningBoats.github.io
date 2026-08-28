@@ -77,8 +77,7 @@
   },
   {
     "id": "mata",
-    "name": "Mata",
-    "surnameTbd": true,
+    "name": "José Miguel Ruiz Mata",
     "role": {
       "en": "Level & Game Design",
       "es": "Diseño de niveles y de juego",
@@ -92,24 +91,6 @@
     "bioStatus": "to-confirm",
     "avatar": "../assets/team/mata.webp",
     "order": 5
-  },
-  {
-    "id": "leon",
-    "name": "León",
-    "surnameTbd": true,
-    "role": {
-      "en": "3D Art",
-      "es": "Arte 3D",
-      "pt": "Arte 3D"
-    },
-    "bio": {
-      "en": "Builds Mindaro in three dimensions: creatures, ruins and everything you'll wish you hadn't seen.",
-      "es": "Construye Mindaro en tres dimensiones: criaturas, ruinas y todo lo que desearás no haber visto.",
-      "pt": "Constrói Mindaro em três dimensões: criaturas, ruínas e tudo o que você vai desejar não ter visto."
-    },
-    "bioStatus": "to-confirm",
-    "avatar": "../assets/team/leon.webp",
-    "order": 6
   },
   {
     "id": "david",
@@ -126,7 +107,7 @@
     },
     "bioStatus": "to-confirm",
     "avatar": "../assets/team/david.webp",
-    "order": 7
+    "order": 6
   },
   {
     "id": "roberto",
@@ -143,7 +124,75 @@
     },
     "bioStatus": "to-confirm",
     "avatar": "../assets/team/roberto.webp",
+    "order": 7
+  },
+  {
+    "id": "santiago-vaca",
+    "name": "Santiago Vaca Fernández",
+    "role": {
+      "en": "Programmer · Gameplay",
+      "es": "Programador · Gameplay",
+      "pt": "Programador · Gameplay"
+    },
+    "bio": {
+      "en": "Turns the design docs into something you can actually play — and something that can actually kill you.",
+      "es": "Convierte el diseño en algo que de verdad se puede jugar… y que de verdad te puede matar.",
+      "pt": "Transforma o design em algo que dá para jogar de verdade — e que pode mesmo te matar."
+    },
+    "bioStatus": "to-confirm",
+    "avatar": "../assets/team/santiago-vaca.webp",
     "order": 8
+  },
+  {
+    "id": "sofia",
+    "name": "Sofía López Vázquez",
+    "role": {
+      "en": "2D & 3D Art",
+      "es": "Arte 2D y 3D",
+      "pt": "Arte 2D e 3D"
+    },
+    "bio": {
+      "en": "Moves between the sketchbook and the model view: designs it flat, then builds it solid.",
+      "es": "Se mueve entre el cuaderno y el visor 3D: lo diseña plano y después lo construye sólido.",
+      "pt": "Transita entre o caderno e a vista 3D: desenha no plano e depois constrói em sólido."
+    },
+    "bioStatus": "to-confirm",
+    "avatar": "../assets/team/sofia.webp",
+    "order": 9
+  },
+  {
+    "id": "santiago-perez",
+    "name": "Santiago Pérez Ochoa",
+    "role": {
+      "en": "3D Art",
+      "es": "Arte 3D",
+      "pt": "Arte 3D"
+    },
+    "bio": {
+      "en": "Models the ruins and the things living in them, one layer deeper than you'd like.",
+      "es": "Modela las ruinas y lo que vive en ellas, una capa más profunda de lo que te gustaría.",
+      "pt": "Modela as ruínas e o que vive nelas, uma camada mais fundo do que você gostaria."
+    },
+    "bioStatus": "to-confirm",
+    "avatar": "../assets/team/santiago-perez.webp",
+    "order": 10
+  },
+  {
+    "id": "juan-pablo",
+    "name": "Juan Pablo Martínez Becerra",
+    "role": {
+      "en": "3D Art",
+      "es": "Arte 3D",
+      "pt": "Arte 3D"
+    },
+    "bio": {
+      "en": "Gives the world its shape and its surface: props, creatures and the texture of every wrong turn.",
+      "es": "Le da forma y superficie al mundo: props, criaturas y la textura de cada paso en falso.",
+      "pt": "Dá forma e superfície ao mundo: props, criaturas e a textura de cada passo em falso."
+    },
+    "bioStatus": "to-confirm",
+    "avatar": "../assets/team/juan-pablo.webp",
+    "order": 11
   },
   {
     "id": "keith",
@@ -160,6 +209,6 @@
     },
     "bioStatus": "to-confirm",
     "avatar": "../assets/team/keith.webp",
-    "order": 9
+    "order": 12
   }
 ]

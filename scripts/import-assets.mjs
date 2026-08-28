@@ -191,11 +191,12 @@ const groups = {
     await emit('src/assets/mindaro/bg-cave.webp', await sharp(src('Mindaro', 'Mindaro_Images', 'Wallpapers', 'Wallpaper2.png')).resize({ width: 1920 }).modulate({ brightness: 0.85, saturation: 0.9 }).webp({ quality: 80, effort: 6 }).toBuffer(), 500);
   },
 
-  /** 9 team avatars → 960² WebP + press JPGs */
+  /** 12 team avatars → 960² WebP + press JPGs. Keys match `id` in src/content/team.json. */
   async team() {
     const members = [
       ['henry', 'Henry2.jpg'], ['venecia', 'Venecia.jpg'], ['paul', 'Paul2.jpg'], ['octavio', 'Octavio.jpg'], ['mata', 'Mata.jpg'],
-      ['leon', 'mindaro_leon.jpg'], ['david', 'David.png'], ['roberto', 'Roberto.jpg'], ['keith', 'Keith.jpg'],
+      ['david', 'David.png'], ['roberto', 'Roberto.jpg'], ['keith', 'Keith.jpg'],
+      ['santiago-vaca', 'mindaro_leon.jpg'], ['sofia', 'Andy.jpg'], ['santiago-perez', 'Andres.jpg'], ['juan-pablo', 'Gabriel.jpg'],
     ];
     for (const [id, file] of members) {
       const p = src('Mindaro', 'Mindaro_Images', 'TeamPictures', file);
